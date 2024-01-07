@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { StudentService } from '../student/student.service';
 import { LoginDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
-    const student = await this.prismaService.student.findUnique({
+    const student = await this.prismaService.user.findUnique({
       where: {
         email,
       },
