@@ -4,6 +4,14 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const cors = {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  };
+
+  app.enableCors(cors);
+
   const config = new DocumentBuilder()
     .setTitle('Backend LMS API')
     .setDescription('The Backend LMS API description')
