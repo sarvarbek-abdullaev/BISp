@@ -25,7 +25,7 @@ export class ModuleController {
   }
 
   @Post()
-  async createModule(moduleData) {
+  async createModule(@Body() moduleData: Module) {
     return this.moduleService.createModule(moduleData);
   }
 

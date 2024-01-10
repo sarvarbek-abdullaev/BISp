@@ -13,13 +13,20 @@ export class CourseService {
   }
 
   async getAllCourses(): Promise<Course[]> {
-    return this.prisma.course.findMany();
+    return this.prisma.course.findMany({
+      include: {
+        modules: true,
+      },
+    });
   }
 
   async getCourseById(id: string): Promise<Course> {
     return this.prisma.course.findUnique({
       where: {
         id,
+      },
+      include: {
+        modules: true,
       },
     });
   }

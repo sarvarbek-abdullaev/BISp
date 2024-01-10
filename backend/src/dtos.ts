@@ -3,5 +3,5 @@ export interface UserDto {
   name: string;
   email: string;
   birthYear?: number;
-  role?: string[];
+  role?: string;
 }

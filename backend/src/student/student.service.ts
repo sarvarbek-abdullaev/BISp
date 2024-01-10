@@ -26,9 +26,7 @@ export class StudentService {
   async getAllStudents(): Promise<UserDto[]> {
     return this.prismaService.user.findMany({
       where: {
-        role: {
-          has: 'STUDENT',
-        },
+        role: 'STUDENT',
       },
       select: {
         id: true,

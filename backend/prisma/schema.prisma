@@ -22,7 +22,7 @@ model User {
   name      String?
   birthYear Int?
   password  String
-  role      Role[]   @default([STUDENT])
+  role      Role     @default(STUDENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -34,6 +34,8 @@ model Module {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  course      Course?  @relation(fields: [courseIds], references: [id])
+  courseIds   String[] @default([]) @db.ObjectId
 }
 
 model Course {
@@ -43,4 +45,5 @@ model Course {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  modules     Module[]
 }

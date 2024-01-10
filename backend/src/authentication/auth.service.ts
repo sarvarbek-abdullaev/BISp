@@ -30,7 +30,14 @@ export class AuthService {
     }
 
     return {
-      token: this.jwtService.sign({ email }),
+      user: {
+        id: student.id,
+        name: student.name,
+        email: student.email,
+      },
+      backendTokens: {
+        accessToken: this.jwtService.sign({ email }),
+      },
     };
   }
 }
