@@ -45,4 +45,12 @@ export class StudentController {
   async deleteStudentById(@Param('id') id: string): Promise<User> {
     return await this.studentService.deleteStudentById(id);
   }
+
+  @Post('assign-group')
+  async assignGroupToStudent(
+    @Body('studentId') studentId: string,
+    @Body('groupId') groupId: string,
+  ): Promise<void> {
+    await this.studentService.assignGroupToUser(studentId, groupId);
+  }
 }

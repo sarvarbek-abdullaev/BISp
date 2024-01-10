@@ -33,6 +33,7 @@ export class StudentService {
         name: true,
         email: true,
         birthYear: true,
+        userGroup: true,
       },
     });
   }
@@ -42,6 +43,13 @@ export class StudentService {
       where: {
         id,
       },
+      include: {
+        userGroup: {
+          select: {
+            group: true,
+          },
+        },
+      },
     });
   }
 
@@ -50,7 +58,9 @@ export class StudentService {
       where: {
         id,
       },
-      data: studentData,
+      data: {
+        ...studentData,
+      },
     });
   }
 
@@ -58,6 +68,15 @@ export class StudentService {
     return this.prismaService.user.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  async assignGroupToUser(userId: string, groupId: string) {
+    return this.prismaService.userGroup.create({
+      data: {
+        userId,
+        groupId,
       },
     });
   }
