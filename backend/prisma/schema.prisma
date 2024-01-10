@@ -34,8 +34,8 @@ model Module {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  course      Course?  @relation(fields: [courseIds], references: [id])
-  courseIds   String[] @default([]) @db.ObjectId
+  courseId    String?  @db.ObjectId // Make sure courseId has the same type as Course's id
+  Course      Course?  @relation(fields: [courseId], references: [id])
 }
 
 model Course {
