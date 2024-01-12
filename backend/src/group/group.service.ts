@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Group } from '@prisma/client';
 
@@ -9,9 +15,9 @@ export class GroupService {
   async getAllGroups(): Promise<Group[]> {
     return this.prisma.group.findMany({
       include: {
-        userGroup: {
+        studentGroup: {
           select: {
-            user: true,
+            student: true,
           },
         },
       },
@@ -24,9 +30,9 @@ export class GroupService {
         id,
       },
       include: {
-        userGroup: {
+        studentGroup: {
           select: {
-            user: true,
+            student: true,
           },
         },
       },
@@ -44,15 +50,46 @@ export class GroupService {
 
   async createGroup(groupData): Promise<Group> {
     return this.prisma.group.create({
-      data: groupData,
+      data: {
+        ...groupData,
+        year: new Date().getUTCFullYear(),
+      },
     });
   }
 
   async deleteGroupById(id: string): Promise<Group> {
-    return this.prisma.group.delete({
-      where: {
-        id,
-      },
-    });
+    try {
+      const existingGroup = await this.prisma.group.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          studentGroup: true,
+        },
+      });
+
+      if (!existingGroup) {
+        throw new NotFoundException(`Group with ID ${id} not found`);
+      }
+
+      if (existingGroup.studentGroup.length > 0) {
+        throw new ForbiddenException(
+          `Group with ID ${id} has users and cannot be deleted.`,
+        );
+      }
+
+      return this.prisma.group.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      if (error instanceof ForbiddenException) {
+        throw new ForbiddenException(error.message);
+      } else {
+        console.error(error);
+        throw new NotFoundException(error.message);
+      }
+    }
   }
 }

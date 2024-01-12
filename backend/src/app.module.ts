@@ -6,9 +6,19 @@ import { ModuleModule } from './module/module.module';
 import { CourseModule } from './course/course.module';
 import { AuthModule } from './authentication/auth.module';
 import { GroupModule } from './group/group.module';
+import { StudentGroupModule } from './studentGroup/studentGroup.module';
+import { TeacherModule } from './teacher/teacher.module';
 
 @Module({
-  imports: [StudentModule, ModuleModule, CourseModule, AuthModule, GroupModule],
+  imports: [
+    StudentModule,
+    TeacherModule,
+    ModuleModule,
+    CourseModule,
+    AuthModule,
+    GroupModule,
+    StudentGroupModule,
+  ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
 })

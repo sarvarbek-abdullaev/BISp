@@ -8,10 +8,19 @@ import { StudentModule } from '../student/student.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import * as process from 'process';
+import { AdminService } from '../admin/admin.service';
+import { TeacherService } from '../teacher/teacher.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, JwtStrategy, StudentService],
+  providers: [
+    AuthService,
+    PrismaService,
+    JwtStrategy,
+    StudentService,
+    TeacherService,
+    AdminService,
+  ],
   imports: [
     StudentModule,
     PassportModule,
