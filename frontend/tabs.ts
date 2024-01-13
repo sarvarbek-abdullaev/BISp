@@ -1,4 +1,5 @@
-export const columns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added', 'Group'];
+export const columns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added'];
+export const studentColumns = [...columns, 'Group'];
 export const userTabs = [
   {
     name: 'Dashboard',
@@ -25,7 +26,7 @@ export const userTabs = [
 export const adminTabs = [
   {
     name: 'Dashboard',
-    path: '/admin/dashboard',
+    path: '/admin',
   },
   {
     name: 'Users',
@@ -42,6 +43,10 @@ export const adminTabs = [
 ];
 
 export const adminUsersTabs = [
+  {
+    name: 'Dashboard',
+    path: '/admin/users',
+  },
   {
     name: 'Students',
     path: '/admin/users/students',

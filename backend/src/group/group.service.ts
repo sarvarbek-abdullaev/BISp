@@ -15,9 +15,9 @@ export class GroupService {
   async getAllGroups(): Promise<Group[]> {
     return this.prisma.group.findMany({
       include: {
-        studentGroup: {
+        userGroup: {
           select: {
-            student: true,
+            user: true,
           },
         },
       },
@@ -30,9 +30,9 @@ export class GroupService {
         id,
       },
       include: {
-        studentGroup: {
+        userGroup: {
           select: {
-            student: true,
+            user: true,
           },
         },
       },
@@ -64,7 +64,7 @@ export class GroupService {
           id,
         },
         include: {
-          studentGroup: true,
+          userGroup: true,
         },
       });
 
@@ -72,7 +72,7 @@ export class GroupService {
         throw new NotFoundException(`Group with ID ${id} not found`);
       }
 
-      if (existingGroup.studentGroup.length > 0) {
+      if (existingGroup.userGroup.length > 0) {
         throw new ForbiddenException(
           `Group with ID ${id} has users and cannot be deleted.`,
         );

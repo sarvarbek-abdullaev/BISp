@@ -5,7 +5,9 @@ import { popoverAnatomy as parts } from '@chakra-ui/anatomy';
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(parts.keys);
 const baseStyle = definePartsStyle({
   content: {
-    padding: 3,
+    padding: 1,
+    maxW: '300px',
+    w: 'unset',
     bg: 'mainBackground',
   },
 });

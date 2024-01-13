@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { Student } from '@prisma/client';
+import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 import { StudentService } from './student.service';
 import { JwtAuthGuard } from '../authentication/auth.guard';
@@ -19,30 +19,30 @@ export class StudentController {
 
   // @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllStudents(): Promise<UserDto[]> {
-    return await this.studentService.getAllStudents();
+  async getAllUsers(): Promise<UserDto[]> {
+    return await this.studentService.getAllUsers();
   }
 
   @Get(':id')
-  async getStudentById(@Param('id') id: string): Promise<Student> {
-    return await this.studentService.getStudentById(id);
+  async getUserById(@Param('id') id: string): Promise<User> {
+    return await this.studentService.getUserById(id);
   }
 
   @Put(':id')
-  async updateStudentById(
+  async updateUserById(
     @Param('id') id: string,
-    @Body() studentData: Student,
-  ): Promise<Student> {
-    return await this.studentService.updateStudentById(id, studentData);
+    @Body() studentData: User,
+  ): Promise<User> {
+    return await this.studentService.updateUserById(id, studentData);
   }
 
   @Post()
-  async createStudent(@Body() studentData: Student): Promise<UserDto> {
-    return await this.studentService.createStudent(studentData);
+  async createUser(@Body() studentData: User): Promise<UserDto> {
+    return await this.studentService.createUser(studentData);
   }
 
   @Delete(':id')
-  async deleteStudentById(@Param('id') id: string): Promise<Student> {
-    return await this.studentService.deleteStudentById(id);
+  async deleteUserById(@Param('id') id: string): Promise<User> {
+    return await this.studentService.deleteUserById(id);
   }
 }

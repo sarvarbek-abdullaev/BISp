@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Admin } from '@prisma/client';
+import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 
 @Injectable()
@@ -14,57 +14,74 @@ export class AdminService {
 
   async createAdmin(adminData): Promise<UserDto> {
     const hashedPassword = await this.hashPassword(adminData.password);
-    const student = await this.prismaService.admin.create({
+    const student = await this.prismaService.user.create({
       data: {
         ...adminData,
         password: hashedPassword,
+        birthYear: Number(adminData.birthYear),
+        role: 'ADMIN',
       },
     });
     return delete student.password && student;
   }
 
   async getAllAdmins(): Promise<UserDto[]> {
-    return this.prismaService.admin.findMany({
+    return this.prismaService.user.findMany({
       select: {
         id: true,
         name: true,
         email: true,
         createdAt: true,
       },
-    });
-  }
-
-  async getAdminById(id: string): Promise<Admin> {
-    return this.prismaService.admin.findUnique({
       where: {
-        id,
+        role: 'ADMIN',
       },
     });
   }
 
-  async getAdminByEmail(email: string): Promise<Admin> {
-    return this.prismaService.admin.findUnique({
+  async getAdminById(id: string): Promise<User> {
+    return this.prismaService.user.findUnique({
+      where: {
+        id,
+        role: 'ADMIN',
+      },
+    });
+  }
+
+  async getAdminByEmail(email: string): Promise<User> {
+    return this.prismaService.user.findUnique({
       where: {
         email,
+        role: 'ADMIN',
       },
     });
   }
 
-  async updateAdminById(id: string, adminData): Promise<Admin> {
-    return this.prismaService.admin.update({
+  async updateAdminById(id: string, adminData): Promise<User> {
+    if (!adminData.password || adminData.password === '') {
+      delete adminData.password;
+    }
+
+    return this.prismaService.user.update({
       where: {
         id,
+        role: 'ADMIN',
       },
       data: {
         ...adminData,
+        birthYear: Number(adminData.birthYear),
+        ...(adminData.password && {
+          password: await this.hashPassword(adminData.password),
+        }),
       },
     });
   }
 
-  async deleteAdminById(id: string): Promise<Admin> {
-    return this.prismaService.admin.delete({
+  async deleteAdminById(id: string): Promise<User> {
+    return this.prismaService.user.delete({
       where: {
         id,
+        role: 'ADMIN',
       },
     });
   }

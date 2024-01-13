@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Student } from '@prisma/client';
+import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 
 @Injectable()
@@ -12,26 +12,27 @@ export class StudentService {
     return bcrypt.hash(password, 10);
   }
 
-  async createStudent(studentData): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(studentData.password);
-    const student = await this.prismaService.student.create({
+  async createUser(userData): Promise<UserDto> {
+    const hashedPassword = await this.hashPassword(userData.password);
+    const user = await this.prismaService.user.create({
       data: {
-        ...studentData,
+        ...userData,
+        birthYear: Number(userData.birthYear),
         password: hashedPassword,
       },
     });
-    return delete student.password && student;
+    return delete user.password && user;
   }
 
-  async getAllStudents(): Promise<UserDto[]> {
-    return this.prismaService.student.findMany({
+  async getAllUsers(): Promise<UserDto[]> {
+    return this.prismaService.user.findMany({
       select: {
         id: true,
         name: true,
         email: true,
         birthYear: true,
         createdAt: true,
-        studentGroup: {
+        userGroup: {
           select: {
             id: true,
             group: {
@@ -51,13 +52,13 @@ export class StudentService {
     });
   }
 
-  async getStudentById(id: string): Promise<Student> {
-    return this.prismaService.student.findUnique({
+  async getUserById(id: string): Promise<User> {
+    return this.prismaService.user.findUnique({
       where: {
         id,
       },
       include: {
-        studentGroup: {
+        userGroup: {
           select: {
             id: true,
             group: {
@@ -77,13 +78,13 @@ export class StudentService {
     });
   }
 
-  async getStudentByEmail(email: string): Promise<Student> {
-    return this.prismaService.student.findUnique({
+  async getUserByEmail(email: string): Promise<User> {
+    return this.prismaService.user.findUnique({
       where: {
         email,
       },
       include: {
-        studentGroup: {
+        userGroup: {
           select: {
             id: true,
             group: {
@@ -103,19 +104,24 @@ export class StudentService {
     });
   }
 
-  async updateStudentById(id: string, studentData): Promise<Student> {
-    return this.prismaService.student.update({
+  async updateUserById(id: string, userData): Promise<User> {
+    if (userData.password || userData.password === '') {
+      delete userData.password;
+    }
+
+    return this.prismaService.user.update({
       where: {
         id,
       },
       data: {
-        ...studentData,
+        ...userData,
+        birthYear: Number(userData.birthYear),
       },
     });
   }
 
-  async deleteStudentById(id: string): Promise<Student> {
-    return this.prismaService.student.delete({
+  async deleteUserById(id: string): Promise<User> {
+    return this.prismaService.user.delete({
       where: {
         id,
       },

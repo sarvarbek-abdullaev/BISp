@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { Admin } from '@prisma/client';
+import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../authentication/auth.guard';
@@ -24,25 +24,25 @@ export class AdminController {
   }
 
   @Get(':id')
-  async getAdminById(@Param('id') id: string): Promise<Admin> {
+  async getAdminById(@Param('id') id: string): Promise<User> {
     return await this.adminService.getAdminById(id);
   }
 
   @Put(':id')
   async updateAdminById(
     @Param('id') id: string,
-    @Body() adminData: Admin,
-  ): Promise<Admin> {
+    @Body() adminData: User,
+  ): Promise<User> {
     return await this.adminService.updateAdminById(id, adminData);
   }
 
   @Post()
-  async createAdmin(@Body() adminData: Admin): Promise<UserDto> {
+  async createAdmin(@Body() adminData: User): Promise<UserDto> {
     return await this.adminService.createAdmin(adminData);
   }
 
   @Delete(':id')
-  async deleteAdminById(@Param('id') id: string): Promise<Admin> {
+  async deleteAdminById(@Param('id') id: string): Promise<User> {
     return await this.adminService.deleteAdminById(id);
   }
 }

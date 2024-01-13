@@ -26,9 +26,13 @@ export const Popover: FC<PopoverProps> = ({ element, header, body }) => {
       <Portal>
         <PopoverContent>
           <PopoverArrow />
-          <PopoverHeader>{header}</PopoverHeader>
-          <PopoverCloseButton />
-          <PopoverBody>{body}</PopoverBody>
+          {header && (
+            <>
+              <PopoverHeader>{header}</PopoverHeader>
+              <PopoverCloseButton />
+            </>
+          )}
+          {body && <PopoverBody>{body}</PopoverBody>}
         </PopoverContent>
       </Portal>
     </ChakraPopover>

@@ -23,12 +23,12 @@ interface SideBarProps {
 
 export const Sidebar: FC<SideBarProps> = ({ tabs }) => {
   const pathname = usePathname();
-  const defaultTabIndex = tabs.findIndex((tab: Tab) => pathname.includes(tab.path)) || 0;
-  const isCurrentTab = (tab: Tab) => pathname.includes(tab.path);
+  const defaultTabIndex = tabs.findIndex((tab: Tab) => pathname === tab.path);
+  const isCurrentTab = (tab: Tab) => pathname === tab.path;
 
   return (
     <Flex position="sticky" bg="#202020" overflow="hidden" color="#B0B0B0" maxW="240px" w="100%" borderRadius="8px">
-      <Tabs variant="unstyled" orientation="vertical" defaultIndex={defaultTabIndex} w="100%">
+      <Tabs variant="unstyled" orientation="vertical" w="100%" index={defaultTabIndex}>
         <TabList w="100%">
           {tabs.map((tab, index) => (
             <Link key={index + tab.name} href={tab.path}>

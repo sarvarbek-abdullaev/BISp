@@ -1,23 +1,25 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { StudentModule } from './student/student.module';
 import { ModuleModule } from './module/module.module';
 import { CourseModule } from './course/course.module';
 import { AuthModule } from './authentication/auth.module';
 import { GroupModule } from './group/group.module';
-import { StudentGroupModule } from './studentGroup/studentGroup.module';
+import { UserGroupModule } from './userGroup/userGroup.module';
+import { AdminModule } from './admin/admin.module';
 import { TeacherModule } from './teacher/teacher.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
     StudentModule,
-    TeacherModule,
     ModuleModule,
+    AdminModule,
+    TeacherModule,
     CourseModule,
     AuthModule,
     GroupModule,
-    StudentGroupModule,
+    UserGroupModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],

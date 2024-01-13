@@ -1,20 +1,17 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { StudentGroup } from '@prisma/client';
+import { UserGroup } from '@prisma/client';
 
 @Injectable()
-export class StudentGroupService {
+export class UserGroupService {
   constructor(private prismaService: PrismaService) {}
 
-  async createStudentGroup(
-    studentId: string,
-    groupId: string,
-  ): Promise<StudentGroup> {
+  async createUserGroup(userId: string, groupId: string): Promise<UserGroup> {
     try {
-      const userHasGroup = await this.prismaService.studentGroup.findFirst({
+      const userHasGroup = await this.prismaService.userGroup.findFirst({
         where: {
-          student: {
-            id: studentId,
+          user: {
+            id: userId,
           },
           group: {
             id: groupId,
@@ -24,11 +21,11 @@ export class StudentGroupService {
       if (userHasGroup) {
         throw new ForbiddenException('User already has group');
       }
-      return await this.prismaService.studentGroup.create({
+      return await this.prismaService.userGroup.create({
         data: {
-          student: {
+          user: {
             connect: {
-              id: studentId,
+              id: userId,
             },
           },
           group: {
@@ -46,16 +43,16 @@ export class StudentGroupService {
     }
   }
 
-  async getStudentGroupById(id: string): Promise<StudentGroup> {
-    return this.prismaService.studentGroup.findUnique({
+  async getUserGroupById(id: string): Promise<UserGroup> {
+    return this.prismaService.userGroup.findUnique({
       where: {
         id,
       },
     });
   }
 
-  async updateStudentGroupById(id: string, userGroup): Promise<StudentGroup> {
-    return this.prismaService.studentGroup.update({
+  async updateUserGroupById(id: string, userGroup): Promise<UserGroup> {
+    return this.prismaService.userGroup.update({
       where: {
         id,
       },
@@ -65,16 +62,16 @@ export class StudentGroupService {
     });
   }
 
-  async deleteStudentGroupById(id: string): Promise<any> {
+  async deleteUserGroupById(id: string): Promise<any> {
     try {
-      return this.prismaService.studentGroup.delete({
+      return this.prismaService.userGroup.delete({
         where: {
           id,
         },
       });
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to remove group from user');
+      throw new Error('Failed to remove group from student');
     }
   }
 }
