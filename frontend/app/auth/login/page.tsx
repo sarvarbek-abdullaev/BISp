@@ -1,19 +1,20 @@
 "use client";
 import {
-    Box,
-    Button,
-    Checkbox,
-    Container,
-    FormControl,
-    FormLabel,
-    Heading,
-    HStack,
-    Input,
-    Stack
-} from "@chakra-ui/react";
-import {Logo} from "@/components/Logo";
-import React, {useState} from "react";
-import {signIn} from "next-auth/react";
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControl,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Stack,
+} from '@chakra-ui/react';
+import { Logo } from '@/components/Logo';
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
+
 interface LoginData {
     email: string;
     password: string;
@@ -73,7 +74,7 @@ export default function Page() {
                                 />
                             </FormControl>
                             <FormControl>
-                                <FormLabel htmlFor="email">Email</FormLabel>
+                                <FormLabel htmlFor="password">Password</FormLabel>
                                 <Input
                                     id="password"
                                     name="password"

@@ -1,5 +1,5 @@
-import NextAuth, {NextAuthOptions} from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -23,20 +23,18 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     pages: {
-        signIn: "/login",
+        signIn: "/auth/login",
     },
     callbacks: {
         async jwt({token, user}){
-            console.log({token, user})
             if (user) {
                 return {...token, ...user};
             }
             return token;
         },
         async session({token, session}){
-            console.log({token, session});
-            // session.user = token.user;
-            // session.backendTokens = token.backendTokens;
+            session.user = token.user;
+            session.backendTokens = token.backendTokens;
             return session;
         },
     },

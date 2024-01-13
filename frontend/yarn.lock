@@ -379,6 +379,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@chakra-ui/icons@npm:2.1.1"
+  dependencies:
+    "@chakra-ui/icon": "npm:3.2.0"
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0"
+    react: ">=18"
+  checksum: 36c94df62216f7445e49dfec98363f4c836e154ba118e6c446e774cade6f9e0e04c33a62fbe2ff9de26eb87f6a3ee805f8c7fd2ddc82c8ef2744994443a83b33
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:2.1.0":
   version: 2.1.0
   resolution: "@chakra-ui/image@npm:2.1.0"
@@ -3258,6 +3270,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "frontend@workspace:."
   dependencies:
+    "@chakra-ui/icons": "npm:^2.1.1"
     "@chakra-ui/next-js": "npm:^2.2.0"
     "@chakra-ui/react": "npm:^2.8.2"
     "@emotion/react": "npm:^11.11.3"
@@ -3272,6 +3285,7 @@ __metadata:
     next: "npm:14.0.4"
     next-auth: "npm:^4.24.5"
     postcss: "npm:^8"
+    prettier: "npm:^3.0.0"
     react: "npm:^18"
     react-dom: "npm:^18"
     react-icons: "npm:^4.12.0"
@@ -4896,6 +4910,15 @@ __metadata:
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
   checksum: b00d617431e7886c520a6f498a2e14c75ec58f6d93ba48c3b639cf241b54232d90daa05d83a9e9b9fef6baa63cb7e1e4602c2372fea5bc169668401eb127d0cd
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.0.0":
+  version: 3.2.0
+  resolution: "prettier@npm:3.2.0"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 8ba997430cb3fe88cd749a3521bc15821cadb4b6ff41c626e92cabc342efee712d109921b3de37dcada7326bc1b03e745b802fba5472535eb7880e8e7e073b51
   languageName: node
   linkType: hard
 
