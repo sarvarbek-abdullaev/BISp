@@ -18,3 +18,20 @@ export const updateUserById = async (type: string, id: string | undefined, data:
     console.log(error);
   }
 };
+
+export const updateGroupById = async (type: string, id: string | undefined, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/${type}/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/${type}s`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

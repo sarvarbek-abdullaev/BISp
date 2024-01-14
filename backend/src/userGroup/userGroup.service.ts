@@ -43,6 +43,25 @@ export class UserGroupService {
     }
   }
 
+  async createUserGroups(userIds: string[], groupId: string) {
+    try {
+      const userGroups = userIds.map((userId) => {
+        return {
+          userId,
+          groupId,
+        };
+      });
+      const res = await this.prismaService.userGroup.createMany({
+        data: userGroups,
+      });
+      console.log(res);
+      return null;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to create users group');
+    }
+  }
+
   async getUserGroupById(id: string): Promise<UserGroup> {
     return this.prismaService.userGroup.findUnique({
       where: {

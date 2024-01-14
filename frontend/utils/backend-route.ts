@@ -25,3 +25,42 @@ export const getUserById = async (type: string, id: string) => {
     console.log(error);
   }
 };
+
+export const getGroups = async () => {
+  try {
+    const res = await fetch(`${API_URL}/group`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getGroupById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/group/${id}`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCourses = async () => {
+  try {
+    const res = await fetch(`${API_URL}/course`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

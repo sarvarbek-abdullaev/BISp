@@ -35,7 +35,10 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
 
   if (pathname === '/auth/login') return null;
 
-  const defaultTabIndex = tabs.findIndex((tab) => pathname.includes(tab.path)) || 0;
+  const defaultTabIndex = tabs.findIndex((tab) => {
+    const regex = new RegExp(`^${pathname}(?:\|$)`);
+    return regex.test(tab.path);
+  });
 
   return (
     <Flex
@@ -49,7 +52,7 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
       {...styles}
     >
       <Logo size="10" />
-      <Tabs alignSelf="end" variant="unstyled" defaultIndex={defaultTabIndex}>
+      <Tabs alignSelf="end" variant="unstyled" index={defaultTabIndex}>
         <TabList>
           {tabs.map((tab, index) => (
             <Link key={index + tab.name} href={tab.path}>

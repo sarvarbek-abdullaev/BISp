@@ -20,6 +20,7 @@ export class GroupService {
             user: true,
           },
         },
+        course: true,
       },
     });
   }
@@ -33,6 +34,12 @@ export class GroupService {
         userGroup: {
           select: {
             user: true,
+          },
+        },
+        course: {
+          select: {
+            id: true,
+            name: true,
           },
         },
       },

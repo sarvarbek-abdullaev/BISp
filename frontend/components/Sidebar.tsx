@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { Tab, TabIndicator, TabList, Tabs } from '@chakra-ui/tabs';
 import Link from '@/components/Link';
 import { Flex } from '@chakra-ui/react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/Icon';
 
 const selectedStyle = {
@@ -19,19 +19,22 @@ interface Tab {
 
 interface SideBarProps {
   tabs: Tab[];
+  query?: string;
 }
 
-export const Sidebar: FC<SideBarProps> = ({ tabs }) => {
+export const Sidebar: FC<SideBarProps> = ({ tabs, query }) => {
   const pathname = usePathname();
-  const defaultTabIndex = tabs.findIndex((tab: Tab) => pathname === tab.path);
-  const isCurrentTab = (tab: Tab) => pathname === tab.path;
+  const searchQuery = useSearchParams();
+  const isQuery = query && searchQuery.size > 0 ? '?' + query + '=' + searchQuery.get(query) : '';
+  const defaultTabIndex = tabs.findIndex((tab: Tab) => pathname + isQuery === tab.path);
+  const isCurrentTab = (tab: Tab) => pathname + isQuery === tab.path;
 
   return (
     <Flex position="sticky" bg="#202020" overflow="hidden" color="#B0B0B0" maxW="240px" w="100%" borderRadius="8px">
       <Tabs variant="unstyled" orientation="vertical" w="100%" index={defaultTabIndex}>
         <TabList w="100%">
           {tabs.map((tab, index) => (
-            <Link key={index + tab.name} href={tab.path}>
+            <Link key={index + tab.name} href={tab.path} query={isQuery}>
               <Tab
                 position="relative"
                 _selected={selectedStyle}

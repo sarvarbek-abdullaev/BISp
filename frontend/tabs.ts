@@ -1,5 +1,9 @@
-export const columns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added'];
-export const studentColumns = [...columns, 'Group'];
+export const columns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added', 'Actions'];
+
+export const studentColumns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added', 'Group', 'Actions'];
+
+export const groupColumns = ['No', 'Name', 'Course', 'Year', 'Created At', 'Members', 'Actions'];
+
 export const userTabs = [
   {
     name: 'Dashboard',

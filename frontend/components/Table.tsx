@@ -16,19 +16,41 @@ interface UserGroup {
   };
 }
 
-interface Row {
+export interface Course {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  createdAt: string;
+}
+
+export interface User {
   id: number;
   name: string;
   email: string;
+  year?: number;
   birthYear: number;
   createdAt: string;
   userGroup?: UserGroup[];
+  course?: Course;
+}
+
+interface Group {
+  id: number;
+  name: string;
+  year: number;
+  birthYear?: number;
+  email?: string;
+  course: Course;
+  createdAt: string;
+  updatedAt: string;
+  userGroup?: User[];
 }
 
 interface UsersTableProps {
   columns: string[];
-  rows: Row[];
-  type: string;
+  rows: User[] | Group[];
+  type?: string;
 }
 
 interface Status {
@@ -38,12 +60,19 @@ interface Status {
 
 export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
   const text = `No ${type}s found`;
+
   if (!rows.length) return <CenteredText text={text} />;
+
+  let globalType = 'user';
+
+  if (type === 'group') {
+    globalType = 'group';
+  }
 
   return (
     <TableContainer maxH="600px" overflowY="auto" position="relative">
       <ChakraTable variant="unstyled" style={{ borderCollapse: 'separate', borderSpacing: '0 1em' }}>
-        <Thead position="sticky" top="0" background="#202020">
+        <Thead position="sticky" top="0" background="#202020" zIndex="1">
           <Tr>
             {columns.map((label) => (
               <Th fontSize="14px" key={label} textTransform="none" color="white">
@@ -53,7 +82,7 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {rows.map(({ id, name, email, birthYear, createdAt, userGroup }, _id: number) => {
+          {rows.map(({ id, name, email, year, birthYear, createdAt, userGroup, course }, _id: number) => {
             return (
               <Tr
                 _hover={{
@@ -65,9 +94,11 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                 key={id}
               >
                 <Td>{_id + 1}</Td>
-                <Td>{name}</Td>
-                <Td>{email}</Td>
-                <Td>{birthYear}</Td>
+                {name && <Td>{name}</Td>}
+                {globalType === 'group' && <Td>{course && course.name}</Td>}
+                {globalType === 'group' && <Td>{year}</Td>}
+                {globalType === 'user' && <Td>{email}</Td>}
+                {globalType === 'user' && <Td>{birthYear}</Td>}
                 <Td>
                   {new Date(createdAt).toLocaleDateString(navigator.language, {
                     year: 'numeric',
@@ -75,7 +106,12 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                     day: 'numeric',
                   })}
                 </Td>
-                {userGroup ? <Td>{userGroup[0]?.group.name}</Td> : ''}
+                {globalType === 'user' ? (
+                  // @ts-ignore
+                  <Td>{userGroup && userGroup.group ? userGroup[0]?.group.name : ''}</Td>
+                ) : (
+                  <Td>{userGroup ? userGroup.length : ''}</Td>
+                )}
                 <Td>
                   <Text color="white">
                     <Popover
@@ -100,7 +136,10 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                               color="red"
                               variant="ghost"
                               width="100%"
-                              onClick={() => handleDelete(type, id)}
+                              {...(type &&
+                                id && {
+                                  onClick: () => handleDelete(type, id),
+                                })}
                             >
                               <Text style={{ textAlign: 'left', width: '100%' }}>Delete</Text>
                             </Button>

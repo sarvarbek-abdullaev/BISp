@@ -15,7 +15,7 @@ interface AddEditFormProps {
   type: string;
 }
 
-const AddEditForm: FC<AddEditFormProps> = ({ user: defaultUserData, type }) => {
+const AddEditUserForm: FC<AddEditFormProps> = ({ user: defaultUserData, type }) => {
   const defaultData = {
     name: defaultUserData?.name || '',
     email: defaultUserData?.email || '',
@@ -116,4 +116,4 @@ const AddEditForm: FC<AddEditFormProps> = ({ user: defaultUserData, type }) => {
   );
 };
 
-export default AddEditForm;
+export default AddEditUserForm;
