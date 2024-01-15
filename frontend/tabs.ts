@@ -53,7 +53,7 @@ export const adminUsersTabs = [
   },
   {
     name: 'Students',
-    path: '/admin/users/students',
+    path: '/admin/users/student',
   },
   {
     name: 'Teachers',

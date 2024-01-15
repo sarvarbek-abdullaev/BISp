@@ -10,7 +10,7 @@ import {
 import { ModuleService } from './module.service';
 import { Module } from '@prisma/client';
 
-@Controller('module')
+@Controller('modules')
 export class ModuleController {
   constructor(private moduleService: ModuleService) {}
 

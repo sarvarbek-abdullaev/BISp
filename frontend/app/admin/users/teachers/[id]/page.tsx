@@ -18,7 +18,7 @@ interface Teacher {
 }
 
 const TeaacherPage: FC<PageProps> = async ({ params }) => {
-  const type = 'teacher';
+  const type = 'teachers';
   const teacher: Teacher = await getUserById(type, params.id);
 
   if (!teacher?.id) return <CenteredText text="Teacher not found" />;

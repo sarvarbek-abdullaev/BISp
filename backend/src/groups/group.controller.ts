@@ -10,7 +10,7 @@ import {
 import { GroupService } from './group.service';
 import { Group } from '@prisma/client';
 
-@Controller('group')
+@Controller('groups')
 export class GroupController {
   constructor(private groupService: GroupService) {}
 
@@ -25,13 +25,13 @@ export class GroupController {
   }
 
   @Post()
-  async createGroup(@Body() moduleData: Group) {
-    return this.groupService.createGroup(moduleData);
+  async createGroup(@Body() groupData: Group) {
+    return this.groupService.createGroup(groupData);
   }
 
   @Put(':id')
-  async updateGroupById(@Param('id') id: string, @Body() moduleData: Group) {
-    return this.groupService.updateGroupById(id, moduleData);
+  async updateGroupById(@Param('id') id: string, @Body() groupData: Group) {
+    return this.groupService.updateGroupById(id, groupData);
   }
 
   @Delete(':id')

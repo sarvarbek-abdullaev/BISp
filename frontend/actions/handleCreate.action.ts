@@ -12,7 +12,7 @@ export const createUser = async (type: string, data: any) => {
       },
     });
     const _data = await res.json();
-    revalidatePath(`/admin/users/${type}s`);
+    revalidatePath(`/admin/users/${type}`);
     return _data;
   } catch (error) {
     console.log(error);
@@ -29,7 +29,7 @@ export const createGroup = async (type: string, data: any) => {
       },
     });
     const _data = await res.json();
-    revalidatePath(`/admin/${type}s`);
+    revalidatePath(`/admin/${type}`);
     return _data;
   } catch (error) {
     console.log(error);

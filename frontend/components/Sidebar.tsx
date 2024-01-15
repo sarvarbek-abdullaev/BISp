@@ -5,6 +5,7 @@ import Link from '@/components/Link';
 import { Flex } from '@chakra-ui/react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/Icon';
+import Loader from '@/components/Loader';
 
 const selectedStyle = {
   color: 'white',
@@ -20,11 +21,21 @@ interface Tab {
 interface SideBarProps {
   tabs: Tab[];
   query?: string;
+  loading?: boolean;
 }
 
-export const Sidebar: FC<SideBarProps> = ({ tabs, query }) => {
+export const Sidebar: FC<SideBarProps> = ({ tabs, query, loading }) => {
   const pathname = usePathname();
   const searchQuery = useSearchParams();
+
+  if (loading) {
+    return (
+      <Flex position="sticky" bg="#202020" overflow="hidden" color="#B0B0B0" maxW="240px" w="100%" borderRadius="8px">
+        <Loader />
+      </Flex>
+    );
+  }
+
   const isQuery = query && searchQuery.size > 0 ? '?' + query + '=' + searchQuery.get(query) : '';
   const defaultTabIndex = tabs.findIndex((tab: Tab) => pathname + isQuery === tab.path);
   const isCurrentTab = (tab: Tab) => pathname + isQuery === tab.path;

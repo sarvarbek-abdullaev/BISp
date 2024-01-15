@@ -13,7 +13,7 @@ import { UserDto } from '../dtos';
 import { StudentService } from './student.service';
 import { JwtAuthGuard } from '../authentication/auth.guard';
 
-@Controller('student')
+@Controller('students')
 export class StudentController {
   constructor(private studentService: StudentService) {}
 

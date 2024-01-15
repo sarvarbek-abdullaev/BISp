@@ -13,7 +13,7 @@ import { UserDto } from '../dtos';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../authentication/auth.guard';
 
-@Controller('admin')
+@Controller('admins')
 export class AdminController {
   constructor(private adminService: AdminService) {}
 

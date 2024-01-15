@@ -10,9 +10,14 @@ import {
 import { UserGroup } from '@prisma/client';
 import { UserGroupService } from './userGroup.service';
 
-@Controller('student-group')
+@Controller('user-groups')
 export class UserGroupController {
   constructor(private userGroupService: UserGroupService) {}
+
+  @Get()
+  async getAllUserGroups(): Promise<UserGroup[]> {
+    return await this.userGroupService.getAllUserGroups();
+  }
 
   @Get(':id')
   async getUserGroupById(@Param('id') id: string): Promise<UserGroup> {
@@ -25,6 +30,14 @@ export class UserGroupController {
     @Body() userGroup: UserGroup,
   ): Promise<UserGroup> {
     return await this.userGroupService.updateUserGroupById(id, userGroup);
+  }
+
+  @Post('manage')
+  async updateUserGroups(
+    @Body('userGroups') userGroups: UserGroup[],
+    @Body('deletedIds') deletedIds: string[],
+  ): Promise<UserGroup> {
+    return await this.userGroupService.updateUserGroups(userGroups, deletedIds);
   }
 
   @Post()

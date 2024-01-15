@@ -10,7 +10,7 @@ import {
 import { Course as CourseModel } from '@prisma/client';
 import { CourseService } from './course.service';
 
-@Controller('course')
+@Controller('courses')
 export class CourseController {
   constructor(private courseService: CourseService) {}
 

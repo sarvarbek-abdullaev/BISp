@@ -11,7 +11,7 @@ export const handleDelete = async (type: string, id: number) => {
       },
     });
     const data = await res.json();
-    revalidatePath(`/admin/users/${type}s`);
+    revalidatePath(`/admin/users/${type}`);
     return data;
   } catch (error) {
     console.log(error);

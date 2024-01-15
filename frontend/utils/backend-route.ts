@@ -28,7 +28,7 @@ export const getUserById = async (type: string, id: string) => {
 
 export const getGroups = async () => {
   try {
-    const res = await fetch(`${API_URL}/group`, {
+    const res = await fetch(`${API_URL}/groups`, {
       next: {
         revalidate: 30,
       },
@@ -54,7 +54,7 @@ export const getGroupById = async (id: string) => {
 
 export const getCourses = async () => {
   try {
-    const res = await fetch(`${API_URL}/course`, {
+    const res = await fetch(`${API_URL}/courses`, {
       next: {
         revalidate: 30,
       },

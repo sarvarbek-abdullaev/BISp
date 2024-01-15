@@ -25,31 +25,41 @@ export class StudentService {
   }
 
   async getAllUsers(): Promise<UserDto[]> {
-    return this.prismaService.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        birthYear: true,
-        createdAt: true,
-        userGroup: {
-          select: {
-            id: true,
-            group: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-          orderBy: {
-            group: {
-              createdAt: 'asc',
-            },
-          },
-        },
+    const res = await this.prismaService.user.findMany({
+      include: {
+        userGroups: true,
       },
     });
+    res.map((student) => {
+      delete student.password;
+    });
+    // {
+    // select: {
+    //   id: true,
+    //   name: true,
+    //   email: true,
+    //   birthYear: true,
+    //   createdAt: true,
+    //   groupIds: true,
+    //   // userGroups: {
+    //   //   select: {
+    //   //     id: true,
+    //   //     groups: {
+    //   //       select: {
+    //   //         id: true,
+    //   //         name: true,
+    //   //       },
+    //   //     },
+    //   //   },
+    //   //   orderBy: {
+    //   //     groups: {
+    //   //       createdAt: 'asc',
+    //   //     },
+    //   //   },
+    //   // },
+    // },
+    // }
+    return res;
   }
 
   async getUserById(id: string): Promise<User> {
@@ -58,23 +68,26 @@ export class StudentService {
         id,
       },
       include: {
-        userGroup: {
-          select: {
-            id: true,
-            group: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-          orderBy: {
-            group: {
-              createdAt: 'asc',
-            },
-          },
-        },
+        userGroups: true,
       },
+      // include: {
+      // userGroups: {
+      //   select: {
+      //     id: true,
+      //     groups: {
+      //       select: {
+      //         id: true,
+      //         name: true,
+      //       },
+      //     },
+      //   },
+      //   orderBy: {
+      //     groups: {
+      //       createdAt: 'asc',
+      //     },
+      //   },
+      // },
+      // },
     });
   }
 
@@ -83,24 +96,24 @@ export class StudentService {
       where: {
         email,
       },
-      include: {
-        userGroup: {
-          select: {
-            id: true,
-            group: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-          orderBy: {
-            group: {
-              createdAt: 'asc',
-            },
-          },
-        },
-      },
+      // include: {
+      // userGroups: {
+      //   select: {
+      //     id: true,
+      //     groups: {
+      //       select: {
+      //         id: true,
+      //         name: true,
+      //       },
+      //     },
+      //   },
+      //   orderBy: {
+      //     groups: {
+      //       createdAt: 'asc',
+      //     },
+      //   },
+      // },
+      // },
     });
   }
 

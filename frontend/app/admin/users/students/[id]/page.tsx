@@ -26,7 +26,7 @@ interface Student {
 }
 
 const StudentPage: FC<StudentPageProps> = async ({ params }) => {
-  const type = 'student';
+  const type = 'students';
   const user: Student = await getUserById(type, params.id);
 
   if (!user?.id) return <CenteredText text="Student not found" />;

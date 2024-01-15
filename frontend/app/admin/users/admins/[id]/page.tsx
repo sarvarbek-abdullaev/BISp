@@ -17,7 +17,7 @@ interface Student {
 }
 
 const AdminPage: FC<PageProps> = async ({ params }) => {
-  const type = 'admin';
+  const type = 'admins';
   const user = await getUserById(type, params.id);
 
   if (!user?.id) return <CenteredText text="Admin not found" />;
