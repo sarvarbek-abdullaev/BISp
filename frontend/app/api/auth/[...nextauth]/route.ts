@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/auth/login',
+    signIn: '/',
   },
   callbacks: {
     async jwt({ token, user }) {

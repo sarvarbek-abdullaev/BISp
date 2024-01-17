@@ -17,7 +17,7 @@ export default async function GroupsPage({ searchParams }: any) {
     <>
       <GroupSidebar />
       <Flex direction="column" p="5" w="90%" marginX="10" bg="#202020" borderRadius="8px" overflow="hidden">
-        {courseCode && <Table columns={groupColumns} rows={groups} type="group" />}
+        {courseCode && <Table columns={groupColumns} rows={groups} type="groups" />}
       </Flex>
     </>
   );

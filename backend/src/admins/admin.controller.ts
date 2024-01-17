@@ -24,7 +24,7 @@ export class AdminController {
   }
 
   @Get(':id')
-  async getAdminById(@Param('id') id: string): Promise<User> {
+  async getAdminById(@Param('id') id: string): Promise<UserDto> {
     return await this.adminService.getAdminById(id);
   }
 

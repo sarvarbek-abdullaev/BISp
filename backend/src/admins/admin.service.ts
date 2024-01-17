@@ -4,6 +4,8 @@ import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 
+const role = 'ADMIN';
+
 @Injectable()
 export class AdminService {
   constructor(private prismaService: PrismaService) {}
@@ -19,7 +21,7 @@ export class AdminService {
         ...adminData,
         password: hashedPassword,
         birthYear: Number(adminData.birthYear),
-        role: 'ADMIN',
+        role,
       },
     });
     return delete student.password && student;
@@ -30,29 +32,47 @@ export class AdminService {
       select: {
         id: true,
         name: true,
+        birthYear: true,
         email: true,
+        role: true,
         createdAt: true,
       },
       where: {
-        role: 'ADMIN',
+        role,
       },
     });
   }
 
-  async getAdminById(id: string): Promise<User> {
+  async getAdminById(id: string): Promise<UserDto> {
     return this.prismaService.user.findUnique({
+      select: {
+        id: true,
+        name: true,
+        birthYear: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
       where: {
         id,
-        role: 'ADMIN',
+        role,
       },
     });
   }
 
-  async getAdminByEmail(email: string): Promise<User> {
+  async getAdminByEmail(email: string): Promise<UserDto> {
     return this.prismaService.user.findUnique({
+      select: {
+        id: true,
+        name: true,
+        birthYear: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
       where: {
         email,
-        role: 'ADMIN',
+        role,
       },
     });
   }
@@ -65,7 +85,7 @@ export class AdminService {
     return this.prismaService.user.update({
       where: {
         id,
-        role: 'ADMIN',
+        role,
       },
       data: {
         ...adminData,
@@ -81,7 +101,7 @@ export class AdminService {
     return this.prismaService.user.delete({
       where: {
         id,
-        role: 'ADMIN',
+        role,
       },
     });
   }

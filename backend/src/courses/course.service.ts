@@ -7,6 +7,8 @@ export class CourseService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(courseData): Promise<Course> {
+    delete courseData.modules;
+
     return this.prisma.course.create({
       data: courseData,
     });
@@ -32,6 +34,7 @@ export class CourseService {
   }
 
   async updateCourseById(id: string, courseData): Promise<Course> {
+    delete courseData.modules;
     return this.prisma.course.update({
       where: {
         id,

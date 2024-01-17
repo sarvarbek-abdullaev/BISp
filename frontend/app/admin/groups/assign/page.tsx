@@ -32,7 +32,8 @@ const AssignStudents = async ({ searchParams }: any) => {
       >
         {groupName && (
           <CheckableContent
-            title="Available Students"
+            currentTitle="Current Students"
+            availableTitle="Available Students"
             data={{
               students,
               group,

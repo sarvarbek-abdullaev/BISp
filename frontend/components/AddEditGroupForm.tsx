@@ -26,7 +26,7 @@ interface AddEditFormProps {
 const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) => {
   const defaultData = {
     name: defaultUserData.group?.name || '',
-    courseId: defaultUserData.group?.course.id || '',
+    courseId: defaultUserData.group?.course?.id || '',
     year: defaultUserData.group?.year || '',
   };
   const isEdit = !!defaultUserData?.group;

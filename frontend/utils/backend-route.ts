@@ -17,7 +17,7 @@ export const getUserById = async (type: string, id: string) => {
   try {
     const res = await fetch(`${API_URL}/${type}/${id}`, {
       next: {
-        revalidate: 30,
+        revalidate: 0,
       },
     });
     return await res.json();
@@ -43,7 +43,7 @@ export const getGroupById = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/group/${id}`, {
       next: {
-        revalidate: 30,
+        revalidate: 0,
       },
     });
     return await res.json();
@@ -55,6 +55,32 @@ export const getGroupById = async (id: string) => {
 export const getCourses = async () => {
   try {
     const res = await fetch(`${API_URL}/courses`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCourseById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/courses/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getModules = async () => {
+  try {
+    const res = await fetch(`${API_URL}/modules`, {
       next: {
         revalidate: 30,
       },

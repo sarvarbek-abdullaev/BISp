@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Checkbox, CheckboxGroup, Heading, Stack } from '@chakra-ui/react';
+import { Button, Checkbox, CheckboxGroup, Divider, Grid, GridItem, Heading, Stack } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
 import { updateUserGroups } from '@/actions/handleUpdate.action';
 import { useRouter } from 'next/navigation';
@@ -17,20 +17,29 @@ interface CheckableContentProps {
     group: any;
     groupName: string;
   };
-  title: string;
+  availableTitle: string;
+  currentTitle: string;
   buttonTitle: string;
 }
 
-const CheckableContent: FC<CheckableContentProps> = ({ title, buttonTitle, data: dataStudentGroups }) => {
+const CheckableContent: FC<CheckableContentProps> = ({
+  availableTitle,
+  currentTitle,
+  buttonTitle,
+  data: dataStudentGroups,
+}) => {
   const { students: fetchedStudents, groupName, group } = dataStudentGroups;
   const groupId = group.id;
-
+  // @ts-ignore
   const handleStudentsIds = (students, groupId) => {
+    // @ts-ignore
     const userIdsSet = new Set();
 
+    // @ts-ignore
     students.forEach((student) => {
-      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup.groupId === groupId);
-
+      // @ts-ignore
+      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup?.group?.id === groupId);
+      // @ts-ignore
       filteredUserGroups.forEach((userGroup) => {
         userIdsSet.add(userGroup);
       });
@@ -38,9 +47,12 @@ const CheckableContent: FC<CheckableContentProps> = ({ title, buttonTitle, data:
 
     return Array.from(userIdsSet);
   };
+  // @ts-ignore
   const handleStudents = (students, groupId) => {
+    // @ts-ignore
     return students.map((student) => {
-      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup.groupId === groupId);
+      // @ts-ignore
+      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup?.group?.id === groupId);
       return {
         ...student,
         isChecked: !!filteredUserGroups.length,
@@ -79,6 +91,7 @@ const CheckableContent: FC<CheckableContentProps> = ({ title, buttonTitle, data:
     const userGroups =
       students
         .map((student: any) => {
+          //  @ts-ignore
           const currentStatus = defaultStudents.find((defaultStudent) => defaultStudent.id === student.id);
           const defaultStatus = !!currentStatus?.isChecked;
           if (student.isChecked && student.isChecked !== defaultStatus) {
@@ -90,17 +103,16 @@ const CheckableContent: FC<CheckableContentProps> = ({ title, buttonTitle, data:
         })
         .filter(Boolean) || [];
 
-    const deletedIds =
-      students
-        .map((student: any) => {
-          const currentGroup = selectedStudents.filter((selectedStudent) => selectedStudent.userId === student.id)[0];
-          if (!student.isChecked && currentGroup) {
-            return currentGroup.id;
-          }
-        })
-        .filter(Boolean) || [];
-
-    console.log(deletedIds);
+    const deletedIds = students
+      .map((student: any) => {
+        // @ts-ignore
+        const currentGroup = selectedStudents.filter((selectedStudent) => selectedStudent.userId === student.id)[0];
+        if (!student.isChecked && currentGroup) {
+          // @ts-ignore
+          return currentGroup.id;
+        }
+      })
+      .filter(Boolean);
 
     try {
       const res = await updateUserGroups('groups/assign', 'user-groups/manage', {
@@ -114,28 +126,45 @@ const CheckableContent: FC<CheckableContentProps> = ({ title, buttonTitle, data:
     }
   };
 
+  // @ts-ignore
+  const CheckBoxes = ({ students, filterSelected }) => {
+    return (
+      <CheckboxGroup colorScheme="blue">
+        <Stack spacing={[1, 2]} direction="column">
+          {students?.map((student: Student) => {
+            if (student.isChecked === filterSelected) return;
+
+            return (
+              <Checkbox
+                key={student.id}
+                onChange={() => handleCheckboxChange(student.id)}
+                isChecked={!!student?.isChecked}
+              >
+                {student.name}
+              </Checkbox>
+            );
+          })}
+        </Stack>
+      </CheckboxGroup>
+    );
+  };
+
   return (
     <>
-      <Box>
-        <Heading size="lg" mb="6">
-          {title}
-        </Heading>
-        <CheckboxGroup colorScheme="blue">
-          <Stack spacing={[1, 2]} direction="column">
-            {students?.map((student: any) => {
-              return (
-                <Checkbox
-                  key={student.id}
-                  onChange={() => handleCheckboxChange(student.id)}
-                  isChecked={!!student?.isChecked}
-                >
-                  {student.name}
-                </Checkbox>
-              );
-            })}
-          </Stack>
-        </CheckboxGroup>
-      </Box>
+      <Grid templateColumns="repeat(2, 1fr)" gap="1">
+        <GridItem>
+          <Heading size="lg" mb="6">
+            {currentTitle}
+          </Heading>
+          <CheckBoxes students={students} filterSelected={false} />
+        </GridItem>
+        <GridItem>
+          <Heading size="lg" mb="6">
+            {availableTitle}
+          </Heading>
+          <CheckBoxes students={students} filterSelected={true} />
+        </GridItem>
+      </Grid>
       <Button maxW="200px" colorScheme="blue" onClick={handleButtonClick}>
         {buttonTitle}
       </Button>

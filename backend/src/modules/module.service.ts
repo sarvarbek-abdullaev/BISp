@@ -7,7 +7,11 @@ export class ModuleService {
   constructor(private prisma: PrismaService) {}
 
   async getAllModules(): Promise<Module[]> {
-    return this.prisma.module.findMany();
+    return this.prisma.module.findMany({
+      include: {
+        course: true,
+      },
+    });
   }
 
   async getModuleById(id: string): Promise<Module> {

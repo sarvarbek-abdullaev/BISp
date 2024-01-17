@@ -33,11 +33,7 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user: defaultUserData, type }) 
 
   const handleUpdate = async () => {
     try {
-      const res = await updateUserById(type, defaultUserData?.id, userData);
-      if (res?.id) {
-        console.log('User updated');
-        router.push(`/admin/users/${type}`);
-      }
+      return await updateUserById(type, defaultUserData?.id, userData);
     } catch (e) {
       console.log(e);
     }
@@ -45,22 +41,15 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user: defaultUserData, type }) 
 
   const handleCreate = async () => {
     try {
-      const res = await createUser(type, userData);
-      if (res?.id) {
-        console.log('User created');
-        router.push(`/admin/users/${type}`);
-      }
+      return await createUser(type, userData);
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleSubmit = async () => {
-    if (isEdit) {
-      await handleUpdate();
-    } else {
-      await handleCreate();
-    }
+    const res = isEdit ? await handleUpdate() : await handleCreate();
+    router.push(`/admin/users/${type}/${res.id}`);
   };
 
   return (

@@ -52,3 +52,20 @@ export const updateUserGroups = async (validatePath: string, backendPath: string
     console.log(error);
   }
 };
+
+export const updateCourseById = async (id: string | undefined, validatePath: string, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/courses/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/programs/${validatePath}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

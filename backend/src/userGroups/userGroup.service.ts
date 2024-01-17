@@ -100,7 +100,6 @@ export class UserGroupService {
   }
 
   async deleteUserGroupsByIds(ids: string[]): Promise<any> {
-    console.log(ids);
     try {
       if (ids.length < 1) {
         return false;

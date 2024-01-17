@@ -4,6 +4,8 @@ import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 
+const role = 'TEACHER';
+
 @Injectable()
 export class TeacherService {
   constructor(private prismaService: PrismaService) {}
@@ -19,7 +21,7 @@ export class TeacherService {
         ...teacherData,
         password: hashedPassword,
         birthYear: Number(teacherData.birthYear),
-        role: 'TEACHER',
+        role,
       },
     });
     return delete student.password && student;
@@ -27,32 +29,50 @@ export class TeacherService {
 
   async getAllTeachers(): Promise<UserDto[]> {
     return this.prismaService.user.findMany({
+      where: {
+        role,
+      },
       select: {
         id: true,
         name: true,
+        birthYear: true,
         email: true,
+        role: true,
         createdAt: true,
-      },
-      where: {
-        role: 'TEACHER',
       },
     });
   }
 
-  async getTeacherById(id: string): Promise<User> {
+  async getTeacherById(id: string): Promise<UserDto> {
     return this.prismaService.user.findUnique({
       where: {
         id,
-        role: 'TEACHER',
+        role,
+      },
+      select: {
+        id: true,
+        name: true,
+        birthYear: true,
+        email: true,
+        role: true,
+        createdAt: true,
       },
     });
   }
 
-  async getTeacherByEmail(email: string): Promise<User> {
+  async getTeacherByEmail(email: string): Promise<UserDto> {
     return this.prismaService.user.findUnique({
       where: {
         email,
-        role: 'TEACHER',
+        role,
+      },
+      select: {
+        id: true,
+        name: true,
+        birthYear: true,
+        email: true,
+        role: true,
+        createdAt: true,
       },
     });
   }
@@ -79,7 +99,7 @@ export class TeacherService {
     return this.prismaService.user.delete({
       where: {
         id,
-        role: 'TEACHER',
+        role,
       },
     });
   }

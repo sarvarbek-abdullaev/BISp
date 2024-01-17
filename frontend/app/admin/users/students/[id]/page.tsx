@@ -22,7 +22,7 @@ interface Student {
   email: string;
   birthYear: number;
   role: string;
-  userGroup: UserGroup[];
+  userGroups: UserGroup[];
 }
 
 const StudentPage: FC<StudentPageProps> = async ({ params }) => {
@@ -38,8 +38,8 @@ const StudentPage: FC<StudentPageProps> = async ({ params }) => {
       <p>Email: {user.email}</p>
       <p>Birth year: {user.birthYear}</p>
       <p>Role: {user.role}</p>
-      <p>Group: {user.userGroup[0]?.group?.name}</p>
-      <p>All groups: {user.userGroup.map((group) => group.group.name).join(', ')}</p>
+      <p>Group: {user.userGroups[0]?.group?.name}</p>
+      <p>All groups: {user.userGroups?.map((userGroup) => userGroup.group.name).join(', ')}</p>
     </div>
   );
 };

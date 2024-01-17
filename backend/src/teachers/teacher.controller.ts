@@ -24,7 +24,7 @@ export class TeacherController {
   }
 
   @Get(':id')
-  async getTeacherById(@Param('id') id: string): Promise<User> {
+  async getTeacherById(@Param('id') id: string): Promise<UserDto> {
     return await this.teacherService.getTeacherById(id);
   }
 

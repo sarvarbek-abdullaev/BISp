@@ -4,6 +4,8 @@ import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { UserDto } from '../dtos';
 
+const role = 'STUDENT';
+
 @Injectable()
 export class StudentService {
   constructor(private prismaService: PrismaService) {}
@@ -26,39 +28,22 @@ export class StudentService {
 
   async getAllUsers(): Promise<UserDto[]> {
     const res = await this.prismaService.user.findMany({
+      where: {
+        role,
+      },
       include: {
-        userGroups: true,
+        userGroups: {
+          select: {
+            id: true,
+            userId: true,
+            group: true,
+          },
+        },
       },
     });
     res.map((student) => {
       delete student.password;
     });
-    // {
-    // select: {
-    //   id: true,
-    //   name: true,
-    //   email: true,
-    //   birthYear: true,
-    //   createdAt: true,
-    //   groupIds: true,
-    //   // userGroups: {
-    //   //   select: {
-    //   //     id: true,
-    //   //     groups: {
-    //   //       select: {
-    //   //         id: true,
-    //   //         name: true,
-    //   //       },
-    //   //     },
-    //   //   },
-    //   //   orderBy: {
-    //   //     groups: {
-    //   //       createdAt: 'asc',
-    //   //     },
-    //   //   },
-    //   // },
-    // },
-    // }
     return res;
   }
 
@@ -66,28 +51,17 @@ export class StudentService {
     return this.prismaService.user.findUnique({
       where: {
         id,
+        role,
       },
       include: {
-        userGroups: true,
+        userGroups: {
+          select: {
+            id: true,
+            userId: true,
+            group: true,
+          },
+        },
       },
-      // include: {
-      // userGroups: {
-      //   select: {
-      //     id: true,
-      //     groups: {
-      //       select: {
-      //         id: true,
-      //         name: true,
-      //       },
-      //     },
-      //   },
-      //   orderBy: {
-      //     groups: {
-      //       createdAt: 'asc',
-      //     },
-      //   },
-      // },
-      // },
     });
   }
 
@@ -95,25 +69,8 @@ export class StudentService {
     return this.prismaService.user.findUnique({
       where: {
         email,
+        role,
       },
-      // include: {
-      // userGroups: {
-      //   select: {
-      //     id: true,
-      //     groups: {
-      //       select: {
-      //         id: true,
-      //         name: true,
-      //       },
-      //     },
-      //   },
-      //   orderBy: {
-      //     groups: {
-      //       createdAt: 'asc',
-      //     },
-      //   },
-      // },
-      // },
     });
   }
 
@@ -125,6 +82,7 @@ export class StudentService {
     return this.prismaService.user.update({
       where: {
         id,
+        role,
       },
       data: {
         ...userData,
@@ -137,6 +95,7 @@ export class StudentService {
     return this.prismaService.user.delete({
       where: {
         id,
+        role,
       },
     });
   }

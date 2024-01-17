@@ -44,7 +44,7 @@ interface Group {
   course: Course;
   createdAt: string;
   updatedAt: string;
-  userGroup?: User[];
+  userGroups?: User[];
 }
 
 interface UsersTableProps {
@@ -59,14 +59,24 @@ interface Status {
 }
 
 export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
-  const text = `No ${type}s found`;
+  const text = `No ${type} found`;
 
   if (!rows.length) return <CenteredText text={text} />;
 
-  let globalType = 'user';
+  let globalType = 'users';
+  let revalidatePage = 'users';
 
-  if (type === 'group') {
-    globalType = 'group';
+  if (type === 'groups') {
+    globalType = 'groups';
+    revalidatePage = 'groups';
+  } else if (type === 'modules') {
+    globalType = 'modules';
+    revalidatePage = 'programs/modules';
+  } else if (type === 'courses') {
+    globalType = 'courses';
+    revalidatePage = 'programs/courses';
+  } else {
+    revalidatePage = `users/${type}`;
   }
 
   return (
@@ -82,76 +92,81 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {rows.map(({ id, name, email, year, birthYear, createdAt, userGroup, course }, _id: number) => {
-            return (
-              <Tr
-                _hover={{
-                  background: 'rgba(45, 45, 45, 0.7)',
-                  color: 'white',
-                }}
-                color="#B0B0B0"
-                background="rgba(0,0, 0, 0.5)"
-                key={id}
-              >
-                <Td>{_id + 1}</Td>
-                {name && <Td>{name}</Td>}
-                {globalType === 'group' && <Td>{course && course.name}</Td>}
-                {globalType === 'group' && <Td>{year}</Td>}
-                {globalType === 'user' && <Td>{email}</Td>}
-                {globalType === 'user' && <Td>{birthYear}</Td>}
-                <Td>
-                  {new Date(createdAt).toLocaleDateString(navigator.language, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </Td>
-                {globalType === 'user' ? (
-                  // @ts-ignore
-                  <Td>{userGroup && userGroup.group ? userGroup[0]?.group.name : ''}</Td>
-                ) : (
-                  <Td>{userGroup ? userGroup.length : ''}</Td>
-                )}
-                <Td>
-                  <Text color="white">
-                    <Popover
-                      element={<BsThreeDotsVertical />}
-                      body={
-                        <>
-                          <Link href={`${type}s/${id}`}>
-                            <Button colorScheme="whiteAlpha" variant="ghost" width="100%">
-                              <Text style={{ textAlign: 'left', width: '100%' }}>View</Text>
-                            </Button>
-                          </Link>
-                          <Link href={`${type}s/${id}/edit`}>
-                            <Button colorScheme="whiteAlpha" color="green" variant="ghost" width="100%">
-                              <Text style={{ textAlign: 'left', width: '100%' }}>Edit</Text>
-                            </Button>
-                          </Link>
-                          {type === 'student' && userGroup && userGroup?.length > 0 ? (
-                            ''
-                          ) : (
-                            <Button
-                              colorScheme="whiteAlpha"
-                              color="red"
-                              variant="ghost"
-                              width="100%"
-                              {...(type &&
-                                id && {
-                                  onClick: () => handleDelete(type, id),
-                                })}
-                            >
-                              <Text style={{ textAlign: 'left', width: '100%' }}>Delete</Text>
-                            </Button>
-                          )}
-                        </>
-                      }
-                    />
-                  </Text>
-                </Td>
-              </Tr>
-            );
-          })}
+          {rows.map(
+            // @ts-ignore
+            ({ id, name, email, year, birthYear, createdAt, userGroups, course, code, modules }, _id: number) => {
+              return (
+                <Tr
+                  _hover={{
+                    background: 'rgba(45, 45, 45, 0.7)',
+                    color: 'white',
+                  }}
+                  color="#B0B0B0"
+                  background="rgba(0,0, 0, 0.5)"
+                  key={id}
+                >
+                  <Td>{_id + 1}</Td>
+                  {(globalType === 'courses' || globalType === 'modules') && <Td>{code}</Td>}
+                  {name && <Td>{name}</Td>}
+                  {(globalType === 'groups' || globalType === 'modules') && <Td>{course && course.name}</Td>}
+                  {globalType === 'groups' && <Td>{year}</Td>}
+                  {globalType === 'users' && <Td>{email}</Td>}
+                  {globalType === 'users' && <Td>{birthYear}</Td>}
+                  {globalType === 'courses' && <Td>{modules?.length}</Td>}
+                  <Td>
+                    {new Date(createdAt).toLocaleDateString(navigator.language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </Td>
+
+                  {type === 'students' && (
+                    // @ts-ignore
+                    <Td>{userGroups.length > 0 ? userGroups[0]?.group.name : ''}</Td>
+                  )}
+                  {globalType === 'groups' && <Td>{userGroups ? userGroups.length : ''}</Td>}
+                  <Td>
+                    <Text color="white">
+                      <Popover
+                        element={<BsThreeDotsVertical />}
+                        body={
+                          <>
+                            <Link href={`${type}/${id}`}>
+                              <Button colorScheme="whiteAlpha" variant="ghost" width="100%">
+                                <Text style={{ textAlign: 'left', width: '100%' }}>View</Text>
+                              </Button>
+                            </Link>
+                            <Link href={`${type}/${id}/edit`}>
+                              <Button colorScheme="whiteAlpha" color="green" variant="ghost" width="100%">
+                                <Text style={{ textAlign: 'left', width: '100%' }}>Edit</Text>
+                              </Button>
+                            </Link>
+                            {type === 'student' && userGroups && userGroups?.length > 0 ? (
+                              ''
+                            ) : (
+                              <Button
+                                colorScheme="whiteAlpha"
+                                color="red"
+                                variant="ghost"
+                                width="100%"
+                                {...(type &&
+                                  id && {
+                                    onClick: () => handleDelete(type, revalidatePage, id),
+                                  })}
+                              >
+                                <Text style={{ textAlign: 'left', width: '100%' }}>Delete</Text>
+                              </Button>
+                            )}
+                          </>
+                        }
+                      />
+                    </Text>
+                  </Td>
+                </Tr>
+              );
+            },
+          )}
         </Tbody>
       </ChakraTable>
     </TableContainer>
