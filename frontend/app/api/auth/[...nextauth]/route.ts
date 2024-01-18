@@ -1,5 +1,6 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { getServerSession, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -22,8 +23,12 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
   pages: {
-    signIn: '/',
+    signIn: '/auth/login',
   },
   callbacks: {
     async jwt({ token, user }) {
