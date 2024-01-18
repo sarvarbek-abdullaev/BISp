@@ -69,3 +69,20 @@ export const updateCourseById = async (id: string | undefined, validatePath: str
     console.log(error);
   }
 };
+
+export const updateModuleById = async (id: string | undefined, validatePath: string, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/modules/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/programs/${validatePath}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

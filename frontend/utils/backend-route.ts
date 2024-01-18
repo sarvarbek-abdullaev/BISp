@@ -41,7 +41,7 @@ export const getGroups = async () => {
 
 export const getGroupById = async (id: string) => {
   try {
-    const res = await fetch(`${API_URL}/group/${id}`, {
+    const res = await fetch(`${API_URL}/groups/${id}`, {
       next: {
         revalidate: 0,
       },
@@ -68,6 +68,19 @@ export const getCourses = async () => {
 export const getCourseById = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/courses/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getModuleById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/modules/${id}`, {
       next: {
         revalidate: 0,
       },
