@@ -1,7 +1,7 @@
 'use client';
 import { Box, ChakraProps, CircularProgress, CircularProgressLabel, Flex, Text } from '@chakra-ui/react';
 import { FC } from 'react';
-import Link from '@/components/Link';
+import Link from '@/components/shared/Link';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 interface CircularProgressBarProps {

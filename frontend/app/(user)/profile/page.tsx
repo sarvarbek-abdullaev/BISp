@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Box,
   Button,
@@ -11,7 +11,7 @@ import {
   Input,
   Stack,
 } from '@chakra-ui/react';
-import { Logo } from '@/components/Logo';
+import { Logo } from '@/components/shared/Logo';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
@@ -22,15 +22,15 @@ interface LoginData {
 
 const defaultLoginData: LoginData = {
   email: '',
-  password: ''
-}
+  password: '',
+};
 
 const Profile = () => {
   const [loginData, setLoginData] = useState<LoginData>(defaultLoginData);
 
   const handleChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
-    setLoginData({...loginData, [name]: value});
+    const { name, value } = e.target;
+    setLoginData({ ...loginData, [name]: value });
   };
 
   const handleSubmit = async () => {
@@ -38,9 +38,9 @@ const Profile = () => {
       await signIn('credentials', {
         email: loginData.email,
         password: loginData.password,
-        callbackUrl: '/'
+        callbackUrl: '/',
       });
-    }catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -65,20 +65,14 @@ const Profile = () => {
             <Stack spacing="5">
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
-                <Input id="email"
-                       name='email'
-                       type="email"
-                       required
-                       value={loginData.email}
-                       onChange={handleChanges}
-                />
+                <Input id="email" name="email" type="email" required value={loginData.email} onChange={handleChanges} />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <Input
                   id="password"
                   name="password"
-                  type='password'
+                  type="password"
                   autoComplete="current-password"
                   required
                   value={loginData.password}
@@ -93,13 +87,15 @@ const Profile = () => {
               </Button>
             </HStack>
             <Stack spacing="6">
-              <Button onClick={handleSubmit} colorScheme="blue">Sign in</Button>
+              <Button onClick={handleSubmit} colorScheme="blue">
+                Sign in
+              </Button>
             </Stack>
           </Stack>
         </Box>
       </Stack>
     </Container>
-  )
+  );
 };
 
 export default Profile;

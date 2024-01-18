@@ -3,10 +3,10 @@ import { Table as ChakraTable, TableContainer, Tbody, Td, Th, Thead, Tr } from '
 import React, { FC } from 'react';
 import { Button, Text } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { Popover } from '@/components/Popover';
+import { Popover } from '@/components/shared/Popover';
 import { handleDelete } from '@/actions/handleDelete.action';
-import CenteredText from '@/components/CenteredText';
-import Link from '@/components/Link';
+import CenteredText from '@/components/shared/CenteredText';
+import Link from '@/components/shared/Link';
 
 interface UserGroup {
   id: string;

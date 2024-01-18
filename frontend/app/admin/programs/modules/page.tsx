@@ -1,5 +1,5 @@
 import { getModules, getUsers } from '@/utils/backend-route';
-import { Table } from '@/components/Table';
+import { Table } from '@/components/admin/Table';
 import { moduleColumns } from '@/tabs';
 
 const ModulesPage = async () => {

@@ -1,5 +1,5 @@
 import { getCourses } from '@/utils/backend-route';
-import { Table } from '@/components/Table';
+import { Table } from '@/components/admin/Table';
 import { courseColumns } from '@/tabs';
 
 const CoursesPage = async () => {

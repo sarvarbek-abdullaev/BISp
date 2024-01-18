@@ -1,4 +1,4 @@
-import AddEditUserForm from '@/components/AddEditUserForm';
+import AddEditUserForm from '@/components/admin/AddEditUserForm';
 import React from 'react';
 
 export default function Page() {

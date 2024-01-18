@@ -1,7 +1,7 @@
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/shared/Sidebar';
 import { adminUsersTabs } from '@/tabs';
 import { FC } from 'react';
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from '@/components/shared/Wrapper';
 
 interface UsersLayoutProps {
   children: React.ReactNode;

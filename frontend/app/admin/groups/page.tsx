@@ -1,12 +1,12 @@
-import { Course, Table } from '@/components/Table';
+import { Course, Table } from '@/components/admin/Table';
 import { groupColumns } from '@/tabs';
 import React from 'react';
 import { getCourses, getGroups } from '@/utils/backend-route';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
 import { Button, Flex, Grid } from '@chakra-ui/react';
-import { Wrapper } from '@/components/Wrapper';
-import Link from '@/components/Link';
-import { CircularProgressBar } from '@/components/CircularProgressBar';
+import { Wrapper } from '@/components/shared/Wrapper';
+import Link from '@/components/shared/Link';
+import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { Tab } from '@/utils/interfaces';
 
 export default async function GroupsPage({ searchParams }: any) {

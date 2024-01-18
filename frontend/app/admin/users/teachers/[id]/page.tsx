@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { getUserById } from '@/utils/backend-route';
-import CenteredText from '@/components/CenteredText';
+import CenteredText from '@/components/shared/CenteredText';
 import { Box } from '@chakra-ui/react';
 
 interface PageProps {

@@ -1,11 +1,11 @@
 'use client';
 import React, { FC } from 'react';
 import { Tab, TabIndicator, TabList, Tabs } from '@chakra-ui/tabs';
-import Link from '@/components/Link';
+import Link from '@/components/shared/Link';
 import { Flex } from '@chakra-ui/react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Icon } from '@/components/Icon';
-import Loader from '@/components/Loader';
+import { Icon } from '@/components/shared/Icon';
+import Loader from '@/components/shared/Loader';
 
 const selectedStyle = {
   color: 'white',

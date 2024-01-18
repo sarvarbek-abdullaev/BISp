@@ -1,6 +1,6 @@
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/shared/Sidebar';
 import { Flex } from '@chakra-ui/react';
-import CheckableContent from '@/components/CheckableContent';
+import CheckableContent from '@/components/admin/CheckableContent';
 import { getGroups, getUsers } from '@/utils/backend-route';
 
 const AssignStudents = async ({ searchParams }: any) => {

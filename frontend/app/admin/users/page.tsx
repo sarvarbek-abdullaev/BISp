@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Grid } from '@chakra-ui/react';
-import { CircularProgressBar } from '@/components/CircularProgressBar';
+import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { adminUsersTabs } from '@/tabs';
-import { Wrapper } from '@/components/Wrapper';
-import Link from '@/components/Link';
+import { Wrapper } from '@/components/shared/Wrapper';
+import Link from '@/components/shared/Link';
 
 const UsersPage = () => {
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];

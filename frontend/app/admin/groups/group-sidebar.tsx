@@ -1,7 +1,7 @@
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/shared/Sidebar';
 import React from 'react';
 import { getCourses } from '@/utils/backend-route';
-import { Course } from '@/components/Table';
+import { Course } from '@/components/admin/Table';
 
 const GroupSidebar = async () => {
   const courses = await getCourses();

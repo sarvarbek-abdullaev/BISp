@@ -1,4 +1,4 @@
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/shared/Sidebar';
 import { adminUsersTabs } from '@/tabs';
 import { FC } from 'react';
 

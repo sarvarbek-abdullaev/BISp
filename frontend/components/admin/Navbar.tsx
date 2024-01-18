@@ -1,11 +1,11 @@
 'use client';
 import { Tab, TabList, Tabs } from '@chakra-ui/tabs';
 import { Flex } from '@chakra-ui/react';
-import { Logo } from '@/components/Logo';
+import { Logo } from '@/components/shared/Logo';
 import { MdNotifications } from 'react-icons/md';
-import Link from '@/components/Link';
+import Link from '@/components/shared/Link';
 import { usePathname } from 'next/navigation';
-import { AccountModal } from './AccountModal';
+import { AccountModal } from '../shared/AccountModal';
 import { FC } from 'react';
 
 const selectedStyle = {

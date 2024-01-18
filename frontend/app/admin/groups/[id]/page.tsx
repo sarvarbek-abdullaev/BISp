@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { getGroupById } from '@/utils/backend-route';
-import CenteredText from '@/components/CenteredText';
-import { Course, User } from '@/components/Table';
+import CenteredText from '@/components/shared/CenteredText';
+import { Course, User } from '@/components/admin/Table';
 
 interface PageProps {
   params: {

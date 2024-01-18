@@ -1,7 +1,7 @@
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from '@/components/shared/Wrapper';
 import { Button, Flex, Grid } from '@chakra-ui/react';
-import Link from '@/components/Link';
-import { CircularProgressBar } from '@/components/CircularProgressBar';
+import Link from '@/components/shared/Link';
+import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { adminProgramTabs, adminUsersTabs } from '@/tabs';
 
 const ProgramsPage = () => {

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Navbar } from '@/components/Navbar';
+import { Navbar } from '@/components/admin/Navbar';
 import { adminTabs } from '@/tabs';
 import { Flex } from '@chakra-ui/react';
-import { Container } from '@/components/Container';
+import { Container } from '@/components/shared/Container';
 
 interface LayoutProps {
   children: React.ReactNode;

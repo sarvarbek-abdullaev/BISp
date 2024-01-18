@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { Sidebar } from '@/components/Sidebar';
+import { Sidebar } from '@/components/shared/Sidebar';
 import { adminProgramTabs } from '@/tabs';
 import { Flex } from '@chakra-ui/react';
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from '@/components/shared/Wrapper';
 
 interface LayoutProps {
   children: React.ReactNode;

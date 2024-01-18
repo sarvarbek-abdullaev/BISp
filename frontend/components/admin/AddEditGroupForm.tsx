@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateGroupById } from '@/actions/handleUpdate.action';
 import { createGroup } from '@/actions/handleCreate.action';
-import { Course } from '@/components/Table';
+import { Course } from '@/components/admin/Table';
 
 interface AddEditFormProps {
   data: {

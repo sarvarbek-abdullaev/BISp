@@ -1,4 +1,4 @@
-import { Table } from '@/components/Table';
+import { Table } from '@/components/admin/Table';
 import { columns } from '@/tabs';
 import { getUsers } from '@/utils/backend-route';
 

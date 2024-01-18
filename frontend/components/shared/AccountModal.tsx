@@ -2,7 +2,7 @@ import React from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { Popover } from '@/components/Popover';
+import { Popover } from '@/components/shared/Popover';
 import { Box, Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
 
