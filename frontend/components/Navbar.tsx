@@ -49,6 +49,7 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
       alignItems="center"
       justifyContent="space-between"
       paddingX="8"
+      zIndex="1"
       {...styles}
     >
       <Logo size="10" />
