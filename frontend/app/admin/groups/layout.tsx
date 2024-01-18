@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-interface LayoutProps {
+interface UsersLayoutProps {
   children: React.ReactNode;
 }
 
-const AdminLayout: FC<LayoutProps> = async ({ children }) => {
+const UsersLayout: FC<UsersLayoutProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default AdminLayout;
+export default UsersLayout;

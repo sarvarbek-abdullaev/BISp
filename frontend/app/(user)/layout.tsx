@@ -7,15 +7,13 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const UserLayout : FC<LayoutProps> = ({ children }) => {
+const UserLayout: FC<LayoutProps> = ({ children }) => {
   return (
     <>
-      <Navbar tabs={userTabs}/>
-      <Container>
-        {children}
-      </Container>
+      <Navbar tabs={userTabs} />
+      <Container>{children}</Container>
     </>
-  )
+  );
 };
 
 export default UserLayout;
