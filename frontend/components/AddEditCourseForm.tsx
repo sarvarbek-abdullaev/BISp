@@ -11,7 +11,7 @@ interface AddEditFormProps {
   type: string;
 }
 
-const AddEditUserForm: FC<AddEditFormProps> = ({ course, type }) => {
+const AddEditCourseForm: FC<AddEditFormProps> = ({ course, type }) => {
   const defaultData: Course = {
     name: course?.name || '',
     code: course?.code || '',
@@ -47,7 +47,6 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ course, type }) => {
 
   const handleSubmit = async () => {
     const res = isEdit ? await handleUpdate() : await handleCreate();
-    console.log(res);
     router.push(`/admin/programs/${type}/${res.id}`);
   };
 
@@ -112,4 +111,4 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ course, type }) => {
   );
 };
 
-export default AddEditUserForm;
+export default AddEditCourseForm;

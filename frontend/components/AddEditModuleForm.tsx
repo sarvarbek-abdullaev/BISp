@@ -2,35 +2,28 @@
 import { Box, Button, Container, FormControl, FormLabel, HStack, Input, Select, Stack } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateGroupById } from '@/actions/handleUpdate.action';
-import { createGroup } from '@/actions/handleCreate.action';
-import { Course } from '@/components/Table';
+import { updateModuleById } from '@/actions/handleUpdate.action';
+import { Course, Module } from '@/utils/interfaces';
+import { createModule } from '@/actions/handleCreate.action';
 
 interface AddEditFormProps {
-  data: {
-    group?: {
-      id: string;
-      name: string;
-      course: Course;
-      year: number;
-    };
-    courses: {
-      id: string;
-      name: string;
-      code: string;
-    }[];
-  };
+  module?: Module;
+  courses: Course[];
   type: string;
 }
 
-const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) => {
-  const defaultData = {
-    name: defaultUserData.group?.name || '',
-    courseId: defaultUserData.group?.course?.id || '',
-    year: defaultUserData.group?.year || '',
+const AddEditModuleForm: FC<AddEditFormProps> = ({ module, courses, type }) => {
+  const defaultData: Module = {
+    name: module?.name || '',
+    code: module?.code || '',
+    description: module?.description || '',
+    courseId: module?.courseId || '',
+    course: module?.course,
   };
-  const isEdit = !!defaultUserData?.group;
-  const [data, setData] = useState(defaultData);
+
+  const isEdit = !!module;
+
+  const [data, setData] = useState<Module>(defaultData);
   const router = useRouter();
 
   const handleChanges = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -40,10 +33,7 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
 
   const handleUpdate = async () => {
     try {
-      const res = await updateGroupById(type, defaultUserData?.group?.id, data);
-      if (res?.id) {
-        console.log(`${type} updated`);
-      }
+      return await updateModuleById(module?.id, type, data);
     } catch (e) {
       console.log(e);
     }
@@ -51,21 +41,15 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
 
   const handleCreate = async () => {
     try {
-      const res = await createGroup(type, data);
-      if (res?.id) {
-        console.log(`${type} created`);
-      }
+      return await createModule(type, data);
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleSubmit = async () => {
-    // @ts-ignore
-    data.courseId === '' && delete data.courseId;
-    isEdit ? await handleUpdate() : await handleCreate();
-    const courseCode = defaultUserData?.courses?.find((course) => course.id === data.courseId)?.code || 'all';
-    router.push(`/admin/${type}?courseCode=${courseCode}`);
+    const res = isEdit ? await handleUpdate() : await handleCreate();
+    router.push(`/admin/programs/${type}/${res.id}`);
   };
 
   const formElements = [
@@ -77,19 +61,25 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
       value: data.name,
     },
     {
+      label: 'Code',
+      name: 'code',
+      type: 'text',
+      required: true,
+      value: data.code,
+    },
+    {
+      label: 'Description',
+      name: 'description',
+      type: 'textarea',
+      required: true,
+      value: data.description,
+    },
+    {
       label: 'Course',
       name: 'courseId',
       type: 'dropdown',
       required: true,
       value: data.courseId,
-    },
-    {
-      label: 'Year',
-      name: 'year',
-      type: 'number',
-      required: true,
-      value: data.year,
-      disabled: isEdit,
     },
   ];
 
@@ -117,7 +107,7 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
                         },
                       }}
                     >
-                      {defaultUserData?.courses?.map((course: any) => (
+                      {courses.map((course: any) => (
                         <option key={course.id} value={course.id}>
                           {course.name}
                         </option>
@@ -130,8 +120,11 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
                       type={element.type}
                       required={element.required}
                       value={element.value}
-                      disabled={element.disabled}
                       onChange={handleChanges}
+                      {...(element.type === 'textarea' && {
+                        as: 'textarea',
+                        height: 'auto',
+                      })}
                     />
                   )}
                 </FormControl>
@@ -150,4 +143,4 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultUserData, type }) 
   );
 };
 
-export default AddEditUserForm;
+export default AddEditModuleForm;
