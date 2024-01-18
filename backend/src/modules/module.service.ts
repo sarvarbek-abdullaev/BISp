@@ -19,10 +19,17 @@ export class ModuleService {
       where: {
         id,
       },
+      include: {
+        course: true,
+      },
     });
   }
 
   async updateModuleById(id: string, moduleData): Promise<Module> {
+    delete moduleData.course;
+    if (moduleData.courseId && moduleData.courseId === '')
+      delete moduleData.courseId;
+
     return this.prisma.module.update({
       where: {
         id,
@@ -32,6 +39,9 @@ export class ModuleService {
   }
 
   async createModule(moduleData): Promise<Module> {
+    delete moduleData.course;
+    !moduleData.courseId && delete moduleData.courseId;
+
     return this.prisma.module.create({
       data: moduleData,
     });
