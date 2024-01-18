@@ -3,10 +3,19 @@ export interface Course {
   code: string;
   name: string;
   description: string;
-  modules: Module[];
+  modules?: Module[];
 }
 
 export interface Module {
-  id: string;
+  id?: string;
+  code: string;
+  name: string;
+  description: string;
+  courseId?: string;
+  course?: Course;
+}
+
+export interface Tab {
+  path: string;
   name: string;
 }
