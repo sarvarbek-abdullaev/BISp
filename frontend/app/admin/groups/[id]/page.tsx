@@ -22,7 +22,9 @@ interface Group {
 const AdminPage: FC<PageProps> = async ({ params }) => {
   const group: Group = await getGroupById(params.id);
 
-  if (!group?.id) return <CenteredText text="Admin not found" />;
+  console.log(group);
+
+  if (!group?.id) return <CenteredText text="Group not found" />;
 
   return (
     <div>

@@ -9,7 +9,7 @@ interface PageProps {
 }
 
 const Page: FC<PageProps> = async ({ params }) => {
-  const type = 'group';
+  const type = 'groups';
   const [group, courses] = await Promise.all([getGroupById(params.id), getCourses()]);
   return <AddEditGroupForm data={{ group, courses }} type={type} />;
 };
