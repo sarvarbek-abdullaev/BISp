@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { getCourseById, getCourses, getUserById } from '@/utils/backend-route';
+import { getModuleById } from '@/utils/backend-route';
 import CenteredText from '@/components/CenteredText';
-import { Course } from '@/utils/interfaces';
+import { Course, Module } from '@/utils/interfaces';
 
 interface PageProps {
   params: {
@@ -9,21 +9,20 @@ interface PageProps {
   };
 }
 
-const AdminPage: FC<PageProps> = async ({ params }) => {
-  const type = 'admins';
-  const course: Course = await getCourseById(params.id);
+const ModulePage: FC<PageProps> = async ({ params }) => {
+  const currentModule: Module = await getModuleById(params.id);
 
-  if (!course?.id) return <CenteredText text="Admin not found" />;
+  if (!currentModule?.id) return <CenteredText text="Admin not found" />;
 
   return (
     <div>
-      <p>Id: {course.id}</p>
-      <p>Code: {course.code}</p>
-      <p>Name: {course.name}</p>
-      <p>Description: {course.description}</p>
-      <p>Modules: {course.modules?.map((module) => module.name).join(' ,')}</p>
+      <p>Id: {currentModule.id}</p>
+      <p>Code: {currentModule.code}</p>
+      <p>Name: {currentModule.name}</p>
+      <p>Description: {currentModule.description}</p>
+      <p>Course: {currentModule.course?.name}</p>
     </div>
   );
 };
 
-export default AdminPage;
+export default ModulePage;

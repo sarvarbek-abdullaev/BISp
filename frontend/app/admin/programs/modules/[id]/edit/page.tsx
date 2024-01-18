@@ -1,6 +1,6 @@
-import { getCourseById, getModules } from '@/utils/backend-route';
+import { getCourses, getModuleById } from '@/utils/backend-route';
 import React, { FC } from 'react';
-import AddEditCourseForm from '@/components/AddEditCourseForm';
+import AddEditModuleForm from '@/components/AddEditModuleForm';
 
 interface PageProps {
   params: {
@@ -9,9 +9,9 @@ interface PageProps {
 }
 
 const Page: FC<PageProps> = async ({ params }) => {
-  const type = 'courses';
-  const course = await getCourseById(params.id);
-  return <AddEditCourseForm course={course} type={type} />;
+  const type = 'modules';
+  const [currentModule, courses] = await Promise.all([getModuleById(params.id), getCourses()]);
+  return <AddEditModuleForm module={currentModule} courses={courses} type={type} />;
 };
 
 export default Page;
