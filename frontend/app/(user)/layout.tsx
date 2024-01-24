@@ -19,6 +19,7 @@ const UserLayout: FC<LayoutProps> = ({ children }) => {
             flex: '1',
           }}
         >
+          <Navbar tabs={userTabs} />
           <Flex height="100%" paddingY="4">
             <Sidebar tabs={userTabs} />
             <Wrapper>{children}</Wrapper>

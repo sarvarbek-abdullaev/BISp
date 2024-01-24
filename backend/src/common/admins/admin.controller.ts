@@ -6,18 +6,15 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { UserDto } from '../dtos';
+import { UserDto } from '../../dtos';
 import { AdminService } from './admin.service';
-import { JwtAuthGuard } from '../authentication/auth.guard';
 
 @Controller('admins')
 export class AdminController {
   constructor(private adminService: AdminService) {}
 
-  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllAdmins(): Promise<UserDto[]> {
     return await this.adminService.getAllAdmins();

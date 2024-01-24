@@ -1,9 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { usage } from 'browserslist';
 
-const secret = process.env.NEXTAUTH_SECRET;
+export const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;

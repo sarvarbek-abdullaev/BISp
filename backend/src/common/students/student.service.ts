@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
-import { UserDto } from '../dtos';
+import { UserDto } from '../../dtos';
 
 const role = 'STUDENT';
 

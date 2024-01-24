@@ -119,8 +119,7 @@ const CheckableContent: FC<CheckableContentProps> = ({
         userGroups,
         deletedIds,
       });
-      console.log(res);
-      // router.push('/admin/groups/assign');
+      router.push(`/admin/groups/${groupId}`);
     } catch (error) {
       console.log(error);
     }

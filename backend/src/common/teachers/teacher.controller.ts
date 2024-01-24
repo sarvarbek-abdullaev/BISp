@@ -6,18 +6,15 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { UserDto } from '../dtos';
+import { UserDto } from '../../dtos';
 import { TeacherService } from './teacher.service';
-import { JwtAuthGuard } from '../authentication/auth.guard';
 
 @Controller('teachers')
 export class TeacherController {
   constructor(private teacherService: TeacherService) {}
 
-  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTeachers(): Promise<UserDto[]> {
     return await this.teacherService.getAllTeachers();

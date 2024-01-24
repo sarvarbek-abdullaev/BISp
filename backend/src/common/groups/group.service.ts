@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../../prisma.service';
 import { Group } from '@prisma/client';
 
 @Injectable()
@@ -40,6 +40,18 @@ export class GroupService {
     });
   }
 
+  getGroupsByUserId(userId: string): Promise<Group[]> {
+    return this.prisma.group.findMany({
+      where: {
+        userGroups: {
+          some: {
+            userId,
+          },
+        },
+      },
+    });
+  }
+
   async updateGroupById(id: string, groupData): Promise<Group> {
     delete groupData.userIds;
 
@@ -50,51 +62,6 @@ export class GroupService {
       data: groupData,
     });
   }
-
-  // async updateGroupStudentIdsById(
-  //   id: string,
-  //   groupData,
-  // ): Promise<Awaited<Prisma.BatchPayload>[]> {
-  //   const { userIds } = groupData;
-  //   const currentGroup = await this.getGroupById(id);
-  //
-  //   const removedIds = currentGroup.userIds.filter(
-  //     (userId) => !userIds.includes(userId),
-  //   );
-  //
-  //   await this.prisma.group.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-  //       userIds,
-  //     },
-  //   });
-  //
-  //   return Promise.all([
-  //     await this.prisma.user.updateMany({
-  //       where: {
-  //         id: {
-  //           in: userIds,
-  //         },
-  //       },
-  //       data: {
-  //         currentGroupId: currentGroup.id,
-  //         groupIds: { push: currentGroup.id },
-  //       },
-  //     }),
-  //     await this.prisma.user.updateMany({
-  //       where: {
-  //         id: {
-  //           in: removedIds,
-  //         },
-  //       },
-  //       data: {
-  //         currentGroupId: null,
-  //       },
-  //     }),
-  //   ]);
-  // }
 
   async createGroup(groupData): Promise<Group> {
     return this.prisma.group.create({
@@ -111,20 +78,10 @@ export class GroupService {
         where: {
           id,
         },
-        // include: {
-        //   userGroups: true,
-        // },
       });
-
       if (!existingGroup) {
         throw new NotFoundException(`Group with ID ${id} not found`);
       }
-
-      // if (existingGroup.userGroups.length > 0) {
-      //   throw new ForbiddenException(
-      //     `Group with ID ${id} has users and cannot be deleted.`,
-      //   );
-      // }
 
       return this.prisma.group.delete({
         where: {

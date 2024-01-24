@@ -1,20 +1,14 @@
-"use client";
-import { signIn, signOut, useSession } from 'next-auth/react';
+'use client';
 
-export default function Events() {
-  const { data: session } = useSession()
-  if (session) {
-    return (
-      <>
-        Signed in <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    )
-  }
-  return (
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
-    </>
-  )
+import { useSession } from 'next-auth/react';
+import Groups from '@/app/(user)/groups/groups';
+
+export default function GroupsPage() {
+  const { data: session } = useSession();
+
+  if (session?.user) return;
+
+  console.log(session);
+
+  return <Groups studentId={session?.user.id} />;
 }

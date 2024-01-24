@@ -13,6 +13,10 @@ export const userTabs = [
     path: '/dashboard',
   },
   {
+    name: 'My Groups',
+    path: '/groups',
+  },
+  {
     name: 'Profile',
     path: '/profile',
   },

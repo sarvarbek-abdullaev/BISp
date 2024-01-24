@@ -1,11 +1,6 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma.service';
 import { UserGroup } from '@prisma/client';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Injectable()
 export class UserGroupService {
@@ -69,9 +64,8 @@ export class UserGroupService {
   }
 
   async updateUserGroups(userGroups, deletedIds): Promise<any> {
+    if (!userGroups || !deletedIds) throw new BadRequestException();
     try {
-      if (!userGroups || !deletedIds) throw new BadRequestException();
-
       return Promise.all([
         this.createUserGroups(userGroups),
         this.deleteUserGroupsByIds(deletedIds),

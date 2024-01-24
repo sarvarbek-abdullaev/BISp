@@ -24,6 +24,11 @@ export class GroupController {
     return this.groupService.getGroupById(id);
   }
 
+  @Get('student/:id')
+  async getGroupsByUserId(@Param('id') userId: string): Promise<Group[]> {
+    return this.groupService.getGroupsByUserId(userId);
+  }
+
   @Post()
   async createGroup(@Body() groupData: Group) {
     return this.groupService.createGroup(groupData);

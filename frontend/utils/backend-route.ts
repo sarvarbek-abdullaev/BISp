@@ -103,3 +103,16 @@ export const getModules = async () => {
     console.log(error);
   }
 };
+
+export const getGroupsByUserId = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/groups/student/${id}`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
