@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
-import { fonts } from './fonts';
 import './globals.css';
-import { useSession } from 'next-auth/react';
+import { Providers } from '@/app/providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fonts.rubik.variable}>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-white dark:bg-[#313338]">
         <Providers>{children}</Providers>
       </body>
     </html>

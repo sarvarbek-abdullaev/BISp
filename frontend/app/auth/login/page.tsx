@@ -1,45 +1,51 @@
 'use client';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  HStack,
-  Input,
-  Stack,
-} from '@chakra-ui/react';
-import { Logo } from '@/components/shared/Logo';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useRouter } from 'next/navigation';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-interface LoginData {
-  email: string;
-  password: string;
-}
-
-const defaultLoginData: LoginData = {
-  email: '',
-  password: '',
-};
+const formSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
 
 export default function Page() {
-  const [loginData, setLoginData] = useState<LoginData>(defaultLoginData);
+  const router = useRouter();
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const handleChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginData({ ...loginData, [name]: value });
-  };
+  const [message, setMessage] = useState<string | null>(null);
 
-  const handleSubmit = async () => {
+  message &&
+    form.watch((value) => {
+      setMessage(null);
+    });
+
+  const isLoading = form.formState.isSubmitting;
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const data = JSON.stringify(values);
       await signIn('credentials', {
-        email: loginData.email,
-        password: loginData.password,
-        callbackUrl: '/',
+        data,
+        redirect: false,
+      }).then(({ ok, error }: any) => {
+        if (ok) {
+          router.push('/');
+        } else {
+          setMessage('Invalid email or password');
+          console.log(error);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -47,53 +53,78 @@ export default function Page() {
   };
 
   return (
-    <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }} height="100vh">
-      <Flex flexDirection="column" alignItems="center" justifyContent="center" height="100%">
-        <Stack spacing="6">
-          <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
-            <Heading size={{ base: 'xs', md: 'sm' }}>Log in to your account</Heading>
-          </Stack>
-        </Stack>
-        <Box
-          py={{ base: '0', sm: '8' }}
-          px={{ base: '4', sm: '10' }}
-          bg={{ base: 'transparent', sm: 'bg.surface' }}
-          boxShadow={{ base: 'none', sm: 'md' }}
-          borderRadius={{ base: 'none', sm: 'xl' }}
-        >
-          <Stack spacing="6">
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <Input id="email" name="email" type="email" required value={loginData.email} onChange={handleChanges} />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={loginData.password}
-                  onChange={handleChanges}
-                />
-              </FormControl>
-            </Stack>
-            <HStack justify="space-between">
-              <Checkbox defaultChecked>Remember me</Checkbox>
-              <Button variant="text" size="sm">
-                Forgot password?
-              </Button>
-            </HStack>
-            <Stack spacing="6">
-              <Button onClick={handleSubmit} colorScheme="blue">
-                Sign in
-              </Button>
-            </Stack>
-          </Stack>
-        </Box>
-      </Flex>
-    </Container>
+    <div className="container mx-auto max-w-lg w-full py-12 md:py-24 px-0 sm:px-8 h-screen">
+      <div className="flex flex-col items-center justify-center h-full">
+        <div className="w-full pt-10 border border-black">
+          <div className="space-y-6">
+            <div className="space-y-2 md:space-y-3 text-center">
+              <h2 className="text-md md:text-xl">Log in to your account</h2>
+            </div>
+          </div>
+          <div className="w-full py-0 sm:py-8 px-4 sm:px-10 bg-transparent sm:bg-surface shadow-none sm:shadow-md rounded-none sm:rounded-xl">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+                <div className="space-y-5">
+                  <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white/70">
+                          Email:
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id="email"
+                            type="email"
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 bg-white dark:bg-[#313338]"
+                            required={true}
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white/70">
+                          Password:
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id="password"
+                            type="password"
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0 bg-white dark:bg-[#313338]"
+                            required={true}
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {message && (
+                    <Alert variant="destructive" className="mt-5 text-red-700 p-1 px-3">
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>{message}</AlertDescription>
+                    </Alert>
+                  )}
+                  <div className="text-end">
+                    <Button variant="link">Forgot password?</Button>
+                  </div>
+                  <Button variant="secondary">Sign in</Button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

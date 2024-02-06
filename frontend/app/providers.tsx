@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
-import { theme } from '@/theme';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    return (
-        <SessionProvider>
-            <ChakraProvider theme={theme} >
-              {children}
-            </ChakraProvider>
-        </SessionProvider>
-    )
+  return (
+    <SessionProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="discord-theme">
+        {children}
+      </ThemeProvider>
+    </SessionProvider>
+  );
 }
