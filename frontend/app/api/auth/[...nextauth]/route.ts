@@ -8,7 +8,8 @@ export const authOptions: NextAuthOptions = {
       type: 'credentials',
       credentials: {},
       async authorize(credentials, req) {
-        const { email, password } = credentials as { email: string; password: string };
+        //@ts-ignore
+        const { email, password } = JSON.parse(credentials?.data) as { email: string; password: string };
         // fetch user from backend and compare password
         const response = await fetch('http://localhost:3000/login', {
           method: 'POST',
