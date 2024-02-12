@@ -15,12 +15,11 @@ export class StudentService {
   }
 
   async createUser(userData): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(userData.password);
+    delete userData.password;
     const user = await this.prismaService.user.create({
       data: {
         ...userData,
         birthYear: Number(userData.birthYear),
-        password: hashedPassword,
       },
     });
     return delete user.password && user;
@@ -75,10 +74,7 @@ export class StudentService {
   }
 
   async updateUserById(id: string, userData): Promise<User> {
-    if (userData.password || userData.password === '') {
-      delete userData.password;
-    }
-
+    delete userData.password;
     return this.prismaService.user.update({
       where: {
         id,

@@ -17,7 +17,7 @@ import { JwtAuthGuard } from '../../authentication/auth.guard';
 export class StudentController {
   constructor(private studentService: StudentService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers(): Promise<UserDto[]> {
     return await this.studentService.getAllUsers();

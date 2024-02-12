@@ -21,7 +21,7 @@ model User {
   email      String      @unique
   name       String?
   birthYear  Int?
-  password   String
+  password   String?
   role       Role        @default(STUDENT)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -37,6 +37,8 @@ model Group {
   userGroups UserGroup[]
   course     Course?     @relation(fields: [courseId], references: [id])
   courseId   String?     @db.ObjectId
+
+  @@unique([name, year, courseId])
 }
 
 model UserGroup {
@@ -58,6 +60,8 @@ model Module {
   updatedAt   DateTime @updatedAt
   courseId    String?  @db.ObjectId
   course      Course?  @relation(fields: [courseId], references: [id])
+
+  @@unique([code, courseId])
 }
 
 model Course {

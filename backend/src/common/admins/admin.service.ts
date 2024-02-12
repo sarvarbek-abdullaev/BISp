@@ -15,11 +15,10 @@ export class AdminService {
   }
 
   async createAdmin(adminData): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(adminData.password);
+    delete adminData.password;
     const student = await this.prismaService.user.create({
       data: {
         ...adminData,
-        password: hashedPassword,
         birthYear: Number(adminData.birthYear),
         role,
       },
@@ -78,9 +77,7 @@ export class AdminService {
   }
 
   async updateAdminById(id: string, adminData): Promise<User> {
-    if (!adminData.password || adminData.password === '') {
-      delete adminData.password;
-    }
+    delete adminData.password;
 
     return this.prismaService.user.update({
       where: {
@@ -90,9 +87,6 @@ export class AdminService {
       data: {
         ...adminData,
         birthYear: Number(adminData.birthYear),
-        ...(adminData.password && {
-          password: await this.hashPassword(adminData.password),
-        }),
       },
     });
   }
