@@ -10,18 +10,16 @@ interface LayoutProps {
 
 const AdminLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <Flex flexDirection="column" height="100vh" overflow="hidden">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Navbar tabs={adminTabs} />
       <Container
         styles={{
           flex: '1',
         }}
       >
-        <Flex height="100%" paddingY="4">
-          {children}
-        </Flex>
+        <div className="flex h-full px-2">{children}</div>
       </Container>
-    </Flex>
+    </div>
   );
 };
 

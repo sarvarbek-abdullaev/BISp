@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 
 interface WrapperProps {
@@ -10,17 +9,11 @@ interface WrapperProps {
 
 export const Wrapper: FC<WrapperProps> = ({ children, flex, padding = '5', width = '90%' }) => {
   return (
-    <Flex
-      direction="column"
-      p={padding}
-      w={width}
-      marginX="10"
-      bg="#202020"
-      borderRadius="8px"
-      flex={flex}
-      overflow="hidden"
+    <div
+      className="flex flex-col mx-10 px-5 py-2 rounded-lg overflow-hidden bg-[#202020]"
+      style={{ flex, padding, width }}
     >
       {children}
-    </Flex>
+    </div>
   );
 };

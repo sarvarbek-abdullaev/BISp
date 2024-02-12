@@ -15,12 +15,12 @@ interface CircularProgressBarProps {
 
 export const CircularProgressBar: FC<CircularProgressBarProps> = ({ text, value, maxValue, color, path, name }) => {
   return (
-    <Box p="5" bg="black" justifyContent="center" borderRadius="20">
+    <div className="p-5 bg-black flex flex-col justify-center rounded-lg">
       <Link href={path}>
-        <Flex alignItems="center" gap="1">
+        <div className="flex items-center gap-1">
           <Text>{name}</Text>
           <ExternalLinkIcon />
-        </Flex>
+        </div>
       </Link>
       <CircularProgress
         display="flex"
@@ -35,6 +35,6 @@ export const CircularProgressBar: FC<CircularProgressBarProps> = ({ text, value,
       >
         <CircularProgressLabel fontSize={40}>{text}</CircularProgressLabel>
       </CircularProgress>
-    </Box>
+    </div>
   );
 };

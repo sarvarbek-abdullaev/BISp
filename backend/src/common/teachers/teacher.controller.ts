@@ -30,11 +30,13 @@ export class TeacherController {
     @Param('id') id: string,
     @Body() studentData: User,
   ): Promise<User> {
+    delete studentData.password;
     return await this.teacherService.updateTeacherById(id, studentData);
   }
 
   @Post()
   async createTeacher(@Body() studentData: User): Promise<UserDto> {
+    delete studentData.password;
     return await this.teacherService.createTeacher(studentData);
   }
 

@@ -1,12 +1,21 @@
 'use client';
-import { Table as ChakraTable, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import React, { FC } from 'react';
-import { Button, Text } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Popover } from '@/components/shared/Popover';
 import { handleDelete } from '@/actions/handleDelete.action';
 import CenteredText from '@/components/shared/CenteredText';
 import Link from '@/components/shared/Link';
+import { Button } from '@/components/ui/button';
+
+import {
+  Table as TableComponent,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface UserGroup {
   id: string;
@@ -80,95 +89,86 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
   }
 
   return (
-    <TableContainer maxH="600px" overflowY="auto" position="relative">
-      <ChakraTable variant="unstyled" style={{ borderCollapse: 'separate', borderSpacing: '0 1em' }}>
-        <Thead position="sticky" top="0" background="#202020" zIndex="1">
-          <Tr>
-            {columns.map((label) => (
-              <Th fontSize="14px" key={label} textTransform="none" color="white">
-                {label}
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {rows.map(
-            // @ts-ignore
-            ({ id, name, email, year, birthYear, createdAt, userGroups, course, code, modules }, _id: number) => {
-              return (
-                <Tr
-                  _hover={{
-                    background: 'rgba(45, 45, 45, 0.7)',
-                    color: 'white',
-                  }}
-                  color="#B0B0B0"
-                  background="rgba(0,0, 0, 0.5)"
-                  key={id}
-                >
-                  <Td>{_id + 1}</Td>
-                  {(globalType === 'courses' || globalType === 'modules') && <Td>{code}</Td>}
-                  {name && <Td>{name}</Td>}
-                  {(globalType === 'groups' || globalType === 'modules') && <Td>{course && course.name}</Td>}
-                  {globalType === 'groups' && <Td>{year}</Td>}
-                  {globalType === 'users' && <Td>{email}</Td>}
-                  {globalType === 'users' && <Td>{birthYear}</Td>}
-                  {globalType === 'courses' && <Td>{modules?.length}</Td>}
-                  <Td>
-                    {new Date(createdAt).toLocaleDateString(navigator.language, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </Td>
+    <TableComponent>
+      <TableHeader className="sticky top-0 z-10 bg-[#202020]">
+        <TableRow>
+          {columns.map((label) => (
+            <TableHead key={label} className="text-sm">
+              {label}
+            </TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {rows.map(
+          // @ts-ignore
+          ({ id, name, email, year, birthYear, createdAt, userGroups, course, code, modules }, _id: number) => {
+            return (
+              <TableRow key={id + name}>
+                <TableCell>{_id + 1}</TableCell>
+                {(globalType === 'courses' || globalType === 'modules') && <TableCell>{code}</TableCell>}
+                {name && <TableCell>{name}</TableCell>}
+                {(globalType === 'groups' || globalType === 'modules') && (
+                  <TableCell>{course && course.name}</TableCell>
+                )}
+                {globalType === 'groups' && <TableCell>{year}</TableCell>}
+                {globalType === 'users' && <TableCell>{email}</TableCell>}
+                {globalType === 'users' && <TableCell>{birthYear}</TableCell>}
+                {globalType === 'courses' && <TableCell>{modules?.length}</TableCell>}
+                <TableCell>
+                  {new Date(createdAt).toLocaleDateString(navigator.language, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </TableCell>
 
-                  {type === 'students' && (
-                    // @ts-ignore
-                    <Td>{userGroups.length > 0 ? userGroups[0]?.group.name : ''}</Td>
-                  )}
-                  {globalType === 'groups' && <Td>{userGroups ? userGroups.length : ''}</Td>}
-                  <Td>
-                    <Text color="white">
-                      <Popover
-                        element={<BsThreeDotsVertical />}
-                        body={
-                          <>
-                            <Link href={`${type}/${id}`}>
-                              <Button colorScheme="whiteAlpha" variant="ghost" width="100%">
-                                <Text style={{ textAlign: 'left', width: '100%' }}>View</Text>
-                              </Button>
-                            </Link>
-                            <Link href={`${type}/${id}/edit`}>
-                              <Button colorScheme="whiteAlpha" color="green" variant="ghost" width="100%">
-                                <Text style={{ textAlign: 'left', width: '100%' }}>Edit</Text>
-                              </Button>
-                            </Link>
-                            {type === 'student' && userGroups && userGroups?.length > 0 ? (
-                              ''
-                            ) : (
-                              <Button
-                                colorScheme="whiteAlpha"
-                                color="red"
-                                variant="ghost"
-                                width="100%"
-                                {...(type &&
-                                  id && {
-                                    onClick: () => handleDelete(type, revalidatePage, id),
-                                  })}
-                              >
-                                <Text style={{ textAlign: 'left', width: '100%' }}>Delete</Text>
-                              </Button>
-                            )}
-                          </>
-                        }
-                      />
-                    </Text>
-                  </Td>
-                </Tr>
-              );
-            },
-          )}
-        </Tbody>
-      </ChakraTable>
-    </TableContainer>
+                {type === 'students' && (
+                  // @ts-ignore
+                  <TableCell>{userGroups.length > 0 ? userGroups[0]?.group.name : ''}</TableCell>
+                )}
+                {globalType === 'groups' && <TableCell>{userGroups ? userGroups.length : ''}</TableCell>}
+                <TableCell>
+                  <div className="text-white">
+                    <Popover
+                      element={<BsThreeDotsVertical />}
+                      body={
+                        <>
+                          <Link href={`${type}/${id}`}>
+                            <Button className="text-white w-full" variant="ghost">
+                              <p className="text-left w-full">View</p>
+                            </Button>
+                          </Link>
+                          <Link href={`${type}/${id}/edit`}>
+                            <Button className="w-full text-green-700 hover:text-green-700" variant="ghost">
+                              <p className="text-left w-full">Edit</p>
+                            </Button>
+                          </Link>
+                          {type === 'student' && userGroups && userGroups?.length > 0 ? (
+                            ''
+                          ) : (
+                            <Button
+                              className="w-full text-red-700 hover:text-red-700"
+                              color="red"
+                              variant="ghost"
+                              {...(type &&
+                                id && {
+                                  onClick: () => handleDelete(type, revalidatePage, id),
+                                })}
+                            >
+                              <p className="text-left w-full">Delete</p>
+                            </Button>
+                          )}
+                        </>
+                      }
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          },
+        )}
+      </TableBody>
+    </TableComponent>
   );
 };

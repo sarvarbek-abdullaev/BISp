@@ -12,21 +12,19 @@ interface LayoutProps {
 
 const UserLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <>
-      <Flex flexDirection="column" height="100vh" overflow="hidden">
-        <Container
-          styles={{
-            flex: '1',
-          }}
-        >
-          <Navbar tabs={userTabs} />
-          <Flex height="100%" paddingY="4">
-            <Sidebar tabs={userTabs} />
-            <Wrapper>{children}</Wrapper>
-          </Flex>
-        </Container>
-      </Flex>
-    </>
+    <div className="flex flex-col h-screen overflow-hidden">
+      <Container
+        styles={{
+          flex: '1',
+        }}
+      >
+        <Navbar tabs={userTabs} />
+        <div className="flex h-full px-2">
+          <Sidebar tabs={userTabs} />
+          <Wrapper>{children}</Wrapper>
+        </div>
+      </Container>
+    </div>
   );
 };
 

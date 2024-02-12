@@ -1,4 +1,3 @@
-import { Center, Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
 
 interface CenteredTextProps {
@@ -6,9 +5,9 @@ interface CenteredTextProps {
 }
 
 const CenteredText: FC<CenteredTextProps> = ({ text }) => (
-  <Center height="100%">
-    <Text fontSize="xl">{text}</Text>
-  </Center>
+  <div className="w-full h-full flex items-center justify-center">
+    <p className="text-xl">{text}</p>
+  </div>
 );
 
 export default CenteredText;

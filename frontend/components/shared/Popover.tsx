@@ -1,15 +1,7 @@
-import {
-  Button,
-  Popover as ChakraPopover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Portal,
-} from '@chakra-ui/react';
 import React, { FC } from 'react';
+
+import { Popover as PopoverShadcn, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 
 interface PopoverProps {
   element: React.ReactNode;
@@ -19,22 +11,14 @@ interface PopoverProps {
 
 export const Popover: FC<PopoverProps> = ({ element, header, body }) => {
   return (
-    <ChakraPopover>
+    <PopoverShadcn>
       <PopoverTrigger>
-        <Button colorScheme="none">{element}</Button>
+        <Button className="bg-transparent hover:bg-transparent text-white">{element}</Button>
       </PopoverTrigger>
-      <Portal>
-        <PopoverContent>
-          <PopoverArrow />
-          {header && (
-            <>
-              <PopoverHeader>{header}</PopoverHeader>
-              <PopoverCloseButton />
-            </>
-          )}
-          {body && <PopoverBody>{body}</PopoverBody>}
-        </PopoverContent>
-      </Portal>
-    </ChakraPopover>
+      <PopoverContent className="w-fit">
+        {header && <div className="mb-4">{header}</div>}
+        {body}
+      </PopoverContent>
+    </PopoverShadcn>
   );
 };

@@ -3,11 +3,11 @@ import { groupColumns } from '@/tabs';
 import React from 'react';
 import { getCourses, getGroups } from '@/utils/backend-route';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
-import { Button, Flex, Grid } from '@chakra-ui/react';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { Tab } from '@/utils/interfaces';
+import { Button } from '@/components/ui/button';
 
 export default async function GroupsPage({ searchParams }: any) {
   const { courseCode } = searchParams;
@@ -40,23 +40,19 @@ export default async function GroupsPage({ searchParams }: any) {
 
   const Dashboard = () => {
     return (
-      <Flex width="100%" height="100%" flexDirection="column" gap="4">
+      <div className="flex w-full h-full flex-col gap-4">
         <Wrapper>
-          <Flex justifyContent="flex-end" alignItems="center" gap="4">
+          <div className="flex justify-end items-center gap-4">
             <Link href={'groups/create'}>
-              <Button {...buttonStyle} _hover={selectedStyle}>
-                Create Group
-              </Button>
+              <Button variant="ghost">Create Group</Button>
             </Link>
             <Link href={'groups/assign'}>
-              <Button {...buttonStyle} _hover={selectedStyle}>
-                Manage Groups Students
-              </Button>
+              <Button variant="ghost">Manage Groups Students</Button>
             </Link>
-          </Flex>
+          </div>
         </Wrapper>
         <Wrapper flex="1">
-          <Grid templateColumns="repeat(3, 1fr)" gap="10">
+          <div className="grid grid-cols-3 gap-10">
             {groupTabs.map(({ path, name }: Tab, index: number) => (
               <CircularProgressBar
                 key={path + name + index}
@@ -68,9 +64,9 @@ export default async function GroupsPage({ searchParams }: any) {
                 name={name}
               />
             ))}
-          </Grid>
+          </div>
         </Wrapper>
-      </Flex>
+      </div>
     );
   };
 

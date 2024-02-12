@@ -8,8 +8,8 @@ interface ContainerProps {
 
 export const Container: FC<ContainerProps> = ({ children, styles }) => {
   return (
-    <Box margin="2" {...styles}>
+    <div className="m-2 w-full h-full" {...styles}>
       {children}
-    </Box>
+    </div>
   );
 };

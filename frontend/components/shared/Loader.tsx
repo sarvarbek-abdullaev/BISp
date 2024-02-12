@@ -1,10 +1,9 @@
-import { Spinner } from '@chakra-ui/spinner';
-import { Center, Flex } from '@chakra-ui/react';
+import { Loader2 } from 'lucide-react';
 
 export default function LoadingSkeleton() {
   return (
-    <Flex width="100%" justifyContent="center" alignItems="center">
-      <Spinner thickness="4px" speed="0.6s" emptyColor="gray.200" color="blue.500" size="xl" />
-    </Flex>
+    <div className="flex justify-center items-center w-full">
+      <Loader2 size={64} speed={0.6} className="animate-spin text-gray-500" />
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 'use client';
-import { Tab, TabList, Tabs } from '@chakra-ui/tabs';
 import { Flex } from '@chakra-ui/react';
 import { Logo } from '@/components/shared/Logo';
 import { MdNotifications } from 'react-icons/md';
@@ -7,6 +6,7 @@ import Link from '@/components/shared/Link';
 import { usePathname } from 'next/navigation';
 import { AccountModal } from '../shared/AccountModal';
 import { FC } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const selectedStyle = {
   color: 'white',
@@ -35,39 +35,30 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
 
   if (pathname === '/auth/login') return null;
 
-  const defaultTabIndex = tabs.findIndex((tab) => {
-    const regex = new RegExp(`^${pathname}(?:\|$)`);
-    return regex.test(tab.path);
-  });
+  const defaultTab =
+    tabs.find((tab) => {
+      const regex = new RegExp(`^${pathname}(?:\|$)`);
+      return regex.test(tab.path);
+    })?.path || tabs[0].path;
 
   return (
-    <Flex
-      position="sticky"
-      top="0"
-      bg="#202020"
-      color="#B0B0B0"
-      alignItems="center"
-      justifyContent="space-between"
-      paddingX="8"
-      zIndex="1"
-      {...styles}
-    >
-      <Logo size="10" />
-      <Tabs alignSelf="end" variant="unstyled" index={defaultTabIndex}>
-        <TabList>
+    <div className="flex sticky top-0 bg-[#202020] items-center justify-between px-8 z-1" {...styles}>
+      <Logo />
+      <Tabs defaultValue={defaultTab} className="w-[400px]">
+        <TabsList>
           {tabs.map((tab, index) => (
-            <Link key={index + tab.name} href={tab.path}>
-              <Tab _selected={selectedStyle} {...unselectedStyle} paddingBottom="3">
-                {tab.name}
-              </Tab>
-            </Link>
+            <div key={index + tab.name}>
+              <Link href={tab.path}>
+                <TabsTrigger value={tab.path}>{tab.name}</TabsTrigger>
+              </Link>
+            </div>
           ))}
-        </TabList>
+        </TabsList>
       </Tabs>
       <Flex paddingY="4">
         <MdNotifications size="40px" color="#B0B0B0" />
         <AccountModal />
       </Flex>
-    </Flex>
+    </div>
   );
 };

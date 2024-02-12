@@ -1,8 +1,9 @@
-import { Box, Button, Flex, Grid } from '@chakra-ui/react';
+import { Box, Flex, Grid } from '@chakra-ui/react';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { adminUsersTabs } from '@/tabs';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
+import { Button } from '@/components/ui/button';
 
 const UsersPage = () => {
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
@@ -23,20 +24,18 @@ const UsersPage = () => {
   const userTypes = adminUsersTabs.slice(1);
 
   return (
-    <Flex width="100%" height="100%" flexDirection="column" gap="4">
+    <div className="flex w-full h-full flex-col gap-4">
       <Wrapper>
-        <Flex justifyContent="flex-end" alignItems="center" gap="4">
+        <div className="flex justify-end items-center gap-4">
           {userTypes.map(({ path, name }, index) => (
             <Link key={name + path + index} href={path + '/create'}>
-              <Button {...buttonStyle} _hover={selectedStyle}>
-                Create {name.slice(0, name.length - 1)}
-              </Button>
+              <Button variant="ghost">Create {name.slice(0, name.length - 1)}</Button>
             </Link>
           ))}
-        </Flex>
+        </div>
       </Wrapper>
       <Wrapper flex="1">
-        <Grid templateColumns="repeat(3, 1fr)" gap="10">
+        <div className="grid grid-cols-3 gap-10">
           {userTypes.map(({ path, name }, index) => (
             <CircularProgressBar
               key={path + name + index}
@@ -48,9 +47,9 @@ const UsersPage = () => {
               name={name}
             />
           ))}
-        </Grid>
+        </div>
       </Wrapper>
-    </Flex>
+    </div>
   );
 };
 
