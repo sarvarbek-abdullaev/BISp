@@ -9,6 +9,7 @@ import { AdminModule } from './common/admins/admin.module';
 import { TeacherModule } from './common/teachers/teacher.module';
 import { StudentModule } from './common/students/student.module';
 import { UserGroupModule } from './common/userGroups/userGroup.module';
+import { ProductModule } from './common/products/product.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserGroupModule } from './common/userGroups/userGroup.module';
     AuthModule,
     GroupModule,
     UserGroupModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
