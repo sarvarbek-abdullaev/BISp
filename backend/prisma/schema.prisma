@@ -16,12 +16,18 @@ enum Role {
   STUDENT
 }
 
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
   email      String      @unique
   name       String?
   birthYear  Int?
   password   String?
+  status     Status      @default(ACTIVE)
   role       Role        @default(STUDENT)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt

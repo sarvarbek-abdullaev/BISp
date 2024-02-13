@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { UserDto } from '../../dtos';
+import { Status } from '@prisma/client';
 
 const role = 'STUDENT';
 
@@ -94,5 +95,65 @@ export class StudentService {
         role,
       },
     });
+  }
+
+  async activateUserById(id: string): Promise<UserDto> {
+    try {
+      const user = await this.prismaService.user.update({
+        where: {
+          id,
+          role,
+          status: Status.INACTIVE,
+        },
+        data: {
+          status: Status.ACTIVE,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          birthYear: true,
+          status: true,
+          role: true,
+        },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return user;
+    } catch (e) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  async deactivateUserById(id: string): Promise<UserDto> {
+    try {
+      const user = await this.prismaService.user.update({
+        where: {
+          id,
+          role,
+          status: Status.ACTIVE,
+        },
+        data: {
+          status: Status.INACTIVE,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          birthYear: true,
+          status: true,
+          role: true,
+        },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return user;
+    } catch (e) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

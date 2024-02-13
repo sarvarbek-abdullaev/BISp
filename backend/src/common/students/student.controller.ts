@@ -4,20 +4,18 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { StudentService } from './student.service';
-import { JwtAuthGuard } from '../../authentication/auth.guard';
 
 @Controller('students')
 export class StudentController {
   constructor(private studentService: StudentService) {}
 
-  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers(): Promise<UserDto[]> {
     return await this.studentService.getAllUsers();
@@ -44,5 +42,15 @@ export class StudentController {
   @Delete(':id')
   async deleteUserById(@Param('id') id: string): Promise<User> {
     return await this.studentService.deleteUserById(id);
+  }
+
+  @Patch('activate/:id')
+  async activateUserById(@Param('id') id: string): Promise<UserDto> {
+    return await this.studentService.activateUserById(id);
+  }
+
+  @Patch('deactivate/:id')
+  async deactivateUserById(@Param('id') id: string): Promise<UserDto> {
+    return await this.studentService.deactivateUserById(id);
   }
 }
