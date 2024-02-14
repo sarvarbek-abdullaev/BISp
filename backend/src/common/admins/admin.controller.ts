@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Admin } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { AdminService } from './admin.service';
 
@@ -28,18 +28,18 @@ export class AdminController {
   @Put(':id')
   async updateAdminById(
     @Param('id') id: string,
-    @Body() adminData: User,
-  ): Promise<User> {
+    @Body() adminData: Admin,
+  ): Promise<Admin> {
     return await this.adminService.updateAdminById(id, adminData);
   }
 
   @Post()
-  async createAdmin(@Body() adminData: User): Promise<UserDto> {
+  async createAdmin(@Body() adminData: Admin): Promise<UserDto> {
     return await this.adminService.createAdmin(adminData);
   }
 
   @Delete(':id')
-  async deleteAdminById(@Param('id') id: string): Promise<User> {
+  async deleteAdminById(@Param('id') id: string): Promise<Admin> {
     return await this.adminService.deleteAdminById(id);
   }
 }

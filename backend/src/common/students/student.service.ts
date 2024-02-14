@@ -1,11 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Role, Student } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { Status } from '@prisma/client';
-
-const role = 'STUDENT';
 
 @Injectable()
 export class StudentService {
@@ -15,49 +13,53 @@ export class StudentService {
     return bcrypt.hash(password, 10);
   }
 
-  async createUser(userData): Promise<UserDto> {
+  async createStudent(userData): Promise<UserDto> {
     delete userData.password;
-    const user = await this.prismaService.user.create({
+    const student = await this.prismaService.student.create({
       data: {
-        ...userData,
-        birthYear: Number(userData.birthYear),
-      },
-    });
-    return delete user.password && user;
-  }
-
-  async getAllUsers(): Promise<UserDto[]> {
-    const res = await this.prismaService.user.findMany({
-      where: {
-        role,
+        profile: {
+          ...userData,
+          role: Role.STUDENT,
+        },
       },
       include: {
-        userGroups: {
+        profile: true,
+      },
+    });
+
+    delete student.profile.password;
+    return student;
+  }
+
+  async getAllStudents(): Promise<UserDto[]> {
+    const res = await this.prismaService.student.findMany({
+      include: {
+        profile: true,
+        studentGroups: {
           select: {
             id: true,
-            userId: true,
+            studentId: true,
             group: true,
           },
         },
       },
     });
     res.map((student) => {
-      delete student.password;
+      delete student.profile.password;
     });
     return res;
   }
 
-  async getUserById(id: string): Promise<User> {
-    return this.prismaService.user.findUnique({
+  async getStudentById(id: string): Promise<Student> {
+    return this.prismaService.student.findUnique({
       where: {
         id,
-        role,
       },
       include: {
-        userGroups: {
+        studentGroups: {
           select: {
             id: true,
-            userId: true,
+            studentId: true,
             group: true,
           },
         },
@@ -65,95 +67,93 @@ export class StudentService {
     });
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    return this.prismaService.user.findUnique({
-      where: {
-        email,
-        role,
-      },
-    });
-  }
+  // async getStudentByEmail(email: string): Promise<Student> {
+  //   return this.prismaService.student.findUnique({
+  //     where: {
+  //       email,
+  //     },
+  //   });
+  // }
 
-  async updateUserById(id: string, userData): Promise<User> {
+  async updateStudentById(id: string, userData): Promise<Student> {
     delete userData.password;
-    return this.prismaService.user.update({
+    return this.prismaService.student.update({
       where: {
         id,
-        role,
       },
       data: {
-        ...userData,
-        birthYear: Number(userData.birthYear),
+        profile: {
+          ...userData,
+        },
       },
     });
   }
 
-  async deleteUserById(id: string): Promise<User> {
-    return this.prismaService.user.delete({
+  async deleteStudentById(id: string): Promise<Student> {
+    return this.prismaService.student.delete({
       where: {
         id,
-        role,
       },
     });
   }
 
-  async activateUserById(id: string): Promise<UserDto> {
+  async activateStudentById(id: string): Promise<UserDto> {
     try {
-      const user = await this.prismaService.user.update({
+      const user = await this.prismaService.student.update({
         where: {
           id,
-          role,
-          status: Status.INACTIVE,
+          profile: {
+            status: Status.INACTIVE,
+          },
         },
         data: {
-          status: Status.ACTIVE,
+          profile: {
+            update: {
+              status: Status.ACTIVE,
+            },
+          },
         },
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          birthYear: true,
-          status: true,
-          role: true,
+        include: {
+          profile: true,
         },
       });
       if (!user) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('Student not found');
       }
 
       return user;
     } catch (e) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Student not found');
     }
   }
 
-  async deactivateUserById(id: string): Promise<UserDto> {
+  async deactivateStudentById(id: string): Promise<UserDto> {
     try {
-      const user = await this.prismaService.user.update({
+      const user = await this.prismaService.student.update({
         where: {
           id,
-          role,
-          status: Status.ACTIVE,
+          profile: {
+            status: Status.ACTIVE,
+          },
         },
         data: {
-          status: Status.INACTIVE,
+          profile: {
+            update: {
+              status: Status.INACTIVE,
+            },
+          },
         },
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          birthYear: true,
-          status: true,
-          role: true,
+        include: {
+          profile: true,
         },
       });
       if (!user) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('Student not found');
       }
 
       return user;
     } catch (e) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Student not found');
     }
   }
 }

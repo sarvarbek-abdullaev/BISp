@@ -13,23 +13,27 @@ export class GroupService {
   async getAllGroups(): Promise<Group[]> {
     return this.prisma.group.findMany({
       include: {
-        userGroups: true,
+        studentGroups: true,
         course: true,
       },
     });
   }
 
   async getGroupById(id: string): Promise<Group> {
-    return this.prisma.group.findUnique({
+    const group = await this.prisma.group.findUnique({
       where: {
         id,
       },
       include: {
-        // userGroups: {
-        //   select: {
-        //     user: true,
-        //   },
-        // },
+        studentGroups: {
+          include: {
+            student: {
+              include: {
+                profile: true,
+              },
+            },
+          },
+        },
         course: {
           select: {
             id: true,
@@ -38,14 +42,33 @@ export class GroupService {
         },
       },
     });
+
+    if (!group) {
+      throw new NotFoundException(`Group with ID ${id} not found`);
+    }
+
+    group.studentGroups = group.studentGroups.map((studentGroup) => {
+      return {
+        ...studentGroup,
+        student: {
+          ...studentGroup.student,
+          profile: {
+            ...studentGroup.student.profile,
+            password: undefined,
+          },
+        },
+      };
+    });
+
+    return group;
   }
 
-  getGroupsByUserId(userId: string): Promise<Group[]> {
+  getGroupsByUserId(id: string): Promise<Group[]> {
     return this.prisma.group.findMany({
       where: {
-        userGroups: {
+        studentGroups: {
           some: {
-            userId,
+            id,
           },
         },
       },
@@ -67,7 +90,6 @@ export class GroupService {
     return this.prisma.group.create({
       data: {
         ...groupData,
-        year: new Date().getUTCFullYear(),
       },
     });
   }

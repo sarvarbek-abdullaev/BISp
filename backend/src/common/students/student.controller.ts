@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Student } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { StudentService } from './student.service';
 
@@ -17,40 +17,40 @@ export class StudentController {
   constructor(private studentService: StudentService) {}
 
   @Get()
-  async getAllUsers(): Promise<UserDto[]> {
-    return await this.studentService.getAllUsers();
+  async getAllStudents(): Promise<UserDto[]> {
+    return await this.studentService.getAllStudents();
   }
 
   @Get(':id')
-  async getUserById(@Param('id') id: string): Promise<User> {
-    return await this.studentService.getUserById(id);
+  async getStudentById(@Param('id') id: string): Promise<Student> {
+    return await this.studentService.getStudentById(id);
   }
 
   @Put(':id')
-  async updateUserById(
+  async updateStudentById(
     @Param('id') id: string,
-    @Body() studentData: User,
-  ): Promise<User> {
-    return await this.studentService.updateUserById(id, studentData);
+    @Body() studentData: Student,
+  ): Promise<Student> {
+    return await this.studentService.updateStudentById(id, studentData);
   }
 
   @Post()
-  async createUser(@Body() studentData: User): Promise<UserDto> {
-    return await this.studentService.createUser(studentData);
+  async createStudent(@Body() studentData: Student): Promise<UserDto> {
+    return await this.studentService.createStudent(studentData);
   }
 
   @Delete(':id')
-  async deleteUserById(@Param('id') id: string): Promise<User> {
-    return await this.studentService.deleteUserById(id);
+  async deleteStudentById(@Param('id') id: string): Promise<Student> {
+    return await this.studentService.deleteStudentById(id);
   }
 
   @Patch('activate/:id')
-  async activateUserById(@Param('id') id: string): Promise<UserDto> {
-    return await this.studentService.activateUserById(id);
+  async activateStudentById(@Param('id') id: string): Promise<UserDto> {
+    return await this.studentService.activateStudentById(id);
   }
 
   @Patch('deactivate/:id')
-  async deactivateUserById(@Param('id') id: string): Promise<UserDto> {
-    return await this.studentService.deactivateUserById(id);
+  async deactivateStudentById(@Param('id') id: string): Promise<UserDto> {
+    return await this.studentService.deactivateStudentById(id);
   }
 }

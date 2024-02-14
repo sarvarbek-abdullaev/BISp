@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Teacher } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { TeacherService } from './teacher.service';
 
@@ -28,20 +28,18 @@ export class TeacherController {
   @Put(':id')
   async updateTeacherById(
     @Param('id') id: string,
-    @Body() studentData: User,
-  ): Promise<User> {
-    delete studentData.password;
+    @Body() studentData: Teacher,
+  ): Promise<Teacher> {
     return await this.teacherService.updateTeacherById(id, studentData);
   }
 
   @Post()
-  async createTeacher(@Body() studentData: User): Promise<UserDto> {
-    delete studentData.password;
+  async createTeacher(@Body() studentData: Teacher): Promise<UserDto> {
     return await this.teacherService.createTeacher(studentData);
   }
 
   @Delete(':id')
-  async deleteTeacherById(@Param('id') id: string): Promise<User> {
+  async deleteTeacherById(@Param('id') id: string): Promise<Teacher> {
     return await this.teacherService.deleteTeacherById(id);
   }
 }

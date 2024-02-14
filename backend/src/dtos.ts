@@ -1,14 +1,11 @@
-import { UserGroup } from '@prisma/client';
+import { Profile, StudentGroup } from '@prisma/client';
 
 export interface UserDto {
   id: string;
-  name: string;
-  email: string;
-  birthYear?: number;
-  role?: string;
+  profile?: Profile;
 }
 
 export interface UserGroupData {
-  userGroups: UserGroup[];
+  userGroups: StudentGroup[];
   deletedIds: string[];
 }

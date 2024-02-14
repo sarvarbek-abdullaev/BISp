@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Admin, Role } from '@prisma/client';
 import { UserDto } from '../../dtos';
-
-const role = 'ADMIN';
 
 @Injectable()
 export class AdminService {
@@ -16,86 +14,84 @@ export class AdminService {
 
   async createAdmin(adminData): Promise<UserDto> {
     delete adminData.password;
-    const student = await this.prismaService.user.create({
+    const admin = await this.prismaService.admin.create({
       data: {
-        ...adminData,
-        birthYear: Number(adminData.birthYear),
-        role,
+        profile: {
+          create: {
+            ...adminData,
+            role: Role.ADMIN,
+          },
+        },
+      },
+      include: {
+        profile: true,
       },
     });
-    return delete student.password && student;
+
+    delete admin.profile.password;
+    return admin;
   }
 
   async getAllAdmins(): Promise<UserDto[]> {
-    return this.prismaService.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
+    const admins = await this.prismaService.admin.findMany({
+      include: {
+        profile: true,
       },
-      where: {
-        role,
-      },
+    });
+
+    return admins.map((admin) => {
+      return delete admin.profile.password && admin;
     });
   }
 
   async getAdminById(id: string): Promise<UserDto> {
-    return this.prismaService.user.findUnique({
+    const admin = await this.prismaService.admin.findUnique({
       select: {
         id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
+        profile: true,
       },
       where: {
         id,
-        role,
       },
     });
+
+    delete admin.profile.password;
+    return admin;
   }
 
-  async getAdminByEmail(email: string): Promise<UserDto> {
-    return this.prismaService.user.findUnique({
-      select: {
-        id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
-      where: {
-        email,
-        role,
-      },
-    });
-  }
+  // async getAdminByEmail(email: string): Promise<UserDto> {
+  //   const admin = await this.prismaService.admin.findUnique({
+  //     select: {
+  //       id: true,
+  //       profile: true,
+  //     },
+  //     where: {
+  //       profile: {
+  //         email,
+  //       },
+  //     },
+  //   });
+  // }
 
-  async updateAdminById(id: string, adminData): Promise<User> {
+  async updateAdminById(id: string, adminData): Promise<Admin> {
     delete adminData.password;
 
-    return this.prismaService.user.update({
+    return this.prismaService.admin.update({
       where: {
         id,
-        role,
       },
       data: {
-        ...adminData,
-        birthYear: Number(adminData.birthYear),
+        profile: {
+          update: adminData,
+        },
       },
     });
   }
 
-  async deleteAdminById(id: string): Promise<User> {
-    return this.prismaService.user.delete({
+  async deleteAdminById(id: string): Promise<Admin> {
+    return this.prismaService.admin.delete({
       where: {
         id,
-        role,
       },
     });
   }

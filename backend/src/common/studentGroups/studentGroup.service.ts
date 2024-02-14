@@ -1,18 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { UserGroup } from '@prisma/client';
+import { StudentGroup } from '@prisma/client';
 
 @Injectable()
-export class UserGroupService {
+export class StudentGroupService {
   constructor(private prismaService: PrismaService) {}
 
-  async createUserGroup(userId: string, groupId: string): Promise<UserGroup> {
+  async createStudentGroup(
+    studentId: string,
+    groupId: string,
+  ): Promise<StudentGroup> {
     try {
-      return this.prismaService.userGroup.create({
+      return this.prismaService.studentGroup.create({
         data: {
-          user: {
+          student: {
             connect: {
-              id: userId,
+              id: studentId,
             },
           },
           group: {
@@ -27,33 +30,33 @@ export class UserGroupService {
     }
   }
 
-  async createUserGroups(userGroups: UserGroup[]): Promise<any> {
+  async createStudentGroups(studentGroups: StudentGroup[]): Promise<any> {
     try {
-      if (userGroups.length < 1) {
+      if (studentGroups.length < 1) {
         return false;
       }
-      return this.prismaService.userGroup.createMany({
-        data: Array.from(userGroups),
+      return this.prismaService.studentGroup.createMany({
+        data: Array.from(studentGroups),
       });
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getUserGroupById(id: string): Promise<UserGroup> {
-    return this.prismaService.userGroup.findUnique({
+  async getStudentGroupById(id: string): Promise<StudentGroup> {
+    return this.prismaService.studentGroup.findUnique({
       where: {
         id,
       },
     });
   }
 
-  async getAllUserGroups(): Promise<UserGroup[]> {
-    return this.prismaService.userGroup.findMany();
+  async getAllStudentGroups(): Promise<StudentGroup[]> {
+    return this.prismaService.studentGroup.findMany();
   }
 
-  async updateUserGroupById(id: string, userGroup): Promise<UserGroup> {
-    return this.prismaService.userGroup.update({
+  async updateStudentGroupById(id: string, userGroup): Promise<StudentGroup> {
+    return this.prismaService.studentGroup.update({
       where: {
         id,
       },
@@ -63,12 +66,12 @@ export class UserGroupService {
     });
   }
 
-  async updateUserGroups(userGroups, deletedIds): Promise<any> {
-    if (!userGroups || !deletedIds) throw new BadRequestException();
+  async updateStudentGroups(studentGroups, deletedIds): Promise<any> {
+    if (!studentGroups || !deletedIds) throw new BadRequestException();
     try {
       return Promise.all([
-        this.createUserGroups(userGroups),
-        this.deleteUserGroupsByIds(deletedIds),
+        this.createStudentGroups(studentGroups),
+        this.deleteStudentGroupsByIds(deletedIds),
       ]);
     } catch (error) {
       console.log(error);
@@ -80,9 +83,9 @@ export class UserGroupService {
     }
   }
 
-  async deleteUserGroupById(id: string): Promise<any> {
+  async deleteStudentGroupById(id: string): Promise<any> {
     try {
-      return this.prismaService.userGroup.delete({
+      return this.prismaService.studentGroup.delete({
         where: {
           id,
         },
@@ -93,12 +96,12 @@ export class UserGroupService {
     }
   }
 
-  async deleteUserGroupsByIds(ids: string[]): Promise<any> {
+  async deleteStudentGroupsByIds(ids: string[]): Promise<any> {
     try {
       if (ids.length < 1) {
         return false;
       }
-      return this.prismaService.userGroup.deleteMany({
+      return this.prismaService.studentGroup.deleteMany({
         where: {
           id: {
             in: ids,

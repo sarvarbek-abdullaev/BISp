@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Role, Teacher } from '@prisma/client';
 import { UserDto } from '../../dtos';
-
-const role = 'TEACHER';
 
 @Injectable()
 export class TeacherService {
@@ -15,91 +13,80 @@ export class TeacherService {
   }
 
   async createTeacher(teacherData): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(teacherData.password);
-    const student = await this.prismaService.user.create({
+    const teacher = await this.prismaService.teacher.create({
       data: {
-        ...teacherData,
-        password: hashedPassword,
-        birthYear: Number(teacherData.birthYear),
-        role,
+        profile: {
+          ...teacherData,
+          role: Role.TEACHER,
+        },
+      },
+      include: {
+        profile: true,
       },
     });
-    return delete student.password && student;
+    return delete teacher.profile.password && teacher;
   }
 
   async getAllTeachers(): Promise<UserDto[]> {
-    return this.prismaService.user.findMany({
-      where: {
-        role,
+    const teachers = await this.prismaService.teacher.findMany({
+      include: {
+        profile: true,
       },
-      select: {
-        id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
+    });
+
+    return teachers.map((teacher) => {
+      return delete teacher.profile.password && teacher;
     });
   }
 
   async getTeacherById(id: string): Promise<UserDto> {
-    return this.prismaService.user.findUnique({
+    const teacher = await this.prismaService.teacher.findUnique({
       where: {
         id,
-        role,
       },
-      select: {
-        id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
+      include: {
+        profile: true,
       },
     });
+
+    return delete teacher.profile.password && teacher;
   }
 
-  async getTeacherByEmail(email: string): Promise<UserDto> {
-    return this.prismaService.user.findUnique({
-      where: {
-        email,
-        role,
-      },
-      select: {
-        id: true,
-        name: true,
-        birthYear: true,
-        email: true,
-        role: true,
-        createdAt: true,
-      },
-    });
-  }
+  // async getTeacherByEmail(email: string): Promise<UserDto> {
+  //   return this.prismaService.teacher.findUnique({
+  //     where: {
+  //       email,
+  //     },
+  //     include: {
+  //       profile: true,
+  //     },
+  //   });
+  // }
 
-  async updateTeacherById(id: string, teacherData): Promise<User> {
-    if (!teacherData.password || teacherData.password === '') {
-      delete teacherData.password;
-    }
-    return this.prismaService.user.update({
+  async updateTeacherById(id: string, teacherData): Promise<Teacher> {
+    delete teacherData.password;
+
+    const teacher = await this.prismaService.teacher.update({
       where: {
         id,
       },
       data: {
-        ...teacherData,
-        birthYear: Number(teacherData.birthYear),
-        ...(teacherData.password && {
-          password: await this.hashPassword(teacherData.password),
-        }),
+        profile: {
+          update: teacherData,
+        },
+      },
+      include: {
+        profile: true,
       },
     });
+
+    return delete teacher.profile.password && teacher;
   }
 
-  async deleteTeacherById(id: string): Promise<User> {
-    return this.prismaService.user.delete({
+  async deleteTeacherById(id: string): Promise<Teacher> {
+    return this.prismaService.teacher.delete({
       where: {
         id,
-        role,
       },
     });
   }
