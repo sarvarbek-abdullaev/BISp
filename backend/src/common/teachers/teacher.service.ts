@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { Role, Teacher } from '@prisma/client';
@@ -13,18 +13,31 @@ export class TeacherService {
   }
 
   async createTeacher(teacherData): Promise<UserDto> {
-    const teacher = await this.prismaService.teacher.create({
-      data: {
-        profile: {
-          ...teacherData,
-          role: Role.TEACHER,
+    try {
+      if (!teacherData.password) {
+        throw new BadRequestException('Password is required');
+      }
+
+      const hashedPassword = await this.hashPassword(teacherData.password);
+      const teacher = await this.prismaService.teacher.create({
+        data: {
+          profile: {
+            create: {
+              ...teacherData,
+              password: hashedPassword,
+              role: Role.TEACHER,
+            },
+          },
         },
-      },
-      include: {
-        profile: true,
-      },
-    });
-    return delete teacher.profile.password && teacher;
+        include: {
+          profile: true,
+        },
+      });
+
+      return delete teacher.profile.password && teacher;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   async getAllTeachers(): Promise<UserDto[]> {
@@ -64,7 +77,15 @@ export class TeacherService {
   // }
 
   async updateTeacherById(id: string, teacherData): Promise<Teacher> {
-    delete teacherData.password;
+    if (teacherData.password) {
+      throw new BadRequestException(
+        'You cannot update the password of an admin using this endpoint. Use the /auth/change-password endpoint instead.',
+      );
+    }
+
+    if (teacherData.role) {
+      throw new BadRequestException('You cannot change the role');
+    }
 
     const teacher = await this.prismaService.teacher.update({
       where: {

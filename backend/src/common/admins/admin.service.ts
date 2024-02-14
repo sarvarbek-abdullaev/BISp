@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { Admin, Role } from '@prisma/client';
@@ -13,12 +13,13 @@ export class AdminService {
   }
 
   async createAdmin(adminData): Promise<UserDto> {
-    delete adminData.password;
+    const hashedPassword = await this.hashPassword(adminData.password);
     const admin = await this.prismaService.admin.create({
       data: {
         profile: {
           create: {
             ...adminData,
+            password: hashedPassword,
             role: Role.ADMIN,
           },
         },
@@ -74,9 +75,17 @@ export class AdminService {
   // }
 
   async updateAdminById(id: string, adminData): Promise<Admin> {
-    delete adminData.password;
+    if (adminData.password) {
+      throw new BadRequestException(
+        'You cannot update the password of an admin using this endpoint. Use the /auth/change-password endpoint instead.',
+      );
+    }
 
-    return this.prismaService.admin.update({
+    if (adminData.role) {
+      throw new BadRequestException('You cannot change the role of an admin');
+    }
+
+    const admin = await this.prismaService.admin.update({
       where: {
         id,
       },
@@ -85,7 +94,11 @@ export class AdminService {
           update: adminData,
         },
       },
+      include: {
+        profile: true,
+      },
     });
+    return delete admin.profile.password && admin;
   }
 
   async deleteAdminById(id: string): Promise<Admin> {

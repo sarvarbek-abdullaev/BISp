@@ -44,7 +44,7 @@ model Profile {
   firstName String
   lastName  String
   email     String    @unique
-  birthdate DateTime
+  birthDate DateTime  @db.Date
   status    Status    @default(ACTIVE)
   password  String?
   role      Role      @default(STUDENT)
@@ -181,17 +181,17 @@ model Lesson {
 }
 
 model Product {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  price          Float
-  variants       ProductVariant[]
-  status         Status           @default(ACTIVE)
-  image          String?
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  price           Float
+  variants        ProductVariant[]
+  status          Status           @default(ACTIVE)
+  image           String?
   //
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   //
-  OrderedProduct OrderedProduct[]
+  orderedProducts OrderedProduct[]
 }
 
 model OrderedProduct {

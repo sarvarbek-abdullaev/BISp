@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Role, Student } from '@prisma/client';
+import { Student } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { Status } from '@prisma/client';
 
@@ -14,21 +18,30 @@ export class StudentService {
   }
 
   async createStudent(userData): Promise<UserDto> {
-    delete userData.password;
-    const student = await this.prismaService.student.create({
-      data: {
-        profile: {
-          ...userData,
-          role: Role.STUDENT,
-        },
-      },
-      include: {
-        profile: true,
-      },
-    });
+    try {
+      if (!userData.password) {
+        throw new BadRequestException('Password is required');
+      }
 
-    delete student.profile.password;
-    return student;
+      const hashedPassword = await this.hashPassword(userData.password);
+      const student = await this.prismaService.student.create({
+        data: {
+          profile: {
+            create: {
+              ...userData,
+              password: hashedPassword,
+            },
+          },
+        },
+        include: {
+          profile: true,
+        },
+      });
+
+      return delete student.profile.password && student;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   async getAllStudents(): Promise<UserDto[]> {
@@ -76,8 +89,15 @@ export class StudentService {
   // }
 
   async updateStudentById(id: string, userData): Promise<Student> {
-    delete userData.password;
-    return this.prismaService.student.update({
+    if (userData.password) {
+      throw new NotFoundException('Password cannot be updated');
+    }
+
+    if (userData.role) {
+      throw new NotFoundException('Role cannot be updated');
+    }
+
+    const student = await this.prismaService.student.update({
       where: {
         id,
       },
@@ -86,7 +106,12 @@ export class StudentService {
           ...userData,
         },
       },
+      include: {
+        profile: true,
+      },
     });
+
+    return delete student.profile.password && student;
   }
 
   async deleteStudentById(id: string): Promise<Student> {
