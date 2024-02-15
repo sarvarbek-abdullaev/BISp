@@ -7,7 +7,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Post()
   @Post('login')
   async login(@Body() loginData: LoginDto) {
     return this.authService.login(loginData);

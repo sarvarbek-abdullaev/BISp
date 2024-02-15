@@ -8,12 +8,21 @@ interface CircularProgressBarProps {
   text: string;
   value: number;
   maxValue?: number;
+  title?: string;
   color?: string;
   path: string;
   name: string;
 }
 
-export const CircularProgressBar: FC<CircularProgressBarProps> = ({ text, value, maxValue, color, path, name }) => {
+export const CircularProgressBar: FC<CircularProgressBarProps> = ({
+  text,
+  value,
+  maxValue,
+  title,
+  color,
+  path,
+  name,
+}) => {
   return (
     <div className="p-5 bg-black flex flex-col justify-center rounded-lg">
       <Link href={path}>
@@ -33,7 +42,10 @@ export const CircularProgressBar: FC<CircularProgressBarProps> = ({ text, value,
         value={value}
         color={color}
       >
-        <CircularProgressLabel fontSize={40}>{text}</CircularProgressLabel>
+        <CircularProgressLabel fontSize={20}>
+          <Text fontSize={40}>{text}</Text>
+          <Text fontSize={20}>{title}</Text>
+        </CircularProgressLabel>
       </CircularProgress>
     </div>
   );

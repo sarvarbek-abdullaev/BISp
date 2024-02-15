@@ -1,6 +1,15 @@
-export const columns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added', 'Actions'];
+export const columns = ['No', 'First name', 'Last name', 'Email', 'Birth Year', 'Date Added', 'Actions'];
 
-export const studentColumns = ['No', 'Name', 'Email', 'Birth Year', 'Date Added', 'Group', 'Actions'];
+export const studentColumns = [
+  'No',
+  'First name',
+  'Last name',
+  'Email',
+  'Birth Year',
+  'Date Added',
+  'Group',
+  'Actions',
+];
 
 export const groupColumns = ['No', 'Name', 'Course', 'Year', 'Created At', 'Members', 'Actions'];
 

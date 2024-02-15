@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
         //@ts-ignore
         const { email, password } = JSON.parse(credentials?.data) as { email: string; password: string };
         // fetch user from backend and compare password
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch(process.env.BACKEND_URL + '/auth/login', {
           method: 'POST',
           body: JSON.stringify({ email, password }),
           headers: { 'Content-Type': 'application/json' },
@@ -39,8 +39,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ token, session }) {
-      session.user = token.user;
+      session.user = token.profile;
       session.backendTokens = token.backendTokens;
+
       return session;
     },
   },

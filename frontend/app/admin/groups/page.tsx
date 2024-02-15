@@ -14,6 +14,8 @@ export default async function GroupsPage({ searchParams }: any) {
 
   let [groups, courses] = await Promise.all([getGroups(), getCourses()]);
 
+  const allModulesLength = courses.reduce((acc: number, course: Course) => acc + course.modules.length, 0);
+
   if (courseCode !== 'all') {
     groups = groups.filter((group: any) => group?.course?.code === courseCode);
   }
@@ -52,18 +54,22 @@ export default async function GroupsPage({ searchParams }: any) {
           </div>
         </Wrapper>
         <Wrapper flex="1">
-          <div className="grid grid-cols-3 gap-10">
-            {groupTabs.map(({ path, name }: Tab, index: number) => (
-              <CircularProgressBar
-                key={path + name + index}
-                text="10"
-                value={value}
-                maxValue={value * 3}
-                color={colors[index]}
-                path={path}
-                name={name}
-              />
-            ))}
+          <div className="flex justify-end items-center gap-4 my-4">All modules: {allModulesLength}</div>
+          <div className="grid grid-cols-3 gap-4">
+            {groupTabs.map(({ path, name }: Tab, index: number) => {
+              const courseModulesLength = courses.find((course: Course) => course.name === name)?.modules?.length;
+              return (
+                <CircularProgressBar
+                  key={path + name + index}
+                  text={courseModulesLength}
+                  value={courseModulesLength}
+                  maxValue={allModulesLength}
+                  color={colors[index]}
+                  path={path}
+                  name={name}
+                />
+              );
+            })}
           </div>
         </Wrapper>
       </div>

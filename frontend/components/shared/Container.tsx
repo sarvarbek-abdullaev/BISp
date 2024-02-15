@@ -8,7 +8,7 @@ interface ContainerProps {
 
 export const Container: FC<ContainerProps> = ({ children, styles }) => {
   return (
-    <div className="m-2 w-full h-full" {...styles}>
+    <div className="m-2 w-full h-full overflow-y-auto" {...styles}>
       {children}
     </div>
   );

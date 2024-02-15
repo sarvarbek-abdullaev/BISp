@@ -29,18 +29,25 @@ export interface Course {
   id: string;
   code: string;
   name: string;
+  modules?: any;
   description: string;
   createdAt: string;
 }
 
 export interface User {
+  id: string;
+  profile: Profile;
+  studentGroups?: UserGroup[];
+}
+
+export interface Profile {
   id: number;
-  name: string;
+  fullName: string;
+  lastName: string;
   email: string;
   year?: number;
   birthYear: number;
   createdAt: string;
-  userGroup?: UserGroup[];
   course?: Course;
 }
 
@@ -88,6 +95,14 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
     revalidatePage = `users/${type}`;
   }
 
+  const createDate = (date: string) => {
+    return new Date(date).toLocaleDateString(navigator.language, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
   return (
     <TableComponent>
       <TableHeader className="sticky top-0 z-10 bg-[#202020]">
@@ -102,32 +117,26 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
       <TableBody>
         {rows.map(
           // @ts-ignore
-          ({ id, name, email, year, birthYear, createdAt, userGroups, course, code, modules }, _id: number) => {
+          ({ id, name, year, createdAt, course, profile, code, modules, studentGroups }, _id: number) => {
             return (
               <TableRow key={id + name}>
                 <TableCell>{_id + 1}</TableCell>
                 {(globalType === 'courses' || globalType === 'modules') && <TableCell>{code}</TableCell>}
                 {name && <TableCell>{name}</TableCell>}
+                {globalType === 'users' && <TableCell>{profile.firstName}</TableCell>}
+                {globalType === 'users' && <TableCell>{profile.lastName}</TableCell>}
                 {(globalType === 'groups' || globalType === 'modules') && (
                   <TableCell>{course && course.name}</TableCell>
                 )}
                 {globalType === 'groups' && <TableCell>{year}</TableCell>}
-                {globalType === 'users' && <TableCell>{email}</TableCell>}
-                {globalType === 'users' && <TableCell>{birthYear}</TableCell>}
+                {globalType === 'users' && <TableCell>{profile.email}</TableCell>}
+                {globalType === 'users' && <TableCell>{createDate(profile.birthDate)}</TableCell>}
                 {globalType === 'courses' && <TableCell>{modules?.length}</TableCell>}
-                <TableCell>
-                  {new Date(createdAt).toLocaleDateString(navigator.language, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </TableCell>
-
+                <TableCell>{createDate(createdAt)}</TableCell>
                 {type === 'students' && (
-                  // @ts-ignore
-                  <TableCell>{userGroups.length > 0 ? userGroups[0]?.group.name : ''}</TableCell>
+                  <TableCell>{studentGroups.length > 0 ? studentGroups[0]?.group.name : ''}</TableCell>
                 )}
-                {globalType === 'groups' && <TableCell>{userGroups ? userGroups.length : ''}</TableCell>}
+                {globalType === 'groups' && <TableCell>{studentGroups ? studentGroups.length : ''}</TableCell>}
                 <TableCell>
                   <div className="text-white">
                     <Popover
@@ -144,7 +153,7 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                               <p className="text-left w-full">Edit</p>
                             </Button>
                           </Link>
-                          {type === 'student' && userGroups && userGroups?.length > 0 ? (
+                          {type === 'student' && studentGroups && studentGroups?.length > 0 ? (
                             ''
                           ) : (
                             <Button
@@ -153,7 +162,7 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                               variant="ghost"
                               {...(type &&
                                 id && {
-                                  onClick: () => handleDelete(type, revalidatePage, id),
+                                  onClick: () => handleDelete(type, revalidatePage, +id),
                                 })}
                             >
                               <p className="text-left w-full">Delete</p>

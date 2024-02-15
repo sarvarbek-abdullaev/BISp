@@ -148,6 +148,7 @@ model Module {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   code        String   @unique
   name        String
+  status      Status   @default(ACTIVE)
   description String?
   //
   createdAt   DateTime @default(now())
@@ -171,6 +172,7 @@ model Course {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   code        String       @unique
   name        String
+  status      Status       @default(ACTIVE)
   description String?
   //
   createdAt   DateTime     @default(now())

@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
 
   if (session) {
     const {
-      user: { role },
+      profile: { role },
     } = session;
 
     const isAdmin = role.toLowerCase() === 'admin';
