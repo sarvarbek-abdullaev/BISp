@@ -210,4 +210,19 @@ export class StudentService {
       throw new NotFoundException('Student not found');
     }
   }
+
+  async setStudentCourse(id: string, courseId: string): Promise<Student> {
+    return this.prismaService.student.update({
+      where: {
+        id,
+      },
+      data: {
+        course: {
+          connect: {
+            id: courseId,
+          },
+        },
+      },
+    });
+  }
 }

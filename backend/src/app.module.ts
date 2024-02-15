@@ -10,6 +10,7 @@ import { TeacherModule } from './common/teachers/teacher.module';
 import { StudentModule } from './common/students/student.module';
 import { StudentGroupModule } from './common/studentGroups/studentGroup.module';
 import { ProductModule } from './common/products/product.module';
+import { EnrollmentModule } from './common/enrollments/enrollment.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProductModule } from './common/products/product.module';
     GroupModule,
     StudentGroupModule,
     ProductModule,
+    EnrollmentModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
