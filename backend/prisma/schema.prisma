@@ -93,7 +93,7 @@ model Teacher {
   courseId  String?  @db.ObjectId
   course    Course?  @relation(fields: [courseId], references: [id])
   // 
-  module    Module[]
+  modules   Module[]
 }
 
 model Admin {

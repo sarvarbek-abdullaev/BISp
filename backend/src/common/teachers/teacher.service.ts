@@ -58,6 +58,7 @@ export class TeacherService {
     const teachers = await this.prismaService.teacher.findMany({
       include: {
         profile: true,
+        modules: true,
       },
     });
 
@@ -127,6 +128,7 @@ export class TeacherService {
       include: {
         profile: true,
         course: true,
+        modules: true,
       },
     });
 
