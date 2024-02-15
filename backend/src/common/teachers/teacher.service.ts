@@ -18,12 +18,15 @@ export class TeacherService {
         throw new BadRequestException('Password is required');
       }
 
-      const hashedPassword = await this.hashPassword(teacherData.password);
+      const hashedPassword = await this.hashPassword(
+        teacherData.profile.password,
+      );
       const teacher = await this.prismaService.teacher.create({
         data: {
+          ...teacherData,
           profile: {
             create: {
-              ...teacherData,
+              ...teacherData.profile,
               password: hashedPassword,
               role: Role.TEACHER,
             },
@@ -92,8 +95,9 @@ export class TeacherService {
         id,
       },
       data: {
+        ...teacherData,
         profile: {
-          update: teacherData,
+          update: teacherData.profile,
         },
       },
       include: {

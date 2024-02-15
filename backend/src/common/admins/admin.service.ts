@@ -13,12 +13,13 @@ export class AdminService {
   }
 
   async createAdmin(adminData): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(adminData.password);
+    const hashedPassword = await this.hashPassword(adminData.profile.password);
     const admin = await this.prismaService.admin.create({
       data: {
+        ...adminData,
         profile: {
           create: {
-            ...adminData,
+            ...adminData.profile,
             password: hashedPassword,
             role: Role.ADMIN,
           },
@@ -56,8 +57,7 @@ export class AdminService {
       },
     });
 
-    delete admin.profile.password;
-    return admin;
+    return delete admin.profile.password && admin;
   }
 
   // async getAdminByEmail(email: string): Promise<UserDto> {
@@ -90,8 +90,11 @@ export class AdminService {
         id,
       },
       data: {
+        ...adminData,
         profile: {
-          update: adminData,
+          update: {
+            ...adminData.profile,
+          },
         },
       },
       include: {
