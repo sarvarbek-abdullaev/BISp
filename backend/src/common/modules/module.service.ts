@@ -26,24 +26,71 @@ export class ModuleService {
   }
 
   async updateModuleById(id: string, moduleData): Promise<Module> {
-    delete moduleData.course;
-    if (moduleData.courseId && moduleData.courseId === '')
-      delete moduleData.courseId;
+    const prismaData = {
+      ...moduleData,
+    };
+
+    delete prismaData.courseId;
+    delete prismaData.teacherId;
+
+    if (!!moduleData.courseId) {
+      prismaData.course = {
+        connect: {
+          id: moduleData.courseId,
+        },
+      };
+    } else {
+      prismaData['course'] = {
+        disconnect: true,
+      };
+    }
+
+    if (!!moduleData.teacherId) {
+      prismaData['teacher'] = {
+        connect: {
+          id: moduleData.teacherId,
+        },
+      };
+    } else {
+      prismaData['teacher'] = {
+        disconnect: true,
+      };
+    }
 
     return this.prisma.module.update({
       where: {
         id,
       },
-      data: moduleData,
+      data: prismaData,
     });
   }
 
   async createModule(moduleData): Promise<Module> {
-    delete moduleData.course;
-    !moduleData.courseId && delete moduleData.courseId;
+    const prismaData = {
+      ...moduleData,
+    };
+
+    delete prismaData.courseId;
+    delete prismaData.teacherId;
+
+    if (!!moduleData.courseId) {
+      prismaData.course = {
+        connect: {
+          id: moduleData.courseId,
+        },
+      };
+    }
+
+    if (!!moduleData.teacherId) {
+      prismaData.teacher = {
+        connect: {
+          id: moduleData.teacherId,
+        },
+      };
+    }
 
     return this.prisma.module.create({
-      data: moduleData,
+      data: prismaData,
     });
   }
 
