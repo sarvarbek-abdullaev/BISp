@@ -19,27 +19,35 @@ export class StudentService {
 
   async createStudent(userData): Promise<UserDto> {
     try {
-      if (!userData.password) {
+      if (!userData.profile.password) {
         throw new BadRequestException('Password is required');
       }
 
-      const hashedPassword = await this.hashPassword(userData.password);
+      const hashedPassword = await this.hashPassword(userData.profile.password);
+
       const student = await this.prismaService.student.create({
         data: {
           profile: {
             create: {
-              ...userData,
+              ...userData.profile,
               password: hashedPassword,
+            },
+          },
+          course: {
+            connect: {
+              id: userData.courseId,
             },
           },
         },
         include: {
           profile: true,
+          course: true,
         },
       });
 
       return delete student.profile.password && student;
     } catch (e) {
+      console.log(e);
       throw new BadRequestException(e.message);
     }
   }
@@ -48,6 +56,7 @@ export class StudentService {
     const res = await this.prismaService.student.findMany({
       include: {
         profile: true,
+        course: true,
         studentGroups: {
           select: {
             id: true,
@@ -69,6 +78,7 @@ export class StudentService {
         id,
       },
       include: {
+        course: true,
         studentGroups: {
           select: {
             id: true,
@@ -108,6 +118,7 @@ export class StudentService {
       },
       include: {
         profile: true,
+        course: true,
       },
     });
 
