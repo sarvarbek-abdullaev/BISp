@@ -18,6 +18,7 @@ export class CourseService {
     return this.prisma.course.findMany({
       include: {
         modules: true,
+        enrollments: true,
       },
     });
   }

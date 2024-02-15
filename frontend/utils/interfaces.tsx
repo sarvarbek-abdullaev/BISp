@@ -18,4 +18,5 @@ export interface Module {
 export interface Tab {
   path: string;
   name: string;
+  key?: string;
 }

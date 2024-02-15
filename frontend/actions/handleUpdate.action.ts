@@ -86,3 +86,29 @@ export const updateModuleById = async (id: string | undefined, validatePath: str
     console.log(error);
   }
 };
+
+export const approveEnrollmentById = async (id: string | number | undefined) => {
+  try {
+    const res = await fetch(`${API_URL}/enrollments/${id}/approve`, {
+      method: 'POST',
+    });
+    const _data = await res.json();
+    revalidatePath('/admin/enrollments');
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const rejectEnrollmentById = async (id: string | number | undefined) => {
+  try {
+    const res = await fetch(`${API_URL}/enrollments/${id}/reject`, {
+      method: 'POST',
+    });
+    const _data = await res.json();
+    revalidatePath('/admin/enrollments');
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

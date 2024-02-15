@@ -1,4 +1,5 @@
 'use client';
+
 import React, { FC } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Popover } from '@/components/shared/Popover';
@@ -8,7 +9,6 @@ import Link from '@/components/shared/Link';
 import { Button } from '@/components/ui/button';
 
 import { Table as TableComponent, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { approveEnrollmentById, rejectEnrollmentById } from '@/actions/handleUpdate.action';
 
 interface UserGroup {
   id: string;
@@ -22,8 +22,7 @@ export interface Course {
   id: string;
   code: string;
   name: string;
-  modules?: any[];
-  enrollments?: any[];
+  modules?: any;
   description: string;
   createdAt: string;
 }
@@ -94,9 +93,6 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
   } else if (type === 'courses') {
     globalType = 'courses';
     revalidatePage = 'programs/courses';
-  } else if (type === 'enrollments') {
-    globalType = 'enrollments';
-    revalidatePage = 'enrollments';
   } else {
     revalidatePage = `users/${type}`;
   }
@@ -124,25 +120,20 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
         {rows.map(
           (
             // @ts-ignore
-            { id, student, group, status, name, year, createdAt, course, profile, code, modules, studentGroups },
+            { id, student, group, name, year, createdAt, course, profile, code, modules, studentGroups },
             _id: number,
           ) => {
+            console.log({ student });
             return (
               <TableRow key={id + name}>
                 <TableCell>{_id + 1}</TableCell>
                 {(globalType === 'courses' || globalType === 'modules') && <TableCell>{code}</TableCell>}
                 {name && <TableCell>{name}</TableCell>}
-                {student?.profile.firstName && (
-                  <TableCell>
-                    {student.profile.firstName} {student.profile.lastName}
-                  </TableCell>
-                )}
                 {globalType === 'users' && <TableCell>{profile.firstName}</TableCell>}
                 {globalType === 'users' && <TableCell>{profile.lastName}</TableCell>}
-                {(globalType === 'groups' || globalType === 'modules' || globalType === 'enrollments') && (
+                {(globalType === 'groups' || globalType === 'modules') && (
                   <TableCell>{course && course.name}</TableCell>
                 )}
-                {globalType === 'enrollments' && <TableCell>{status}</TableCell>}
                 {globalType === 'groups' && <TableCell>{year}</TableCell>}
                 {globalType === 'users' && <TableCell>{profile.email}</TableCell>}
                 {globalType === 'users' && <TableCell>{createDate(profile.birthDate)}</TableCell>}
@@ -163,56 +154,25 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
                               <p className="text-left w-full">View</p>
                             </Button>
                           </Link>
-                          {globalType !== 'enrollments' ? (
-                            <>
-                              <Link href={`${type}/${id}/edit`}>
-                                <Button className="w-full text-green-700 hover:text-green-700" variant="ghost">
-                                  <p className="text-left w-full">Edit</p>
-                                </Button>
-                              </Link>
-                              {type === 'student' && studentGroups && studentGroups?.length > 0 ? (
-                                ''
-                              ) : (
-                                <Button
-                                  className="w-full text-red-700 hover:text-red-700"
-                                  color="red"
-                                  variant="ghost"
-                                  {...(type &&
-                                    id && {
-                                      onClick: () => handleDelete(type, revalidatePage, +id),
-                                    })}
-                                >
-                                  <p className="text-left w-full">Delete</p>
-                                </Button>
-                              )}
-                            </>
+                          <Link href={`${type}/${id}/edit`}>
+                            <Button className="w-full text-green-700 hover:text-green-700" variant="ghost">
+                              <p className="text-left w-full">Edit</p>
+                            </Button>
+                          </Link>
+                          {type === 'student' && studentGroups && studentGroups?.length > 0 ? (
+                            ''
                           ) : (
-                            <>
-                              {
-                                // @ts-ignore
-                                status === 'PENDING' && (
-                                  <Button
-                                    className="w-full text-green-700 hover:text-green-700"
-                                    variant="ghost"
-                                    onClick={() => approveEnrollmentById(id)}
-                                  >
-                                    <p className="text-left w-full">Approve</p>
-                                  </Button>
-                                )
-                              }
-                              {
-                                // @ts-ignore
-                                status === 'PENDING' && (
-                                  <Button
-                                    className="w-full text-red-700 hover:text-red-700"
-                                    variant="ghost"
-                                    onClick={() => rejectEnrollmentById(id)}
-                                  >
-                                    <p className="text-left w-full">Reject</p>
-                                  </Button>
-                                )
-                              }
-                            </>
+                            <Button
+                              className="w-full text-red-700 hover:text-red-700"
+                              color="red"
+                              variant="ghost"
+                              {...(type &&
+                                id && {
+                                  onClick: () => handleDelete(type, revalidatePage, +id),
+                                })}
+                            >
+                              <p className="text-left w-full">Delete</p>
+                            </Button>
                           )}
                         </>
                       }

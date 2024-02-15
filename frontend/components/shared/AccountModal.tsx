@@ -1,3 +1,5 @@
+'use client';
+
 import { MdAccountCircle } from 'react-icons/md';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -12,17 +14,21 @@ export const AccountModal = () => {
     <Popover
       element={<MdAccountCircle size="40px" color="#B0B0B0" />}
       header={
-        <div className="flex gap-2">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="font-semibold">{session?.user?.name}</div>
-            <div className="font-semibold">{session?.user?.email}</div>
-            <div className="text-xs">{session?.user?.role}</div>
+        session && (
+          <div className="flex gap-2">
+            <Avatar className="h-16 w-16">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="font-semibold">
+                {session?.user.firstName} {session?.user?.lastName}
+              </div>
+              <div className="font-semibold">{session?.user?.email}</div>
+              <div className="text-xs">{session?.user?.role}</div>
+            </div>
           </div>
-        </div>
+        )
       }
       body={
         <>

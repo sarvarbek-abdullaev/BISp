@@ -1,4 +1,3 @@
-// do not remove this import line
 import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
@@ -6,7 +5,8 @@ declare module 'next-auth' {
     user: {
       id: string;
       email: string;
-      name: string;
+      firstName: string;
+      lastName: string;
       role: string;
     };
     backendTokens: {
@@ -22,7 +22,8 @@ declare module 'next-auth/jwt' {
     profile: {
       id: string;
       email: string;
-      name: string;
+      firstName: string;
+      lastName: string;
       role: string;
     };
 

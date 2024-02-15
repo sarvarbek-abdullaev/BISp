@@ -116,3 +116,29 @@ export const getGroupsByUserId = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getEnrollments = async () => {
+  try {
+    const res = await fetch(`${API_URL}/enrollments`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getEnrollmentsById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/enrollments/${id}`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

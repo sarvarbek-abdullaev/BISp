@@ -17,7 +17,21 @@ export class EnrollmentService {
   }
 
   async getAllEnrollments(): Promise<Enrollment[]> {
-    return this.prisma.enrollment.findMany({});
+    return this.prisma.enrollment.findMany({
+      include: {
+        course: true,
+        student: {
+          include: {
+            profile: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async getEnrollmentById(id: string): Promise<Enrollment> {
@@ -25,25 +39,51 @@ export class EnrollmentService {
       where: {
         id,
       },
+      include: {
+        course: true,
+        student: {
+          include: {
+            profile: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
-  async updateEnrollmentById(id: string, enrollmentData): Promise<Enrollment> {
+  async approveEnrollmentById(id: string): Promise<Enrollment> {
     const enrollment = await this.prisma.enrollment.update({
       where: {
         id,
+        status: EnrollmentStatus.PENDING,
       },
-      data: enrollmentData,
+      data: {
+        status: EnrollmentStatus.APPROVED,
+      },
     });
 
-    if (enrollmentData.status === EnrollmentStatus.APPROVED) {
-      await this.studentService.setStudentCourse(
-        enrollment.studentId,
-        enrollment.courseId,
-      );
-    }
+    await this.studentService.setStudentCourse(
+      enrollment.studentId,
+      enrollment.courseId,
+    );
 
     return enrollment;
+  }
+
+  async rejectEnrollmentById(id: string): Promise<Enrollment> {
+    return this.prisma.enrollment.update({
+      where: {
+        id,
+        status: EnrollmentStatus.PENDING,
+      },
+      data: {
+        status: EnrollmentStatus.CANCELED,
+      },
+    });
   }
 
   async deleteEnrollmentById(id: string): Promise<Enrollment> {
