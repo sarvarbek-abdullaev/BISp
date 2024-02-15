@@ -14,26 +14,37 @@ export class TeacherService {
 
   async createTeacher(teacherData): Promise<UserDto> {
     try {
-      if (!teacherData.password) {
+      if (!teacherData.profile.password) {
         throw new BadRequestException('Password is required');
       }
 
       const hashedPassword = await this.hashPassword(
         teacherData.profile.password,
       );
-      const teacher = await this.prismaService.teacher.create({
-        data: {
-          ...teacherData,
-          profile: {
-            create: {
-              ...teacherData.profile,
-              password: hashedPassword,
-              role: Role.TEACHER,
-            },
+
+      const prismaData = {
+        profile: {
+          create: {
+            ...teacherData.profile,
+            password: hashedPassword,
+            role: Role.TEACHER,
           },
         },
+      };
+
+      if (!!teacherData.courseId) {
+        prismaData['course'] = {
+          connect: {
+            id: teacherData.courseId,
+          },
+        };
+      }
+
+      const teacher = await this.prismaService.teacher.create({
+        data: prismaData,
         include: {
           profile: true,
+          course: true,
         },
       });
 
@@ -62,6 +73,7 @@ export class TeacherService {
       },
       include: {
         profile: true,
+        course: true,
       },
     });
 
@@ -90,18 +102,31 @@ export class TeacherService {
       throw new BadRequestException('You cannot change the role');
     }
 
+    const courseData = !!teacherData.courseId
+      ? {
+          connect: {
+            id: teacherData.courseId,
+          },
+        }
+      : {
+          disconnect: true,
+        };
+
+    const prismaData = {
+      profile: {
+        update: teacherData.profile,
+      },
+      course: courseData,
+    };
+
     const teacher = await this.prismaService.teacher.update({
       where: {
         id,
       },
-      data: {
-        ...teacherData,
-        profile: {
-          update: teacherData.profile,
-        },
-      },
+      data: prismaData,
       include: {
         profile: true,
+        course: true,
       },
     });
 

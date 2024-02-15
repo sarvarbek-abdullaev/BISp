@@ -25,20 +25,25 @@ export class StudentService {
 
       const hashedPassword = await this.hashPassword(userData.profile.password);
 
-      const student = await this.prismaService.student.create({
-        data: {
-          profile: {
-            create: {
-              ...userData.profile,
-              password: hashedPassword,
-            },
-          },
-          course: {
-            connect: {
-              id: userData.courseId,
-            },
+      const prismaData = {
+        profile: {
+          create: {
+            ...userData.profile,
+            password: hashedPassword,
           },
         },
+      };
+
+      if (!!userData.courseId) {
+        prismaData['course'] = {
+          connect: {
+            id: userData.courseId,
+          },
+        };
+      }
+
+      const student = await this.prismaService.student.create({
+        data: prismaData,
         include: {
           profile: true,
           course: true,
@@ -107,15 +112,28 @@ export class StudentService {
       throw new NotFoundException('Role cannot be updated');
     }
 
+    const courseData = !!userData.courseId
+      ? {
+          connect: {
+            id: userData.courseId,
+          },
+        }
+      : {
+          disconnect: true,
+        };
+
+    const prismaData = {
+      profile: {
+        update: userData.profile,
+      },
+      course: courseData,
+    };
+
     const student = await this.prismaService.student.update({
       where: {
         id,
       },
-      data: {
-        profile: {
-          ...userData,
-        },
-      },
+      data: prismaData,
       include: {
         profile: true,
         course: true,
