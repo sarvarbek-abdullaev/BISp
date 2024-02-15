@@ -89,6 +89,11 @@ model Teacher {
   //
   profileId String   @db.ObjectId
   profile   Profile  @relation(fields: [profileId], references: [id])
+  //
+  courseId  String?  @db.ObjectId
+  course    Course?  @relation(fields: [courseId], references: [id])
+  // 
+  module    Module[]
 }
 
 model Admin {
@@ -146,6 +151,9 @@ model Module {
   courseId    String?  @db.ObjectId
   course      Course?  @relation(fields: [courseId], references: [id])
   //
+  teacherId   String?  @db.ObjectId
+  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  //
   events      Event[]
   lessons     Lesson[]
 
@@ -164,6 +172,7 @@ model Course {
   modules     Module[]
   groups      Group[]
   students    Student[]
+  teachers    Teacher[]
 }
 
 model Event {
