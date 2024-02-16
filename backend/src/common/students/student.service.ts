@@ -78,12 +78,22 @@ export class StudentService {
   }
 
   async getStudentById(id: string): Promise<Student> {
-    return this.prismaService.student.findUnique({
+    const student = await this.prismaService.student.findUnique({
       where: {
         id,
       },
       include: {
+        marks: {
+          include: {
+            exam: {
+              include: {
+                module: true,
+              },
+            },
+          },
+        },
         course: true,
+        profile: true,
         studentGroups: {
           select: {
             id: true,
@@ -93,6 +103,8 @@ export class StudentService {
         },
       },
     });
+
+    return delete student.profile.password && student;
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

@@ -11,6 +11,8 @@ import { StudentModule } from './common/students/student.module';
 import { StudentGroupModule } from './common/studentGroups/studentGroup.module';
 import { ProductModule } from './common/products/product.module';
 import { EnrollmentModule } from './common/enrollments/enrollment.module';
+import { ExamModule } from './common/exams/exam.module';
+import { MarkModule } from './common/marks/mark.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { EnrollmentModule } from './common/enrollments/enrollment.module';
     StudentGroupModule,
     ProductModule,
     EnrollmentModule,
+    ExamModule,
+    MarkModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],

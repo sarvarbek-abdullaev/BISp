@@ -12,6 +12,8 @@ async function bootstrap() {
 
   app.enableCors(cors);
 
+  // app.useGlobalPipes();
+
   const config = new DocumentBuilder()
     .setTitle('Backend LMS API')
     .setDescription('The Backend LMS API description')
