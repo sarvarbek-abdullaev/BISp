@@ -5,7 +5,7 @@ import { MdNotifications } from 'react-icons/md';
 import Link from '@/components/shared/Link';
 import { usePathname } from 'next/navigation';
 import { AccountModal } from '../shared/AccountModal';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const selectedStyle = {
@@ -43,9 +43,9 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
 
   return (
     <div className="flex sticky top-0 bg-[#202020] items-center justify-between px-8 z-1" {...styles}>
-      <Logo />
+      <Logo height={150} width={150} />
       <Tabs defaultValue={defaultTab} className="w-[400px]">
-        <TabsList>
+        <TabsList className="p-0 h-full">
           {tabs.map((tab, index) => (
             <div key={index + tab.name}>
               <Link href={tab.path}>

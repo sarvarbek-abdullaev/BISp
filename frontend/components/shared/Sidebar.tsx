@@ -42,12 +42,12 @@ export const Sidebar: FC<SideBarProps> = ({ tabs, query, loading }) => {
   return (
     <div className="sticky overflow-hidden max-w-xs w-full bg-[#202020] border rounded-lg">
       <Tabs defaultValue={defaultTab} orientation="vertical">
-        <TabsList className="w-full h-full flex-col">
+        <TabsList className="w-full h-full flex-col p-0">
           {tabs.map((tab, index) => (
             <div key={index + tab.name} className="w-full h-full flex-col">
               <Link href={tab.path} query={isQuery}>
                 <TabsTrigger value={tab.path} className="w-full h-full gap-2 text-lg">
-                  <Icon name={tab.name} />
+                  {/*<Icon name={tab.name} />*/}
                   {tab.name}
                 </TabsTrigger>
               </Link>
