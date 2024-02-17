@@ -49,7 +49,7 @@ const Profile = () => {
     <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
       <Stack spacing="8">
         <Stack spacing="6">
-          <Logo />
+          <Logo height={150} width={150} />
           <Stack spacing={{ base: '2', md: '3' }} textAlign="center">
             <Heading size={{ base: 'xs', md: 'sm' }}>Log in to your account</Heading>
           </Stack>

@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Logo } from '@/components/shared/Logo';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -57,6 +58,9 @@ export default function Page() {
       <div className="flex flex-col items-center justify-center h-full">
         <div className="w-full pt-10 border border-black">
           <div className="space-y-6">
+            <div className="flex justify-center items-center">
+              <Logo height={300} width={300} />
+            </div>
             <div className="space-y-2 md:space-y-3 text-center">
               <h2 className="text-md md:text-xl">Log in to your account</h2>
             </div>
