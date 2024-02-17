@@ -8,7 +8,5 @@ export default function GroupsPage() {
 
   if (session?.user) return;
 
-  console.log(session);
-
   return <Groups studentId={session?.user.id} />;
 }

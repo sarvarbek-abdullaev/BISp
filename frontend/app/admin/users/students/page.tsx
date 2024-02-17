@@ -6,8 +6,6 @@ const StudentsPage = async () => {
   const type = 'students';
   const students = await getUsers(type);
 
-  console.log({ students });
-
   return <Table rows={students} columns={studentColumns} type={type} />;
 };
 

@@ -123,7 +123,6 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
             { id, student, group, name, year, createdAt, course, profile, code, modules, studentGroups },
             _id: number,
           ) => {
-            console.log({ student });
             return (
               <TableRow key={id + name}>
                 <TableCell>{_id + 1}</TableCell>
