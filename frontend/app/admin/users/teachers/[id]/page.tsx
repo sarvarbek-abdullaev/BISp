@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { getUserById } from '@/utils/backend-route';
 import CenteredText from '@/components/shared/CenteredText';
 import { Box } from '@chakra-ui/react';
+import { createDate } from '@/lib/utils';
 
 interface PageProps {
   params: {
@@ -11,10 +12,17 @@ interface PageProps {
 
 interface Teacher {
   id: string;
-  name: string;
-  birthYear: number;
-  email: string;
-  role: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthDate: string;
+    role: string;
+  };
+  modules: {
+    id: string;
+    name: string;
+  }[];
 }
 
 const TeaacherPage: FC<PageProps> = async ({ params }) => {
@@ -25,11 +33,13 @@ const TeaacherPage: FC<PageProps> = async ({ params }) => {
 
   return (
     <Box>
-      <p>Teacher: {teacher.id}</p>
-      <p>Name: {teacher.name}</p>
-      <p>Email: {teacher.email}</p>
-      <p>Birth year: {teacher.birthYear}</p>
-      <p>Role: {teacher.role}</p>
+      <p>Id: {teacher.id}</p>
+      <p>FirstName: {teacher.profile.firstName}</p>
+      <p>LastName: {teacher.profile.lastName}</p>
+      <p>Email: {teacher.profile.email}</p>
+      <p>Birth Date: {createDate(teacher.profile.birthDate)}</p>
+      <p>Role: {teacher.profile.role}</p>
+      <p>Modules: {teacher.modules?.map((module) => module.name).join(', ')}</p>
     </Box>
   );
 };

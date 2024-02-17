@@ -6,11 +6,12 @@ import { handleDelete } from '@/actions/handleDelete.action';
 import CenteredText from '@/components/shared/CenteredText';
 import Link from '@/components/shared/Link';
 import { Button } from '@/components/ui/button';
+import { createDate } from '@/lib/utils';
 
 import { Table as TableComponent, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { approveEnrollmentById, rejectEnrollmentById } from '@/actions/handleUpdate.action';
 
-interface UserGroup {
+interface studentGroups {
   id: string;
   group: {
     id: string;
@@ -31,7 +32,7 @@ export interface Course {
 export interface User {
   id: string;
   profile: Profile;
-  studentGroups?: UserGroup[];
+  studentGroups?: studentGroups[];
 }
 
 export interface Profile {
@@ -100,14 +101,6 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
   } else {
     revalidatePage = `users/${type}`;
   }
-
-  const createDate = (date: string) => {
-    return new Date(date).toLocaleDateString(navigator.language, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
 
   return (
     <TableComponent>

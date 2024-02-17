@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { getUserById } from '@/utils/backend-route';
 import CenteredText from '@/components/shared/CenteredText';
+import { createDate } from '@/lib/utils';
 
 interface StudentPageProps {
   params: {
@@ -8,7 +9,7 @@ interface StudentPageProps {
   };
 }
 
-interface UserGroup {
+interface StudentGroup {
   id: string;
   group: {
     id: string;
@@ -18,28 +19,33 @@ interface UserGroup {
 
 interface Student {
   id: string;
-  name: string;
-  email: string;
-  birthYear: number;
-  role: string;
-  userGroups: UserGroup[];
+  profile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthDate: string;
+    role: string;
+  };
+  studentGroups: StudentGroup[];
+  currentGroup: StudentGroup;
 }
 
 const StudentPage: FC<StudentPageProps> = async ({ params }) => {
   const type = 'students';
-  const user: Student = await getUserById(type, params.id);
+  const student: Student = await getUserById(type, params.id);
 
-  if (!user?.id) return <CenteredText text="Student not found" />;
+  if (!student?.id) return <CenteredText text="Student not found" />;
 
   return (
     <div>
-      <p>Id: {user.id}</p>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Birth year: {user.birthYear}</p>
-      <p>Role: {user.role}</p>
-      <p>Group: {user.userGroups[0]?.group?.name}</p>
-      <p>All groups: {user.userGroups?.map((userGroup) => userGroup.group.name).join(', ')}</p>
+      <p>Id: {student.id}</p>
+      <p>FirstName: {student.profile.firstName}</p>
+      <p>LastName: {student.profile.lastName}</p>
+      <p>Email: {student.profile.email}</p>
+      <p>Birth Date: {createDate(student.profile.birthDate)}</p>
+      <p>Role: {student.profile.role}</p>
+      <p>Current Group: {student.currentGroup?.group?.name}</p>
+      <p>All groups: {student.studentGroups?.map((studentGroup) => studentGroup.group.name).join(', ')}</p>
     </div>
   );
 };

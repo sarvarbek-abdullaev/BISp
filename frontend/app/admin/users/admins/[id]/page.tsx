@@ -2,33 +2,39 @@ import React, { FC } from 'react';
 import { getUserById } from '@/utils/backend-route';
 import CenteredText from '@/components/shared/CenteredText';
 
+import { createDate } from '@/lib/utils';
+
 interface PageProps {
   params: {
     id: string;
   };
 }
 
-interface Student {
+interface Admin {
   id: string;
-  name: string;
-  email: string;
-  birthYear: number;
-  role: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthDate: string;
+    role: string;
+  };
 }
 
 const AdminPage: FC<PageProps> = async ({ params }) => {
   const type = 'admins';
-  const user = await getUserById(type, params.id);
+  const admin: Admin = await getUserById(type, params.id);
 
-  if (!user?.id) return <CenteredText text="Admin not found" />;
+  if (!admin?.id) return <CenteredText text="Admin not found" />;
 
   return (
     <div>
-      <p>Id: {user.id}</p>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Birth year: {user.birthYear}</p>
-      <p>Role: {user.role}</p>
+      <p>Id: {admin.id}</p>
+      <p>FirstName: {admin.profile.firstName}</p>
+      <p>LastName: {admin.profile.lastName}</p>
+      <p>Email: {admin.profile.email}</p>
+      <p>Birth Date: {createDate(admin.profile.birthDate)}</p>
+      <p>Role: {admin.profile.role}</p>
     </div>
   );
 };
