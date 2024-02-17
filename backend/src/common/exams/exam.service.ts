@@ -13,7 +13,11 @@ export class ExamService {
   async getAllExams(): Promise<Exam[]> {
     return this.prisma.exam.findMany({
       include: {
-        module: true,
+        module: {
+          include: {
+            course: true,
+          },
+        },
       },
     });
   }

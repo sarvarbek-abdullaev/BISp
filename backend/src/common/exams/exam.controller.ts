@@ -25,13 +25,13 @@ export class ExamController {
   }
 
   @Post()
-  async createExam(@Body() moduleData: Exam) {
-    return this.moduleService.createExam(moduleData);
+  async createExam(@Body() examData: Exam) {
+    return this.moduleService.createExam(examData);
   }
 
   @Put(':id')
-  async updateExamById(@Param('id') id: string, @Body() moduleData: Exam) {
-    return this.moduleService.updateExamById(id, moduleData);
+  async updateExamById(@Param('id') id: string, @Body() examData: Exam) {
+    return this.moduleService.updateExamById(id, examData);
   }
 
   @Delete(':id')
