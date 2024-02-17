@@ -66,6 +66,8 @@ model Profile {
   updatedAt DateTime  @updatedAt
   //
   orders    Order[]
+  payments  Payment[]
+  // 
   students  Student[]
   teachers  Teacher[]
   admins    Admin[]
@@ -81,10 +83,10 @@ model Student {
   profileId     String         @db.ObjectId
   profile       Profile        @relation(fields: [profileId], references: [id])
   //
-  studentGroups StudentGroup[]
-  //
   courseId      String?        @db.ObjectId
   course        Course?        @relation(fields: [courseId], references: [id])
+  //
+  studentGroups StudentGroup[]
   enrollments   Enrollment[]
   marks         Mark[]
 }
@@ -118,6 +120,7 @@ model Group {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   year          Int?
+  status        Status         @default(ACTIVE)
   //
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -299,6 +302,9 @@ model Payment {
   //
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+  //
+  profile   Profile?      @relation(fields: [profileId], references: [id])
+  profileId String?       @db.ObjectId
   //
   order     Order?        @relation(fields: [orderId], references: [id])
   orderId   String?       @db.ObjectId

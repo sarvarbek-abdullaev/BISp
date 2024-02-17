@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Group } from '@prisma/client';
+import { Group, Status } from '@prisma/client';
 
 @Injectable()
 export class GroupService {
@@ -118,5 +118,29 @@ export class GroupService {
         throw new NotFoundException(error.message);
       }
     }
+  }
+
+  async deactivateGroupsByIds(ids: string[]) {
+    return this.prisma.group.updateMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      data: {
+        status: Status.INACTIVE,
+      },
+    });
+  }
+
+  async deactivateGroupsByYear(year: number) {
+    return this.prisma.group.updateMany({
+      where: {
+        year,
+      },
+      data: {
+        status: Status.INACTIVE,
+      },
+    });
   }
 }
