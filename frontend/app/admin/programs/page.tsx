@@ -3,13 +3,13 @@ import Link from '@/components/shared/Link';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { adminProgramTabs, adminUsersTabs } from '@/tabs';
 import { Button } from '@/components/ui/button';
-import { getCourses, getModules } from '@/utils/backend-route';
+import { getCourses, getExams, getModules } from '@/utils/backend-route';
 import React from 'react';
 
 const ProgramsPage = async () => {
   // courses, modules
-  const courseModules = await Promise.all([getCourses(), getModules()]);
-  const [courses, modules] = courseModules;
+  const courseModules = await Promise.all([getCourses(), getModules(), getExams()]);
+  const [courses, modules, exams] = courseModules;
   const programTabs = adminProgramTabs.slice(1);
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
 
@@ -41,11 +41,12 @@ const ProgramsPage = async () => {
           <div>All modules: {modules.length}</div>
           <div className="h-full w-0.5 bg-[#313338]" />
           <div>All courses: {courses.length}</div>
+          <div className="h-full w-0.5 bg-[#313338]" />
+          <div>All exams: {exams.length}</div>
         </div>
         <div className="grid grid-cols-3 gap-10">
           {programTabs.map(({ path, name }, index) => {
             const currentArr = courseModules[index];
-            console.log({ currentArr });
             const currentLength = currentArr.length;
             const currentActive = currentArr.filter((obj: any) => obj?.active !== 'ACTIVE').length;
 
@@ -53,7 +54,7 @@ const ProgramsPage = async () => {
               <CircularProgressBar
                 key={path + name + index}
                 text={currentActive}
-                title="Active"
+                title={name === 'Exams' ? name : 'Active'}
                 value={currentActive}
                 maxValue={currentLength}
                 color={colors[index]}

@@ -142,3 +142,29 @@ export const getEnrollmentsById = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getExams = async () => {
+  try {
+    const res = await fetch(`${API_URL}/exams`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getExamById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/exams/${id}`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

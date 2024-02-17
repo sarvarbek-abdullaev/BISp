@@ -18,6 +18,8 @@ export const courseColumns = ['No', 'Code', 'Name', 'Modules', 'Created At', 'Ac
 
 export const enrollmentColumns = ['No', 'Student', 'Course', 'Status', 'Date Created', 'Actions'];
 
+export const examColumns = ['No', 'Name', 'Module', 'Course', 'Date', 'Actions'];
+
 export const userTabs = [
   {
     name: 'Dashboard',
@@ -103,5 +105,9 @@ export const adminProgramTabs = [
   {
     name: 'Modules',
     path: '/admin/programs/modules',
+  },
+  {
+    name: 'Exams',
+    path: '/admin/programs/exams',
   },
 ];
