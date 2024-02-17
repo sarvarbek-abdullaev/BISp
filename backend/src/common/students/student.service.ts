@@ -5,9 +5,12 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Student } from '@prisma/client';
+import { Status, Student, StudentGroup } from '@prisma/client';
 import { UserDto } from '../../dtos';
-import { Status } from '@prisma/client';
+
+interface StudentWithCurrentGroup extends Student {
+  currentGroup: StudentGroup;
+}
 
 @Injectable()
 export class StudentService {
@@ -57,7 +60,7 @@ export class StudentService {
     }
   }
 
-  async getAllStudents(): Promise<UserDto[]> {
+  async getAllStudents(): Promise<StudentWithCurrentGroup[]> {
     const res = await this.prismaService.student.findMany({
       include: {
         profile: true,
@@ -71,13 +74,20 @@ export class StudentService {
         },
       },
     });
-    res.map((student) => {
+
+    return res.map((student) => {
+      const currentGroupArr = student.studentGroups.find(
+        (studentGroup) => studentGroup.group.status === Status.ACTIVE,
+      );
+
+      const currentGroup = !!currentGroupArr ? currentGroupArr[0] : null;
       delete student.profile.password;
+
+      return { ...student, currentGroup };
     });
-    return res;
   }
 
-  async getStudentById(id: string): Promise<Student> {
+  async getStudentById(id: string): Promise<StudentWithCurrentGroup> {
     const student = await this.prismaService.student.findUnique({
       where: {
         id,
@@ -104,7 +114,13 @@ export class StudentService {
       },
     });
 
-    return delete student.profile.password && student;
+    const currentGroupArr = student.studentGroups.find(
+      (studentGroup) => studentGroup.group.status === Status.ACTIVE,
+    );
+
+    const currentGroup = !!currentGroupArr ? currentGroupArr[0] : null;
+
+    return delete student.profile.password && { ...student, currentGroup };
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

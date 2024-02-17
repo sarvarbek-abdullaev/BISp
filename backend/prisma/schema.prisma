@@ -100,9 +100,6 @@ model Teacher {
   profileId String   @db.ObjectId
   profile   Profile  @relation(fields: [profileId], references: [id])
   //
-  courseId  String?  @db.ObjectId
-  course    Course?  @relation(fields: [courseId], references: [id])
-  //
   modules   Module[]
 }
 
@@ -213,7 +210,6 @@ model Course {
   modules     Module[]
   groups      Group[]
   students    Student[]
-  teachers    Teacher[]
   enrollments Enrollment[]
 }
 

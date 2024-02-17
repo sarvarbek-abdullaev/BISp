@@ -44,7 +44,6 @@ export class TeacherService {
         data: prismaData,
         include: {
           profile: true,
-          course: true,
         },
       });
 
@@ -74,7 +73,7 @@ export class TeacherService {
       },
       include: {
         profile: true,
-        course: true,
+        modules: true,
       },
     });
 
@@ -127,7 +126,6 @@ export class TeacherService {
       data: prismaData,
       include: {
         profile: true,
-        course: true,
         modules: true,
       },
     });
