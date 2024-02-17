@@ -13,6 +13,7 @@ import { ProductModule } from './common/products/product.module';
 import { EnrollmentModule } from './common/enrollments/enrollment.module';
 import { ExamModule } from './common/exams/exam.module';
 import { MarkModule } from './common/marks/mark.module';
+import { EventModule } from './common/events/event.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MarkModule } from './common/marks/mark.module';
     EnrollmentModule,
     ExamModule,
     MarkModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],

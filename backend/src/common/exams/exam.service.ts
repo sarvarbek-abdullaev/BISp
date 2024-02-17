@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { Exam, Module } from '@prisma/client';
 
-interface ExamWithModule extends Exam {
+export interface ExamWithModule extends Exam {
   module: Module;
 }
 
