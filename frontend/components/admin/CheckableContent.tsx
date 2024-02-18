@@ -1,13 +1,18 @@
 'use client';
 
-import { Button, Checkbox, CheckboxGroup, Divider, Grid, GridItem, Heading, Stack } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
 import { updateUserGroups } from '@/actions/handleUpdate.action';
 import { useRouter } from 'next/navigation';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface Student {
   id: string;
-  name: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+  };
   isChecked: boolean;
 }
 
@@ -38,7 +43,7 @@ const CheckableContent: FC<CheckableContentProps> = ({
     // @ts-ignore
     students.forEach((student) => {
       // @ts-ignore
-      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup?.group?.id === groupId);
+      const filteredUserGroups = student.studentGroups.filter((userGroup) => userGroup?.group?.id === groupId);
       // @ts-ignore
       filteredUserGroups.forEach((userGroup) => {
         userIdsSet.add(userGroup);
@@ -52,7 +57,7 @@ const CheckableContent: FC<CheckableContentProps> = ({
     // @ts-ignore
     return students.map((student) => {
       // @ts-ignore
-      const filteredUserGroups = student.userGroups.filter((userGroup) => userGroup?.group?.id === groupId);
+      const filteredUserGroups = student.studentGroups.filter((userGroup) => userGroup?.group?.id === groupId);
       return {
         ...student,
         isChecked: !!filteredUserGroups.length,
@@ -128,43 +133,36 @@ const CheckableContent: FC<CheckableContentProps> = ({
   // @ts-ignore
   const CheckBoxes = ({ students, filterSelected }) => {
     return (
-      <CheckboxGroup colorScheme="blue">
-        <Stack spacing={[1, 2]} direction="column">
-          {students?.map((student: Student) => {
-            if (student.isChecked === filterSelected) return;
+      <div className="space-y-5 mt-2">
+        {students?.map((student: Student) => {
+          if (student.isChecked === filterSelected) return;
 
-            return (
-              <Checkbox
-                key={student.id}
-                onChange={() => handleCheckboxChange(student.id)}
-                isChecked={!!student?.isChecked}
-              >
-                {student.name}
-              </Checkbox>
-            );
-          })}
-        </Stack>
-      </CheckboxGroup>
+          return (
+            <div key={student.id} className="flex items-center space-x-4">
+              <Checkbox onChange={() => handleCheckboxChange(student.id)} checked={!!student?.isChecked} />
+              <Label>
+                {student.profile.firstName} {student.profile.lastName}
+              </Label>
+            </div>
+          );
+        })}
+      </div>
     );
   };
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" gap="1">
-        <GridItem>
-          <Heading size="lg" mb="6">
-            {currentTitle}
-          </Heading>
+      <div className="grid grid-cols-2 gap-1">
+        <div>
+          <Label>{currentTitle}</Label>
           <CheckBoxes students={students} filterSelected={false} />
-        </GridItem>
-        <GridItem>
-          <Heading size="lg" mb="6">
-            {availableTitle}
-          </Heading>
+        </div>
+        <div>
+          <Label>{availableTitle}</Label>
           <CheckBoxes students={students} filterSelected={true} />
-        </GridItem>
-      </Grid>
-      <Button maxW="200px" colorScheme="blue" onClick={handleButtonClick}>
+        </div>
+      </div>
+      <Button className="max-w-[200px]" onClick={handleButtonClick}>
         {buttonTitle}
       </Button>
     </>
