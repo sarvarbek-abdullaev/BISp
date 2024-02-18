@@ -14,6 +14,7 @@ import { EnrollmentModule } from './common/enrollments/enrollment.module';
 import { ExamModule } from './common/exams/exam.module';
 import { MarkModule } from './common/marks/mark.module';
 import { EventModule } from './common/events/event.module';
+import { OrderModule } from './common/orders/order.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { EventModule } from './common/events/event.module';
     ExamModule,
     MarkModule,
     EventModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
