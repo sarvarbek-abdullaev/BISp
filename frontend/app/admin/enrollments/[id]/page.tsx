@@ -28,7 +28,7 @@ const AdminPage: FC<PageProps> = async ({ params }) => {
       <p>Id: {enrollment.id}</p>
       <p>Status: {enrollment.status}</p>
       <p>
-        Student Name: {enrollment.student?.firstName} {enrollment.student?.lastName}
+        Student Name: {enrollment.student?.profile.firstName} {enrollment.student?.profile.lastName}
       </p>
       <p>Course: {enrollment.course?.name}</p>
     </div>

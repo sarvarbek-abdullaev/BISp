@@ -1,7 +1,7 @@
 'use client';
 import React, { FC } from 'react';
 import { useRouter } from 'next/navigation';
-import { createEnrollment, createGroup } from '@/actions/handleCreate.action';
+import { createEnrollment } from '@/actions/handleCreate.action';
 import { Course } from '@/components/admin/Table';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
