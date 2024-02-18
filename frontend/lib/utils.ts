@@ -12,3 +12,13 @@ export const createDate = (date: string) => {
     day: 'numeric',
   });
 };
+
+export const createDateTime = (date: string) => {
+  return new Date(date).toLocaleString(navigator.language, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+};

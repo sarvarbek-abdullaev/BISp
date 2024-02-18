@@ -2,8 +2,9 @@
 
 import React, { FC } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateExamById } from '@/actions/handleUpdate.action';
-import { createExam } from '@/actions/handleCreate.action';
+import { updateEventById } from '@/actions/handleUpdate.action';
+import { Module } from '@/utils/interfaces';
+import { createEvent } from '@/actions/handleCreate.action';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,24 +12,27 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Module } from '@/utils/interfaces';
+import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface Exam {
-  id: string;
-  name: string;
-  moduleId: string;
-  module?: Module[];
-}
-
 interface AddEditFormProps {
-  exam?: Exam;
+  event?: any;
   modules: Module[];
   type: string;
 }
 
 const formSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
+  description: z.string().min(10, 'Description must be at least 3 characters'),
+  startDate: z
+    .string()
+    .pipe(z.coerce.date())
+    .refine((date) => new Date(date) > new Date(), 'Start date must be in the future')
+    .transform((date) => new Date(date).toISOString()),
+  endDate: z
+    .string()
+    .refine((date) => new Date(date) > new Date(), 'End date must be in the future')
+    .transform((date) => new Date(date).toISOString()),
   moduleId: z.string().optional(),
 });
 
@@ -40,30 +44,51 @@ const formElements = [
     required: true,
   },
   {
+    label: 'Description',
+    name: 'description',
+    type: 'textarea',
+    required: true,
+  },
+  {
+    label: 'Start Date',
+    name: 'startDate',
+    type: 'date',
+    required: true,
+  },
+  {
+    label: 'End Date',
+    name: 'endDate',
+    type: 'date',
+    required: true,
+  },
+  {
     label: 'Module',
     name: 'moduleId',
     type: 'dropdown',
   },
 ];
 
-const AddEditExamForm: FC<AddEditFormProps> = ({ exam, modules, type }) => {
+const AddEditEventForm: FC<AddEditFormProps> = ({ event, modules, type }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: exam?.name || '',
-      moduleId: exam?.moduleId || '',
+      name: event?.name || '',
+      description: event?.description || '',
+      startDate: event.startDate || '',
+      endDate: event?.endDate || '',
+      moduleId: event?.moduleId,
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const isEdit = !!exam;
+  const isEdit = !!event;
 
   const router = useRouter();
 
   const handleUpdate = async (data: z.infer<typeof formSchema>) => {
     try {
-      return await updateExamById(exam?.id, type, data);
+      return await updateEventById(event?.id, type, data);
     } catch (e) {
       console.log(e);
     }
@@ -71,7 +96,7 @@ const AddEditExamForm: FC<AddEditFormProps> = ({ exam, modules, type }) => {
 
   const handleCreate = async (data: z.infer<typeof formSchema>) => {
     try {
-      return await createExam(type, data);
+      return await createEvent(type, data);
     } catch (e) {
       console.log(e);
     }
@@ -127,6 +152,16 @@ const AddEditExamForm: FC<AddEditFormProps> = ({ exam, modules, type }) => {
                                     )}
                                   </SelectContent>
                                 </Select>
+                              ) : element.type === 'date' ? (
+                                <div>
+                                  <input
+                                    type="datetime-local"
+                                    id={element.name}
+                                    required={element.required}
+                                    disabled={isLoading}
+                                    {...field}
+                                  />
+                                </div>
                               ) : (
                                 <Input
                                   id={element.name}
@@ -156,4 +191,4 @@ const AddEditExamForm: FC<AddEditFormProps> = ({ exam, modules, type }) => {
   );
 };
 
-export default AddEditExamForm;
+export default AddEditEventForm;

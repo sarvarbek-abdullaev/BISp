@@ -168,3 +168,29 @@ export const getExamById = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getEvents = async () => {
+  try {
+    const res = await fetch(`${API_URL}/events`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getEventById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/events/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

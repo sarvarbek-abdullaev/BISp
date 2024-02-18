@@ -130,3 +130,21 @@ export const updateExamById = async (id: string | undefined, validatePath: strin
     console.log(error);
   }
 };
+
+export const updateEventById = async (id: string | undefined, validatePath: string, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/events/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/programs/${validatePath}`);
+    revalidatePath(`/admin/programs/${validatePath}/${id}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

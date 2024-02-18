@@ -16,6 +16,8 @@ export const groupColumns = ['No', 'Name', 'Course', 'Year', 'Created At', 'Memb
 export const moduleColumns = ['No', 'Code', 'Name', 'Course', 'Created At', 'Actions'];
 export const courseColumns = ['No', 'Code', 'Name', 'Modules', 'Created At', 'Actions'];
 
+export const eventColumns = ['No', 'Name', 'Module', 'Start Date', 'End Date', 'Created At', 'Actions'];
+
 export const enrollmentColumns = ['No', 'Student', 'Course', 'Status', 'Date Created', 'Actions'];
 
 export const examColumns = ['No', 'Name', 'Module', 'Course', 'Date', 'Actions'];
@@ -109,5 +111,9 @@ export const adminProgramTabs = [
   {
     name: 'Exams',
     path: '/admin/programs/exams',
+  },
+  {
+    name: 'Events',
+    path: '/admin/programs/events',
   },
 ];

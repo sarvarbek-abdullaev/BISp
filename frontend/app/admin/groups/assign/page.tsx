@@ -14,6 +14,8 @@ const AssignStudents = async ({ searchParams }: any) => {
     };
   });
 
+  groupTabs.unshift({ name: 'Dashboard', path: '/admin/groups/assign' });
+
   const group = groups.find((group: { name: string }) => group.name === groupName);
 
   return (
