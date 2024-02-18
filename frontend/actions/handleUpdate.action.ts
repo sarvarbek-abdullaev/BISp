@@ -166,3 +166,37 @@ export const updateProductById = async (id: string | undefined, validatePath: st
     console.log(error);
   }
 };
+
+export const makePaidOrderById = async (id: string | undefined, validatePath: string) => {
+  try {
+    const res = await fetch(`${API_URL}/orders/${id}/paid`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/e-commerce/${validatePath}`);
+    revalidatePath(`/admin/e-commerce/${validatePath}/${id}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const cancelOrderById = async (id: string | undefined, validatePath: string) => {
+  try {
+    const res = await fetch(`${API_URL}/orders/${id}/cancel`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/e-commerce/${validatePath}`);
+    revalidatePath(`/admin/e-commerce/${validatePath}/${id}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

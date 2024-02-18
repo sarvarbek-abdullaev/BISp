@@ -138,3 +138,20 @@ export const createProduct = async (type: string, data: any) => {
     console.log(error);
   }
 };
+
+export const createOrder = async (type: string, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/${type}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const _data = await res.json();
+    revalidatePath(`/admin/e-commerce/${type}`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

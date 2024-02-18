@@ -24,6 +24,8 @@ export const examColumns = ['No', 'Name', 'Module', 'Course', 'Date', 'Actions']
 
 export const productColumns = ['No', 'Name', 'Price', 'Status', 'Image', 'Date Created', 'Actions'];
 
+export const orderColumns = ['No', 'Name', 'Subtotal', 'Products', 'Status', 'Date Created', 'Actions'];
+
 export const userTabs = [
   {
     name: 'Dashboard',
@@ -123,14 +125,14 @@ export const adminProgramTabs = [
 export const adminEcommerceTabs = [
   {
     name: 'Dashboard',
-    path: '/admin/programs/e-commerce',
+    path: '/admin/e-commerce',
   },
   {
     name: 'Products',
-    path: '/admin/programs/products',
+    path: '/admin/e-commerce/products',
   },
-  // {
-  //   name: 'Orders',
-  //   path: '/admin/programs/orders',
-  // },
+  {
+    name: 'Orders',
+    path: '/admin/e-commerce/orders',
+  },
 ];

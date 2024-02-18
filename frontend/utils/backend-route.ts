@@ -220,3 +220,29 @@ export const getProductById = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getOrders = async () => {
+  try {
+    const res = await fetch(`${API_URL}/orders`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrderById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/orders/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

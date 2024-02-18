@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { Order, OrderStatus } from '@prisma/client';
+import { Order } from '@prisma/client';
 import { OrderService } from './order.service';
 
 @Controller('orders')
@@ -21,12 +21,14 @@ export class OrderController {
     return await this.adminService.createOrder(adminData);
   }
 
-  @Patch(':id/status')
-  async updateOrderStatusById(
-    @Param('id') id: string,
-    @Body() orderStatus: OrderStatus,
-  ): Promise<Order> {
-    return await this.adminService.updateOrderStatusById(id, orderStatus);
+  @Patch(':id/paid')
+  async updateOrderStatusById(@Param('id') id: string): Promise<Order> {
+    return await this.adminService.makePaidOrderById(id);
+  }
+
+  @Patch(':id/cancel')
+  async cancelOrderById(@Param('id') id: string): Promise<Order> {
+    return await this.adminService.cancelOrderById(id);
   }
 
   // @Put(':id')

@@ -1,23 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Order, OrderStatus } from '@prisma/client';
+import { Order, OrderedProduct, OrderStatus } from '@prisma/client';
+
+interface OrderData extends Order {
+  subtotal: number;
+  quantity: number;
+  orderedProducts: OrderedProduct[];
+}
 
 @Injectable()
 export class OrderService {
   constructor(private prismaService: PrismaService) {}
 
   async createOrder(orderData): Promise<Order> {
+    const orderedProducts = orderData.orderedProducts.map((orderedProduct) => {
+      return {
+        productId: orderedProduct.productId,
+        quantity: +orderedProduct.quantity,
+        selectedSize: orderedProduct.selectedSize,
+      };
+    });
     return this.prismaService.order.create({
       data: {
         profileId: orderData.profileId,
         orderedProducts: {
-          create: orderData.orderedProducts,
+          create: orderedProducts,
         },
       },
     });
   }
 
-  async getAllOrders(): Promise<Order[]> {
+  async getAllOrders(): Promise<OrderData[]> {
     const orders = await this.prismaService.order.findMany({
       include: {
         profile: true,
@@ -30,12 +43,23 @@ export class OrderService {
     });
 
     return orders.map((order) => {
-      return delete order.profile.password && order;
+      const subtotal = order.orderedProducts.reduce((acc, orderedProduct) => {
+        return acc + orderedProduct.product.price * orderedProduct.quantity;
+      }, 0);
+
+      return {
+        ...order,
+        subtotal,
+        quantity: order.orderedProducts.reduce((acc, orderedProduct) => {
+          return acc + orderedProduct.quantity;
+        }, 0),
+        orderedProducts: order.orderedProducts,
+      };
     });
   }
 
-  async getOrderById(id: string): Promise<Order> {
-    return this.prismaService.order.findUnique({
+  async getOrderById(id: string): Promise<OrderData> {
+    const order = await this.prismaService.order.findUnique({
       where: {
         id,
       },
@@ -48,23 +72,39 @@ export class OrderService {
         },
       },
     });
+
+    const subtotal = order.orderedProducts.reduce((acc, orderedProduct) => {
+      return acc + orderedProduct.product.price * orderedProduct.quantity;
+    }, 0);
+
+    return {
+      ...order,
+      subtotal,
+      quantity: order.orderedProducts.reduce((acc, orderedProduct) => {
+        return acc + orderedProduct.quantity;
+      }, 0),
+      orderedProducts: order.orderedProducts,
+    };
   }
 
-  async updateOrderStatusById(id: string, status: OrderStatus): Promise<Order> {
+  async makePaidOrderById(id: string): Promise<Order> {
     return this.prismaService.order.update({
       where: {
         id,
       },
       data: {
-        status,
+        status: OrderStatus.PAID,
       },
-      include: {
-        profile: true,
-        orderedProducts: {
-          include: {
-            product: true,
-          },
-        },
+    });
+  }
+
+  async cancelOrderById(id: string): Promise<Order> {
+    return this.prismaService.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status: OrderStatus.CANCELED,
       },
     });
   }

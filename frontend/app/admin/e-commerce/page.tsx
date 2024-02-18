@@ -3,12 +3,11 @@ import { adminEcommerceTabs } from '@/tabs';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
 import { Button } from '@/components/ui/button';
-import { getProducts } from '@/utils/backend-route';
+import { getOrders, getProducts } from '@/utils/backend-route';
 
 const UsersPage = async () => {
   const eCommerceTypes = adminEcommerceTabs.slice(1);
-  const productsOrders = await Promise.all([getProducts()]);
-  const [products] = productsOrders;
+  const productsOrders = await Promise.all([getProducts(), getOrders()]);
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
 
@@ -45,7 +44,7 @@ const UsersPage = async () => {
                 key={path + name + index}
                 text={currentLength}
                 value={currentLength}
-                maxValue={products}
+                maxValue={productsOrders[index].length}
                 color={colors[index]}
                 path={path}
                 name={name}
