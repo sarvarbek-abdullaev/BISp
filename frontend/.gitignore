@@ -15,3 +15,13 @@ node_modules
 
 #!.yarn/cache
 .pnp.*
+
+
+yarn.lock
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
