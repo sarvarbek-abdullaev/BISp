@@ -194,3 +194,29 @@ export const getEventById = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getProducts = async () => {
+  try {
+    const res = await fetch(`${API_URL}/products`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getProductById = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/products/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

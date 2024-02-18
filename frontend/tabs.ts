@@ -22,6 +22,8 @@ export const enrollmentColumns = ['No', 'Student', 'Course', 'Status', 'Date Cre
 
 export const examColumns = ['No', 'Name', 'Module', 'Course', 'Date', 'Actions'];
 
+export const productColumns = ['No', 'Name', 'Price', 'Status', 'Image', 'Date Created', 'Actions'];
+
 export const userTabs = [
   {
     name: 'Dashboard',
@@ -71,8 +73,8 @@ export const adminTabs = [
     path: '/admin/enrollments',
   },
   {
-    name: 'Settings',
-    path: '/admin/settings',
+    name: 'E-commerce',
+    path: '/admin/e-commerce',
   },
 ];
 
@@ -116,4 +118,19 @@ export const adminProgramTabs = [
     name: 'Events',
     path: '/admin/programs/events',
   },
+];
+
+export const adminEcommerceTabs = [
+  {
+    name: 'Dashboard',
+    path: '/admin/programs/e-commerce',
+  },
+  {
+    name: 'Products',
+    path: '/admin/programs/products',
+  },
+  // {
+  //   name: 'Orders',
+  //   path: '/admin/programs/orders',
+  // },
 ];
