@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Enrollment } from '@prisma/client';
 import { EnrollmentService } from './enrollment.service';
 
@@ -14,6 +14,13 @@ export class EnrollmentController {
   @Get(':id')
   async getEnrollmentById(@Param('id') id: string): Promise<Enrollment> {
     return this.courseService.getEnrollmentById(id);
+  }
+
+  @Post()
+  async createEnrollment(
+    @Body() enrollmentData: Enrollment,
+  ): Promise<Enrollment> {
+    return this.courseService.createEnrollment(enrollmentData);
   }
 
   @Post(':id/approve')

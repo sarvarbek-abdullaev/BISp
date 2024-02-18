@@ -44,11 +44,8 @@ export default async function GroupsPage({ searchParams }: any) {
       <div className="flex w-full h-full flex-col gap-4">
         <Wrapper>
           <div className="flex justify-end items-center gap-4">
-            <Link href={'groups/create'}>
-              <Button variant="ghost">Create Group</Button>
-            </Link>
-            <Link href={'groups/assign'}>
-              <Button variant="ghost">Manage Groups Students</Button>
+            <Link href={'enrollments/create'}>
+              <Button variant="ghost">Create Enrollment</Button>
             </Link>
           </div>
         </Wrapper>
