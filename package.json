@@ -1,0 +1,17 @@
+{
+  "name": "bisp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "npm run start:dev --prefix backend",
+    "start:frontend": "npm run dev --prefix frontend",
+    "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"red,blue\" -p \"[{name}]\" \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:multiple-cmd": "start cmd /k \"npm run start:backend\" & start cmd /k \"npm run start:frontend\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
