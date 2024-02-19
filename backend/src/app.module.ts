@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ModuleModule } from './common/modules/module.module';
@@ -18,6 +20,7 @@ import { OrderModule } from './common/orders/order.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     StudentModule,
     ModuleModule,
     AdminModule,

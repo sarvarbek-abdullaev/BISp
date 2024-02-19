@@ -5,7 +5,6 @@ import { PrismaService } from '../prisma.service';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import * as process from 'process';
 
 @Module({
   controllers: [AuthController],
