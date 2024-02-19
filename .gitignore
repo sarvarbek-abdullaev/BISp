@@ -24,3 +24,4 @@ install-state.gz
 *.sln
 *.sw?
 ./yarn.lock
+yarn.lock
