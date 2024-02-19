@@ -6,19 +6,8 @@ import Link from '@/components/shared/Link';
 import { usePathname } from 'next/navigation';
 import { AccountModal } from '../shared/AccountModal';
 import React, { FC } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-const selectedStyle = {
-  color: 'white',
-  bg: 'black',
-  border: '1px solid #B0B0B0',
-  borderTopLeftRadius: '10px',
-  borderTopRightRadius: '10px',
-};
-
-const unselectedStyle = {
-  border: '1px solid transparent',
-};
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Session } from 'next-auth';
 
 interface Tab {
   name: string;
@@ -28,9 +17,10 @@ interface Tab {
 interface NavbarProps {
   tabs: Tab[];
   styles?: any;
+  session: Session;
 }
 
-export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
+export const Navbar: FC<NavbarProps> = ({ tabs, session, styles }) => {
   const pathname = usePathname();
 
   if (pathname === '/auth/login') return null;
@@ -57,7 +47,7 @@ export const Navbar: FC<NavbarProps> = ({ tabs, styles }) => {
       </Tabs>
       <Flex paddingY="4">
         <MdNotifications size="40px" color="#B0B0B0" />
-        <AccountModal />
+        <AccountModal session={session} />
       </Flex>
     </div>
   );

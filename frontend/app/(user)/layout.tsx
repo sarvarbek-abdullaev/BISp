@@ -1,26 +1,29 @@
-import { Navbar } from '@/components/admin/Navbar';
 import React, { FC } from 'react';
-import { adminTabs, userTabs } from '@/tabs';
+import { userTabs } from '@/tabs';
 import { Container } from '@/components/shared/Container';
-import { Sidebar } from '@/components/shared/Sidebar';
-import { Flex } from '@chakra-ui/react';
 import { Wrapper } from '@/components/shared/Wrapper';
+import { GlobalSidebar } from '@/components/shared/global-sidebar';
+import { getServerSession, Session } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-const UserLayout: FC<LayoutProps> = ({ children }) => {
+const UserLayout: FC<LayoutProps> = async ({ children }) => {
+  // @ts-ignore
+  const session: Session = await getServerSession(authOptions);
+
+  if (!session) {
+    return <div>No Modules Found</div>;
+  }
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <Container
-        styles={{
-          flex: '1',
-        }}
-      >
-        <Navbar tabs={userTabs} />
+      <Container>
+        {/*<Navbar tabs={userTabs} />*/}
         <div className="flex h-full">
-          <Sidebar tabs={userTabs} />
+          <GlobalSidebar tabs={userTabs} session={session} />
           <Wrapper>{children}</Wrapper>
         </div>
       </Container>

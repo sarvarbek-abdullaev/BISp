@@ -1,15 +1,11 @@
 import { FC } from 'react';
-import { Box } from '@chakra-ui/react';
+import { cn } from '@/lib/utils';
 
 interface ContainerProps {
   children: React.ReactNode;
-  styles?: any;
+  className?: string;
 }
 
-export const Container: FC<ContainerProps> = ({ children, styles }) => {
-  return (
-    <div className="m-2 w-full h-full overflow-y-auto" {...styles}>
-      {children}
-    </div>
-  );
+export const Container: FC<ContainerProps> = ({ children, className }) => {
+  return <div className={cn('w-full h-full overflow-y-auto flex-1', className)}>{children}</div>;
 };
