@@ -19,7 +19,7 @@ const UserLayout: FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Navbar tabs={userTabs} />
-        <div className="flex h-full px-2">
+        <div className="flex h-full">
           <Sidebar tabs={userTabs} />
           <Wrapper>{children}</Wrapper>
         </div>

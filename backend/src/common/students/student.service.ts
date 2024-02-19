@@ -5,11 +5,15 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Status, Student, StudentGroup } from '@prisma/client';
+import { Course, Module, Status, Student, StudentGroup } from '@prisma/client';
 import { UserDto } from '../../dtos';
 
 interface StudentWithCurrentGroup extends Student {
   currentGroup: StudentGroup;
+}
+
+export interface StudentCourseWithModules extends Course {
+  modules: Module[];
 }
 
 @Injectable()
@@ -121,6 +125,23 @@ export class StudentService {
     const currentGroup = !!currentGroupArr ? currentGroupArr[0] : null;
 
     return delete student.profile.password && { ...student, currentGroup };
+  }
+
+  async getStudentModules(id: string): Promise<StudentCourseWithModules> {
+    const student = await this.prismaService.student.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        course: {
+          include: {
+            modules: true,
+          },
+        },
+      },
+    });
+
+    return student.course;
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

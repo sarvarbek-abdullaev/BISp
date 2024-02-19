@@ -18,6 +18,29 @@ export class AuthService {
       where: {
         email,
       },
+      include: {
+        admins: {
+          where: {
+            profile: {
+              email,
+            },
+          },
+        },
+        students: {
+          where: {
+            profile: {
+              email,
+            },
+          },
+        },
+        teachers: {
+          where: {
+            profile: {
+              email,
+            },
+          },
+        },
+      },
     });
     if (!profile) {
       throw new NotFoundException('User not found');
@@ -28,7 +51,8 @@ export class AuthService {
       throw new NotFoundException('Invalid password');
     }
 
-    return {
+    const user = {
+      id: null,
       profile: {
         id: profile.id,
         firstName: profile.firstName,
@@ -40,6 +64,20 @@ export class AuthService {
         accessToken: this.jwtService.sign({ email }),
       },
     };
+
+    if (profile.admins.length > 0) {
+      user.id = profile.admins[0]?.id;
+    }
+
+    if (profile.students.length > 0) {
+      user.id = profile.students[0].id;
+    }
+
+    if (profile.teachers.length > 0) {
+      user.id = profile.teachers[0].id;
+    }
+
+    return user;
   }
 
   async changePassword(changePasswordDto: ChangePasswordDto) {

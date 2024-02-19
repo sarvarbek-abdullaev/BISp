@@ -1,6 +1,5 @@
-import NextAuth, { getServerSession, NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,6 +15,7 @@ export const authOptions: NextAuthOptions = {
           body: JSON.stringify({ email, password }),
           headers: { 'Content-Type': 'application/json' },
         });
+
         const user = await response.json();
         if (user.backendTokens) {
           return user;
@@ -39,7 +39,10 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ token, session }) {
-      session.user = token.profile;
+      session.user = {
+        id: token.id,
+        profile: token.profile,
+      };
       session.backendTokens = token.backendTokens;
 
       return session;
