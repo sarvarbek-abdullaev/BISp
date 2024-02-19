@@ -1,14 +1,60 @@
 'use client';
-
 import { MdAccountCircle } from 'react-icons/md';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Popover } from '@/components/shared/Popover';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { FC } from 'react';
+import { Session } from 'next-auth';
 
-export const AccountModal = () => {
-  const { data: session } = useSession();
+interface AccountModalProps {
+  type?: 'navbar' | 'sidebar';
+  session: Session;
+}
+
+export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }) => {
+  const {
+    user: {
+      profile: { role, firstName, lastName },
+    },
+  } = session;
+
+  const fullName = `${firstName} ${lastName}`;
+
+  if (type === 'sidebar') {
+    return (
+      <Popover
+        element={
+          <div className="flex gap-3 text-left">
+            <Avatar className="h-16 w-16">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>
+                {firstName[0]}
+                {lastName[0]}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="font-semibold">{fullName}</div>
+              <div className="text-xs mt-1">{role}</div>
+            </div>
+          </div>
+        }
+        body={
+          <>
+            <Button className="w-full justify-start" variant="ghost">
+              <Link style={{ textAlign: 'left', width: '100%' }} href="/profile">
+                My Profile
+              </Link>
+            </Button>
+            <Button className="w-full justify-start" variant="ghost" onClick={() => signOut()}>
+              Logout
+            </Button>
+          </>
+        }
+      />
+    );
+  }
 
   return (
     <Popover
@@ -22,10 +68,10 @@ export const AccountModal = () => {
             </Avatar>
             <div>
               <div className="font-semibold">
-                {session?.user.firstName} {session?.user?.lastName}
+                {session?.user?.profile?.firstName} {session?.user?.profile?.lastName}
               </div>
-              <div className="font-semibold">{session?.user?.email}</div>
-              <div className="text-xs">{session?.user?.role}</div>
+              <div className="font-semibold">{session?.user?.profile?.email}</div>
+              <div className="text-xs">{session?.user?.profile?.role}</div>
             </div>
           </div>
         )
