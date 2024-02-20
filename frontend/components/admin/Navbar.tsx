@@ -1,5 +1,5 @@
 'use client';
-import { Flex } from '@chakra-ui/react';
+
 import { Logo } from '@/components/shared/Logo';
 import { MdNotifications } from 'react-icons/md';
 import Link from '@/components/shared/Link';
@@ -45,10 +45,10 @@ export const Navbar: FC<NavbarProps> = ({ tabs, session, styles }) => {
           ))}
         </TabsList>
       </Tabs>
-      <Flex paddingY="4">
+      <div className="flex items-center gap-4">
         <MdNotifications size="40px" color="#B0B0B0" />
         <AccountModal session={session} />
-      </Flex>
+      </div>
     </div>
   );
 };
