@@ -24,9 +24,9 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
 
   if (type === 'sidebar') {
     return (
-      <Popover
-        element={
-          <div className="flex gap-3 text-left">
+      <div className="flex gap-3 text-left">
+        <Popover
+          element={
             <Avatar className="h-16 w-16">
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>
@@ -34,25 +34,25 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
                 {lastName[0]}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <div className="font-semibold">{fullName}</div>
-              <div className="text-xs mt-1">{role}</div>
-            </div>
-          </div>
-        }
-        body={
-          <>
-            <Button className="w-full justify-start" variant="ghost">
-              <Link style={{ textAlign: 'left', width: '100%' }} href="/profile">
-                My Profile
-              </Link>
-            </Button>
-            <Button className="w-full justify-start" variant="ghost" onClick={() => signOut()}>
-              Logout
-            </Button>
-          </>
-        }
-      />
+          }
+          body={
+            <>
+              <Button className="w-full justify-start" variant="ghost">
+                <Link style={{ textAlign: 'left', width: '100%' }} href="/profile">
+                  My Profile
+                </Link>
+              </Button>
+              <Button className="w-full justify-start" variant="ghost" onClick={() => signOut()}>
+                Logout
+              </Button>
+            </>
+          }
+        />
+        <div>
+          <div className="font-semibold">{fullName}</div>
+          <div className="text-xs mt-[1px]">{role}</div>
+        </div>
+      </div>
     );
   }
 
