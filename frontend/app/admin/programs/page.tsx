@@ -1,29 +1,17 @@
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
-import { adminProgramTabs, adminUsersTabs } from '@/tabs';
+import { adminProgramTabs } from '@/tabs';
 import { Button } from '@/components/ui/button';
 import { getCourses, getEvents, getExams, getModules } from '@/utils/backend-route';
 import React from 'react';
 
 const ProgramsPage = async () => {
-  // courses, modules
+  // courses, marks
   const courseModules = await Promise.all([getCourses(), getModules(), getExams(), getEvents()]);
   const [courses, modules, exams, events] = courseModules;
   const programTabs = adminProgramTabs.slice(1);
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
-
-  const buttonStyle = {
-    border: '1px solid transparent',
-    bg: 'blackAlpha.800',
-    colorScheme: 'none',
-  };
-
-  const selectedStyle = {
-    color: 'white',
-    background: 'rgba(45, 45, 45, 0.7)',
-    border: '1px solid black',
-  };
 
   return (
     <div className="flex w-full h-full flex-col gap-4">

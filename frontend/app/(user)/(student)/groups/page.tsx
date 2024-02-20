@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import Groups from '@/app/(user)/groups/groups';
+import Groups from '@/app/(user)/(student)/groups/groups';
 
 export default function GroupsPage() {
   const { data: session } = useSession();
