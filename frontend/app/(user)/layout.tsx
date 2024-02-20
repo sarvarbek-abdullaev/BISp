@@ -21,7 +21,6 @@ const UserLayout: FC<LayoutProps> = async ({ children }) => {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Container>
-        {/*<Navbar tabs={userTabs} />*/}
         <div className="flex h-full">
           <GlobalSidebar tabs={userTabs} session={session} />
           <Wrapper>{children}</Wrapper>
