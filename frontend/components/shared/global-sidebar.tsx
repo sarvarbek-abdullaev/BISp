@@ -54,7 +54,10 @@ export const GlobalSidebar: FC<SideBarProps> = ({ tabs, session, query, loading 
               indicator={true}
               className="relative w-full px-10"
             >
-              <TabsTrigger value={tab.path} className="w-full h-full gap-2 text-lg justify-start px-5">
+              <TabsTrigger
+                value={tab.path}
+                className="w-full h-full gap-2 text-lg justify-start px-5 data-[state=active]:bg-gray-950"
+              >
                 {tab.name}
               </TabsTrigger>
             </Link>
