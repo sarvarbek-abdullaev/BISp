@@ -1,20 +1,8 @@
-"use client";
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { getEvents } from '@/utils/backend-route';
+import EventCalendar from '@/components/shared/event-calendar';
 
-export default function Events() {
-  const { data: session } = useSession()
-  if (session) {
-    return (
-      <>
-        Signed in <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    )
-  }
-  return (
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
-    </>
-  )
+export default async function Events() {
+  const events = await getEvents();
+
+  return <EventCalendar events={events} />;
 }
