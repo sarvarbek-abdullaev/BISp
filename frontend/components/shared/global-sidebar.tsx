@@ -42,7 +42,7 @@ export const GlobalSidebar: FC<SideBarProps> = ({ tabs, session, query, loading 
   return (
     <div className="sticky overflow-hidden max-w-[300px] w-full bg-[#202020] rounded-r-lg py-5 flex flex-col">
       <div className="flex items-center justify-center w-full">
-        <Logo width={200} height={200} />
+        <Logo width={200} height={100} />
       </div>
       <Tabs defaultValue={defaultTab} orientation="vertical" className="flex-1 mt-20">
         <TabsList className="w-full h-full flex-col p-0 bg-transparent justify-start">
