@@ -32,12 +32,16 @@ export const userTabs = [
     path: '/dashboard',
   },
   {
-    name: 'My Groups',
-    path: '/groups',
+    name: 'Marks',
+    path: '/marks',
   },
   {
-    name: 'Profile',
-    path: '/profile',
+    name: 'Attendance',
+    path: '/attendance',
+  },
+  {
+    name: 'E-commerce',
+    path: '/e-commerce',
   },
   {
     name: 'TimeTable',
@@ -46,10 +50,6 @@ export const userTabs = [
   {
     name: 'Events',
     path: '/events',
-  },
-  {
-    name: 'Settings',
-    path: '/settings',
   },
 ];
 
@@ -110,7 +110,7 @@ export const adminProgramTabs = [
   },
   {
     name: 'Modules',
-    path: '/admin/programs/modules',
+    path: '/admin/programs/marks',
   },
   {
     name: 'Exams',
