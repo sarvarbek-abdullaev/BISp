@@ -17,6 +17,7 @@ import { ExamModule } from './common/exams/exam.module';
 import { MarkModule } from './common/marks/mark.module';
 import { EventModule } from './common/events/event.module';
 import { OrderModule } from './common/orders/order.module';
+import { LessonModule } from './common/lessons/lesson.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { OrderModule } from './common/orders/order.module';
     MarkModule,
     EventModule,
     OrderModule,
+    LessonModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
