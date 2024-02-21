@@ -125,6 +125,8 @@ model Group {
   //
   studentGroups StudentGroup[]
   //
+  lessons       Lesson[]
+  // 
   course        Course?        @relation(fields: [courseId], references: [id])
   courseId      String?        @db.ObjectId
 
@@ -310,6 +312,9 @@ model Lesson {
   //
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  //
+  groupId   String?  @db.ObjectId
+  group     Group?   @relation(fields: [groupId], references: [id])
   //
   moduleId  String?  @db.ObjectId
   module    Module?  @relation(fields: [moduleId], references: [id])
