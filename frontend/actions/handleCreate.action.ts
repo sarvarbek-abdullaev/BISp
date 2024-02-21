@@ -168,7 +168,7 @@ export const createOrderByStudent = async (data: any) => {
       body: JSON.stringify(data),
     });
     const _data = await res.json();
-    revalidatePath(`/student/orders`);
+    revalidatePath('/orders');
     return _data;
   } catch (error) {
     console.log(error);

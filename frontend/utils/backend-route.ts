@@ -251,7 +251,20 @@ export const getStudentModules = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/students/${id}/modules`, {
       next: {
-        revalidate: 0,
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrdersByUserId = async (type: string, id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/${type}s/${id}/orders`, {
+      next: {
+        revalidate: 30,
       },
     });
     return await res.json();
