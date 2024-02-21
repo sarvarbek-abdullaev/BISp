@@ -53,24 +53,25 @@ enum EnrollmentStatus {
 }
 
 model Profile {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName  String
-  email     String    @unique
-  birthDate DateTime  @db.Date
-  status    Status    @default(ACTIVE)
-  password  String?
-  role      Role      @default(STUDENT)
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  firstName      String
+  lastName       String
+  email          String          @unique
+  birthDate      DateTime        @db.Date
+  status         Status          @default(ACTIVE)
+  password       String?
+  role           Role            @default(STUDENT)
   //
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   //
-  orders    Order[]
+  orders         Order[]
+  profileModules ProfileModule[]
   // payments  Payment[]
   // 
-  students  Student[]
-  teachers  Teacher[]
-  admins    Admin[]
+  students       Student[]
+  teachers       Teacher[]
+  admins         Admin[]
 }
 
 model Student {
@@ -146,28 +147,44 @@ model StudentGroup {
 }
 
 model Module {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  code        String   @unique
-  name        String
-  status      Status   @default(ACTIVE)
-  description String?
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  code           String          @unique
+  name           String
+  status         Status          @default(ACTIVE)
+  description    String?
   //
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   //
-  level       Level    @default(LEVEL_1)
+  level          Level           @default(LEVEL_1)
   //
-  courseId    String?  @db.ObjectId
-  course      Course?  @relation(fields: [courseId], references: [id])
+  courseId       String?         @db.ObjectId
+  course         Course?         @relation(fields: [courseId], references: [id])
   //
-  teacherId   String?  @db.ObjectId
-  teacher     Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId      String?         @db.ObjectId
+  teacher        Teacher?        @relation(fields: [teacherId], references: [id])
   //
-  events      Event[]
-  lessons     Lesson[]
-  exams       Exam[]
+  events         Event[]
+  lessons        Lesson[]
+  exams          Exam[]
+  profileModules ProfileModule[]
 
   @@unique([code, courseId])
+}
+
+model ProfileModule {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  year      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  profileId String   @db.ObjectId
+  //
+  module    Module   @relation(fields: [moduleId], references: [id])
+  moduleId  String   @db.ObjectId
+
+  @@unique([profileId, moduleId, year])
 }
 
 model Exam {
