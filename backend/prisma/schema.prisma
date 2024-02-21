@@ -258,7 +258,7 @@ model Product {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   price           Float
-  variants        ProductVariant[]
+  variants        ProductVariant[] @default([DEFAULT])
   status          Status           @default(ACTIVE)
   image           String?
   //
