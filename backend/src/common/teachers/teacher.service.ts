@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { Role, Teacher } from '@prisma/client';
 import { UserDto } from '../../dtos';
+import { UserOrder } from '../students/student.service';
 
 @Injectable()
 export class TeacherService {
@@ -78,6 +79,43 @@ export class TeacherService {
     });
 
     return delete teacher.profile.password && teacher;
+  }
+
+  async getTeacherOrders(id: string): Promise<UserOrder[]> {
+    const teacher = await this.prismaService.teacher.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        profile: {
+          include: {
+            orders: {
+              include: {
+                orderedProducts: {
+                  include: {
+                    product: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return teacher.profile.orders.map((order) => {
+      const quantity = order.orderedProducts.reduce(
+        (acc, product) => acc + product.quantity,
+        0,
+      );
+
+      const total = order.orderedProducts.reduce(
+        (acc, product) => acc + product.product.price * product.quantity,
+        0,
+      );
+
+      return { ...order, total, quantity };
+    });
   }
 
   // async getTeacherByEmail(email: string): Promise<UserDto> {

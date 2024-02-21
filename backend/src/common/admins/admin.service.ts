@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import { Admin, Role } from '@prisma/client';
 import { UserDto } from '../../dtos';
+import { UserOrder } from '../students/student.service';
 
 @Injectable()
 export class AdminService {
@@ -58,6 +59,43 @@ export class AdminService {
     });
 
     return delete admin.profile.password && admin;
+  }
+
+  async getAdminOrders(id: string): Promise<UserOrder[]> {
+    const admin = await this.prismaService.admin.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        profile: {
+          include: {
+            orders: {
+              include: {
+                orderedProducts: {
+                  include: {
+                    product: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return admin.profile.orders.map((order) => {
+      const quantity = order.orderedProducts.reduce(
+        (acc, product) => acc + product.quantity,
+        0,
+      );
+
+      const total = order.orderedProducts.reduce(
+        (acc, product) => acc + product.product.price * product.quantity,
+        0,
+      );
+
+      return { ...order, total, quantity };
+    });
   }
 
   // async getAdminByEmail(email: string): Promise<UserDto> {

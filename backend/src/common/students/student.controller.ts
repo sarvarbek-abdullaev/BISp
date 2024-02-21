@@ -10,7 +10,11 @@ import {
 } from '@nestjs/common';
 import { Student } from '@prisma/client';
 import { UserDto } from '../../dtos';
-import { StudentService, StudentCourseWithModules } from './student.service';
+import {
+  StudentService,
+  StudentCourseWithModules,
+  UserOrder,
+} from './student.service';
 
 @Controller('students')
 export class StudentController {
@@ -31,6 +35,11 @@ export class StudentController {
     @Param('id') id: string,
   ): Promise<StudentCourseWithModules> {
     return await this.studentService.getStudentModules(id);
+  }
+
+  @Get(':id/orders')
+  async getStudentOrders(@Param('id') id: string): Promise<UserOrder[]> {
+    return await this.studentService.getStudentOrders(id);
   }
 
   @Put(':id')

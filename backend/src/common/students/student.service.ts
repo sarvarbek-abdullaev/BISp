@@ -5,7 +5,14 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Course, Module, Status, Student, StudentGroup } from '@prisma/client';
+import {
+  Course,
+  Module,
+  Order,
+  Status,
+  Student,
+  StudentGroup,
+} from '@prisma/client';
 import { UserDto } from '../../dtos';
 
 interface StudentWithCurrentGroup extends Student {
@@ -14,6 +21,11 @@ interface StudentWithCurrentGroup extends Student {
 
 export interface StudentCourseWithModules extends Course {
   modules: Module[];
+}
+
+export interface UserOrder extends Order {
+  total: number;
+  quantity: number;
 }
 
 @Injectable()
@@ -142,6 +154,43 @@ export class StudentService {
     });
 
     return student.course;
+  }
+
+  async getStudentOrders(id: string): Promise<UserOrder[]> {
+    const student = await this.prismaService.student.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        profile: {
+          include: {
+            orders: {
+              include: {
+                orderedProducts: {
+                  include: {
+                    product: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return student.profile.orders.map((order) => {
+      const quantity = order.orderedProducts.reduce(
+        (acc, product) => acc + product.quantity,
+        0,
+      );
+
+      const total = order.orderedProducts.reduce(
+        (acc, product) => acc + product.product.price * product.quantity,
+        0,
+      );
+
+      return { ...order, total, quantity };
+    });
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

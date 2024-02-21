@@ -10,6 +10,7 @@ import {
 import { Teacher } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { TeacherService } from './teacher.service';
+import { UserOrder } from '../students/student.service';
 
 @Controller('teachers')
 export class TeacherController {
@@ -23,6 +24,11 @@ export class TeacherController {
   @Get(':id')
   async getTeacherById(@Param('id') id: string): Promise<UserDto> {
     return await this.teacherService.getTeacherById(id);
+  }
+
+  @Get(':id/orders')
+  async getTeacherOrders(@Param('id') id: string): Promise<UserOrder[]> {
+    return await this.teacherService.getTeacherOrders(id);
   }
 
   @Put(':id')
