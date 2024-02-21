@@ -168,6 +168,7 @@ model Module {
   lessons        Lesson[]
   exams          Exam[]
   profileModules ProfileModule[]
+  timeTableSlots TimeTableSlot[]
 
   @@unique([code, courseId])
 }
@@ -313,6 +314,20 @@ model Order {
   profile         Profile          @relation(fields: [profileId], references: [id])
   // 
   // payments        Payment[]
+}
+
+model TimeTableSlot {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  startTime DateTime
+  endTime   DateTime
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //
+  moduleId  String?  @db.ObjectId
+  module    Module?  @relation(fields: [moduleId], references: [id])
+
+  @@unique([startTime, endTime, moduleId])
 }
 
 // model Payment {
