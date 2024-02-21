@@ -155,3 +155,22 @@ export const createOrder = async (type: string, data: any) => {
     console.log(error);
   }
 };
+
+//Student
+
+export const createOrderByStudent = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const _data = await res.json();
+    revalidatePath(`/student/orders`);
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

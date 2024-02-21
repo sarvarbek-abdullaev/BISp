@@ -1,12 +1,13 @@
 import { getProducts } from '@/utils/backend-route';
 import { Product } from '@prisma/client';
 import ProductsContainer from '@/components/shared/products-container';
+
 const Page = async () => {
   const products: Product[] = await getProducts();
 
   return (
-    <div>
-      <h1>Products: </h1>
+    <div className="p-10">
+      <h1 className="text-4xl font-mono mb-10">Products Available:</h1>
       <ProductsContainer products={products} />
     </div>
   );
