@@ -8,6 +8,8 @@ import { createOrderByStudent } from '@/actions/handleCreate.action';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
+import { ToastAction } from '@/components/ui/toast';
+import Link from '@/components/shared/Link';
 
 interface ProductsContainerProps {
   products: Product[];
@@ -53,15 +55,23 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
         toast({
           title: 'Order Placed',
           description: 'Your order has been placed successfully, you can check the status in your orders page',
-          duration: 5000,
           className: 'bg-gray-950',
+          action: (
+            <ToastAction altText="Orders Page" className="bg-gray-950">
+              <Link href={`/orders`}>Go to Orders</Link>
+            </ToastAction>
+          ),
         });
       } else {
         toast({
           title: 'Order Failed',
           description: 'Your order has failed, please try again later',
-          duration: 5000,
           className: 'bg-red-500',
+          action: (
+            <ToastAction altText="Try Again" onClick={handleOrderNow} className="hover:bg-gray-950 hover:text-white">
+              Try Again
+            </ToastAction>
+          ),
         });
       }
     } catch (e) {
@@ -96,7 +106,7 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
           disabled={cart.items.length === 0}
           onClick={handleOrderNow}
           variant="outline"
-          className="text-white font-bold py-6 px-16 text-lg rounded border-black min-w-60"
+          className="text-white font-bold py-6 px-16 text-lg rounded border-black min-w-60 rounded-lg"
         >
           {orderPlacing ? <Loader2 className="animate-spin" size={24} /> : 'Order Now'}
         </Button>
