@@ -40,7 +40,7 @@ export const GlobalSidebar: FC<SideBarProps> = ({ tabs, session, query, loading 
   const defaultTab = tabs.find((tab: Tab) => pathname + isQuery === tab.path)?.path || tabs[0].path;
 
   return (
-    <div className="sticky overflow-hidden max-w-[300px] w-full bg-[#202020] rounded-r-lg py-5 flex flex-col">
+    <div className="sticky overflow-hidden max-w-[300px] w-full bg-[#202020] rounded-r-lg py-5 flex-col hidden md:flex">
       <div className="flex items-center justify-center w-full">
         <Logo width={200} height={100} />
       </div>
