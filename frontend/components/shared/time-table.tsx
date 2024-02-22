@@ -1,15 +1,15 @@
 'use client';
 
 import {
-  Week,
-  Month,
   Agenda,
-  ScheduleComponent,
-  EventSettingsModel,
-  ResourcesDirective,
-  ResourceDirective,
-  Inject,
   DragAndDrop,
+  EventSettingsModel,
+  Inject,
+  Month,
+  ResourceDirective,
+  ResourcesDirective,
+  ScheduleComponent,
+  Week,
   WorkWeek,
 } from '@syncfusion/ej2-react-schedule';
 import React, { FC } from 'react';
@@ -28,7 +28,7 @@ interface CalendarProps {
 
 const Calendar: FC<CalendarProps> = ({ lessons, modules, groups }) => {
   const eventSettings: EventSettingsModel = {
-    dataSource: lessons.map((lesson) => {
+    dataSource: lessons?.map((lesson) => {
       return {
         Id: lesson.id,
         Subject: `${lesson.module.name}: ${lesson.group.name}`,
@@ -159,28 +159,25 @@ const Calendar: FC<CalendarProps> = ({ lessons, modules, groups }) => {
           const groupName = findByIdAndReturnName(groups, currentObj.GroupId);
           const moduleName = findByIdAndReturnName(modules, currentObj.ModuleId);
 
-          const newSubject = `${moduleName}: ${groupName}`;
+          args.addedRecords[0].Subject = `${moduleName}: ${groupName}`;
 
-          currentObj.Subject = newSubject;
-          args.addedRecords[0].Subject = newSubject;
-
-          const resp = await createLesson({
+          const newData = {
             groupId: currentObj.GroupId,
             moduleId: currentObj.ModuleId,
             day: new Date(currentObj.StartTime).getDay(),
             startTime: new Date(currentObj.StartTime).getHours(),
             endTime: new Date(currentObj.EndTime).getHours(),
-          });
+          };
+
+          const resp = await createLesson(newData);
 
           if (resp.error || resp.statusCode === 500) {
             args.cancel = true;
-            toast({
+            return toast({
               variant: 'destructive',
               title: resp.message || resp.message,
             });
           }
-
-          console.log({ resp });
         } else if (args.requestType === 'eventChanged') {
           const currentObj = args.data[0];
 

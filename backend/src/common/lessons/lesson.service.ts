@@ -28,10 +28,6 @@ export class LessonService {
   }
 
   async updateLessonById(id: string, lessonData): Promise<Lesson> {
-    try {
-    } catch (e) {
-      console.log(e);
-    }
     if (!lessonData.groupId) {
       throw new BadRequestException('Group is required');
     }

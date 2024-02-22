@@ -185,7 +185,9 @@ export const createLesson = async (data: any) => {
       },
       body: JSON.stringify(data),
     });
-    return await res.json();
+    const _data = await res.json();
+    revalidatePath('/timetable');
+    return _data;
   } catch (error) {
     console.log(error);
   }
