@@ -272,3 +272,16 @@ export const getOrdersByUserId = async (type: string, id: string) => {
     console.log(error);
   }
 };
+
+export const getLessons = async () => {
+  try {
+    const res = await fetch(`${API_URL}/lessons`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

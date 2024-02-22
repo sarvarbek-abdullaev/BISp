@@ -1,20 +1,15 @@
-"use client";
-import { signIn, signOut, useSession } from 'next-auth/react';
+import Calendar from '@/components/shared/time-table';
+import { getGroups, getLessons, getModules } from '@/utils/backend-route';
 
-export default function TimeTable() {
-  const { data: session } = useSession()
-  if (session) {
-    return (
-      <>
-        Signed in <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    )
-  }
+export default async function TimeTable() {
+  const [groups, modules, lessons] = await Promise.all([getGroups(), getModules(), getLessons()]);
+
+  // console.log(groups, modules, lessons);
+
   return (
-    <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
-    </>
-  )
+    <div className="container-fluid p-10">
+      <h1 className="h3 mb-3">Time Table</h1>
+      <Calendar groups={groups} modules={modules} lessons={lessons} />
+    </div>
+  );
 }

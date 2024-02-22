@@ -157,7 +157,6 @@ export const createOrder = async (type: string, data: any) => {
 };
 
 //Student
-
 export const createOrderByStudent = async (data: any) => {
   try {
     const res = await fetch(`${API_URL}/orders`, {
@@ -170,6 +169,23 @@ export const createOrderByStudent = async (data: any) => {
     const _data = await res.json();
     revalidatePath('/orders');
     return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Teacher & Admin
+
+export const createLesson = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/lessons`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return await res.json();
   } catch (error) {
     console.log(error);
   }

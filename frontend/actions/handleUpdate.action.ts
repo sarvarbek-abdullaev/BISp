@@ -200,3 +200,18 @@ export const cancelOrderById = async (id: string | undefined, validatePath: stri
     console.log(error);
   }
 };
+
+export const updateLessonById = async (id: string | undefined, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/lessons/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

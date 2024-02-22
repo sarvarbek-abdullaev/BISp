@@ -66,7 +66,7 @@ export class LessonService {
       throw new BadRequestException('Time cannot be less than 0');
     }
 
-    const { groupId, moduleId, endTime, startTime } = lessonData;
+    const { groupId, moduleId, endTime, startTime, day } = lessonData;
 
     return this.prisma.lesson.update({
       where: {
@@ -85,6 +85,7 @@ export class LessonService {
         },
         endTime,
         startTime,
+        day,
       },
     });
   }
