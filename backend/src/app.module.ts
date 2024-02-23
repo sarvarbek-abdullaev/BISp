@@ -19,6 +19,7 @@ import { EventModule } from './common/events/event.module';
 import { OrderModule } from './common/orders/order.module';
 import { LessonModule } from './common/lessons/lesson.module';
 import { ClassModule } from './common/classes/class.module';
+import { AttendanceModule } from './common/attendances/attendance.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ClassModule } from './common/classes/class.module';
     OrderModule,
     LessonModule,
     ClassModule,
+    AttendanceModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
