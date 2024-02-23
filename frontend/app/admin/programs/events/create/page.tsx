@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import AddEditEventForm from '@/components/admin/add-edit-event-form';
-import { getModules } from '@/utils/backend-route';
+import { getModules } from '@/actions/handleGet.action';
 
 interface PageProps {
   params: {

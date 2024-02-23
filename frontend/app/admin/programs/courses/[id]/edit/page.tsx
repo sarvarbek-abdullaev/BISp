@@ -1,4 +1,4 @@
-import { getCourseById, getModules } from '@/utils/backend-route';
+import { getCourseById } from '@/actions/handleGet.action';
 import React, { FC } from 'react';
 import AddEditCourseForm from '@/components/admin/AddEditCourseForm';
 

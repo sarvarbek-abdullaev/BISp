@@ -1,6 +1,6 @@
 import React from 'react';
 import AddEditGroupForm from '@/components/admin/AddEditGroupForm';
-import { getCourses } from '@/utils/backend-route';
+import { getCourses } from '@/actions/handleGet.action';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
 import { Wrapper } from '@/components/shared/Wrapper';
 

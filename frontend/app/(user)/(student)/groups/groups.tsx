@@ -1,4 +1,4 @@
-import { getGroupsByUserId } from '@/utils/backend-route';
+import { getGroupsByUserId } from '@/actions/handleGet.action';
 import { FC } from 'react';
 
 interface GroupProps {

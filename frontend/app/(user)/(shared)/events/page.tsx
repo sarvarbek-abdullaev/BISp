@@ -1,4 +1,4 @@
-import { getEvents } from '@/utils/backend-route';
+import { getEvents } from '@/actions/handleGet.action';
 import EventsCalendar from '@/components/shared/events-calendar';
 
 export default async function Events() {

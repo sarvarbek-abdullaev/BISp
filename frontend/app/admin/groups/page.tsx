@@ -1,7 +1,7 @@
 import { Course, Table } from '@/components/admin/Table';
 import { groupColumns } from '@/tabs';
 import React from 'react';
-import { getCourses, getGroups } from '@/utils/backend-route';
+import { getCourses, getGroups } from '@/actions/handleGet.action';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
@@ -21,19 +21,6 @@ export default async function GroupsPage({ searchParams }: any) {
   }
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
-  const value = Math.random() * 40;
-
-  const buttonStyle = {
-    border: '1px solid transparent',
-    bg: 'blackAlpha.800',
-    colorScheme: 'none',
-  };
-
-  const selectedStyle = {
-    color: 'white',
-    background: 'rgba(45, 45, 45, 0.7)',
-    border: '1px solid black',
-  };
 
   const groupTabs = courses.map((course: Course) => ({
     name: course.name,

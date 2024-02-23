@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getUserById } from '@/utils/backend-route';
+import { getUserById } from '@/actions/handleGet.action';
 import AddEditUserForm from '@/components/admin/AddEditUserForm';
 
 interface PageProps {

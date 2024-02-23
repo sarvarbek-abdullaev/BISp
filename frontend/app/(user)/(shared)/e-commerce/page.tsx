@@ -1,4 +1,4 @@
-import { getProducts } from '@/utils/backend-route';
+import { getProducts } from '@/actions/handleGet.action';
 import { Product } from '@prisma/client';
 import ProductsContainer from '@/components/shared/products-container';
 

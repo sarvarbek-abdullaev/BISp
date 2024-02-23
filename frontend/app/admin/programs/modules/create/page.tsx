@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import AddEditModuleForm from '@/components/admin/AddEditModuleForm';
-import { getCourses, getModuleById } from '@/utils/backend-route';
+import { getCourses } from '@/actions/handleGet.action';
 
 interface PageProps {
   params: {

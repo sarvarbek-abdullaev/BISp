@@ -1,7 +1,7 @@
 import { Sidebar } from '@/components/shared/Sidebar';
 import { Flex } from '@chakra-ui/react';
 import CheckableContent from '@/components/admin/CheckableContent';
-import { getGroups, getUsers } from '@/utils/backend-route';
+import { getGroups, getUsers } from '@/actions/handleGet.action';
 
 const AssignStudents = async ({ searchParams }: any) => {
   const { groupName } = searchParams;

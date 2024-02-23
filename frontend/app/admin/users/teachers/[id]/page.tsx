@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getUserById } from '@/utils/backend-route';
+import { getUserById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 import { Box } from '@chakra-ui/react';
 import { createDate } from '@/lib/utils';

@@ -1,4 +1,4 @@
-import { getEvents } from '@/utils/backend-route';
+import { getEvents } from '@/actions/handleGet.action';
 import { eventColumns } from '@/tabs';
 import { EventTable } from '@/components/admin/event-table';
 

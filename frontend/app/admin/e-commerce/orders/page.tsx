@@ -1,5 +1,5 @@
 import { orderColumns } from '@/tabs';
-import { getOrders } from '@/utils/backend-route';
+import { getOrders } from '@/actions/handleGet.action';
 import { OrderTable } from '@/components/admin/order-table';
 
 const TeachersPage = async () => {

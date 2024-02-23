@@ -1,4 +1,4 @@
-import { getStudentModules } from '@/utils/backend-route';
+import { getStudentModules } from '@/actions/handleGet.action';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { StudentCourseWithModules } from '../../../../../backend/src/common/students/student.service';

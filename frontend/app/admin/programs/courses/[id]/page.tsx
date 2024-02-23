@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getCourseById, getCourses, getUserById } from '@/utils/backend-route';
+import { getCourseById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 import { Course } from '@/utils/interfaces';
 
@@ -10,7 +10,6 @@ interface PageProps {
 }
 
 const AdminPage: FC<PageProps> = async ({ params }) => {
-  const type = 'admins';
   const course: Course = await getCourseById(params.id);
 
   if (!course?.id) return <CenteredText text="Admin not found" />;

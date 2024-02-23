@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { getModuleById } from '@/utils/backend-route';
+import { getModuleById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
-import { Course, Module } from '@/utils/interfaces';
+import { Module } from '@/utils/interfaces';
 
 interface PageProps {
   params: {

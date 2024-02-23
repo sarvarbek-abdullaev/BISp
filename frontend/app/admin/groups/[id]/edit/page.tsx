@@ -1,4 +1,4 @@
-import { getCourses, getGroupById } from '@/utils/backend-route';
+import { getCourses, getGroupById } from '@/actions/handleGet.action';
 import React, { FC } from 'react';
 import AddEditGroupForm from '@/components/admin/AddEditGroupForm';
 

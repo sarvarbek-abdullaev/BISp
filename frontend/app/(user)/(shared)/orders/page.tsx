@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getOrdersByUserId } from '@/utils/backend-route';
+import { getOrdersByUserId } from '@/actions/handleGet.action';
 import Image from 'next/image';
 
 const Page = async () => {

@@ -1,6 +1,6 @@
 import { Table } from '@/components/admin/Table';
 import { studentColumns } from '@/tabs';
-import { getUsers } from '@/utils/backend-route';
+import { getUsers } from '@/actions/handleGet.action';
 
 const StudentsPage = async () => {
   const type = 'students';

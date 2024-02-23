@@ -1,6 +1,6 @@
 import React from 'react';
 import AddEditOrderForm from '@/components/admin/add-edit-order-form';
-import { getProducts, getUsers } from '@/utils/backend-route';
+import { getProducts, getUsers } from '@/actions/handleGet.action';
 
 export default async function Page() {
   const type = 'orders';

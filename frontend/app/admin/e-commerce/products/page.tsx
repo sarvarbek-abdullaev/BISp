@@ -1,5 +1,5 @@
 import { productColumns } from '@/tabs';
-import { getProducts } from '@/utils/backend-route';
+import { getProducts } from '@/actions/handleGet.action';
 import { ProductTable } from '@/components/admin/product-table';
 
 const TeachersPage = async () => {

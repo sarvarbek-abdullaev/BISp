@@ -1,5 +1,5 @@
 import Calendar from '@/components/shared/time-table';
-import { getGroups, getLessons, getModules } from '@/utils/backend-route';
+import { getGroups, getLessons, getModules } from '@/actions/handleGet.action';
 
 export default async function TimeTable() {
   const [groups, modules, lessons] = await Promise.all([getGroups(), getModules(), getLessons()]);

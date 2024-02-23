@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getEventById } from '@/utils/backend-route';
+import { getEventById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 import { createDateTime } from '@/lib/utils';
 

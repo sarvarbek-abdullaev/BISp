@@ -1,4 +1,4 @@
-import { getCourses } from '@/utils/backend-route';
+import { getCourses } from '@/actions/handleGet.action';
 import { Table } from '@/components/admin/Table';
 import { courseColumns } from '@/tabs';
 

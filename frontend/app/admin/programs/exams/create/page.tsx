@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import AddEditExamForm from '@/components/admin/AddEditExamForm';
-import { getModules } from '@/utils/backend-route';
+import { getModules } from '@/actions/handleGet.action';
 
 interface PageProps {
   params: {

@@ -1,4 +1,4 @@
-import { getModules, getUsers } from '@/utils/backend-route';
+import { getModules } from '@/actions/handleGet.action';
 import { Table } from '@/components/admin/Table';
 import { moduleColumns } from '@/tabs';
 

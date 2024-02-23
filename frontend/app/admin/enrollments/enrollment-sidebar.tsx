@@ -1,6 +1,6 @@
 import { Sidebar } from '@/components/shared/Sidebar';
 import React from 'react';
-import { getCourses } from '@/utils/backend-route';
+import { getCourses } from '@/actions/handleGet.action';
 import { Course } from '@/components/admin/Table';
 
 const EnrollmentSidebar = async () => {

@@ -1,7 +1,7 @@
 import { Course, Table } from '@/components/admin/Table';
 import { enrollmentColumns } from '@/tabs';
 import React from 'react';
-import { getCourses, getEnrollments } from '@/utils/backend-route';
+import { getCourses, getEnrollments } from '@/actions/handleGet.action';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
@@ -21,18 +21,6 @@ export default async function GroupsPage({ searchParams }: any) {
   }
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
-
-  const buttonStyle = {
-    border: '1px solid transparent',
-    bg: 'blackAlpha.800',
-    colorScheme: 'none',
-  };
-
-  const selectedStyle = {
-    color: 'white',
-    background: 'rgba(45, 45, 45, 0.7)',
-    border: '1px solid black',
-  };
 
   const enrollmentsTabs = courses.map((course: Course) => ({
     name: course.name,

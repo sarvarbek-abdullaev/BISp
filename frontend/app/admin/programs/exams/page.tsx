@@ -1,4 +1,4 @@
-import { getExams } from '@/utils/backend-route';
+import { getExams } from '@/actions/handleGet.action';
 import { examColumns } from '@/tabs';
 import { ExamTable } from '@/components/admin/exam-table';
 

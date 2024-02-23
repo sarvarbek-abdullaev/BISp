@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { getEnrollmentsById } from '@/utils/backend-route';
+import { getEnrollmentsById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
-import { Course, User } from '@/components/admin/Table';
+import { Course } from '@/components/admin/Table';
 
 interface PageProps {
   params: {

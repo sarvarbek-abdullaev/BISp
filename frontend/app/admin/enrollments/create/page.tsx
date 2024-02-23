@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCourses, getUsers } from '@/utils/backend-route';
+import { getCourses, getUsers } from '@/actions/handleGet.action';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
 import { Wrapper } from '@/components/shared/Wrapper';
 import AddEditEnrollmentForm from '@/components/admin/add-edit-enrollment-form';

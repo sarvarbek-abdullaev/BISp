@@ -1,5 +1,5 @@
 'use server';
-import { API_URL } from '@/utils/backend-route';
+import { API_URL } from '@/actions/handleGet.action';
 import { revalidatePath } from 'next/cache';
 
 export const createUser = async (type: string, data: any) => {

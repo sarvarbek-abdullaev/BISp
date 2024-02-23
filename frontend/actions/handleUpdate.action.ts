@@ -1,5 +1,5 @@
 'use server';
-import { API_URL } from '@/utils/backend-route';
+import { API_URL } from '@/actions/handleGet.action';
 import { revalidatePath } from 'next/cache';
 
 export const updateUserById = async (type: string, id: string | undefined, data: any) => {

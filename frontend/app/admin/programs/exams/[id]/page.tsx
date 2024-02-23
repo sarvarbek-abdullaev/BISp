@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getExamById } from '@/utils/backend-route';
+import { getExamById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 import { Module } from '@/utils/interfaces';
 

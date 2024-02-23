@@ -1,4 +1,4 @@
-import { getExamById, getModules } from '@/utils/backend-route';
+import { getExamById, getModules } from '@/actions/handleGet.action';
 import React, { FC } from 'react';
 import AddEditExamForm from '@/components/admin/AddEditExamForm';
 

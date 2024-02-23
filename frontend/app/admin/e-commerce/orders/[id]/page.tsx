@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getOrderById } from '@/utils/backend-route';
+import { getOrderById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 import { Box } from '@chakra-ui/react';
 import { createDate } from '@/lib/utils';
@@ -17,7 +17,7 @@ const TeacherPage: FC<PageProps> = async ({ params }) => {
   if (!order?.id) return <CenteredText text="Teacher not found" />;
   const defaultImageSrc = 'https://placehold.jp/150x150.png';
 
-  const { id, profile, subtotal, quantity, status, orderedProducts, createdAt } = order;
+  const { profile, subtotal, quantity, orderedProducts } = order;
   return (
     <Box>
       <p>Id: {order.id}</p>

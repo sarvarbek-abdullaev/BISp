@@ -1,4 +1,4 @@
-import { getEventById, getModules } from '@/utils/backend-route';
+import { getEventById, getModules } from '@/actions/handleGet.action';
 import React, { FC } from 'react';
 import AddEditEventForm from '@/components/admin/add-edit-event-form';
 

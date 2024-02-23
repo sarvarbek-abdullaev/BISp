@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { getProductById } from '@/utils/backend-route';
+import { getProductById } from '@/actions/handleGet.action';
 import AddEditProductForm from '@/components/admin/add-edit-product-form';
 
 interface PageProps {

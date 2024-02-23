@@ -3,7 +3,7 @@ import Link from '@/components/shared/Link';
 import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
 import { adminProgramTabs } from '@/tabs';
 import { Button } from '@/components/ui/button';
-import { getCourses, getEvents, getExams, getModules } from '@/utils/backend-route';
+import { getCourses, getEvents, getExams, getModules } from '@/actions/handleGet.action';
 import React from 'react';
 
 const ProgramsPage = async () => {
