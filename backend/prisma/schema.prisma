@@ -90,6 +90,7 @@ model Student {
   studentGroups StudentGroup[]
   enrollments   Enrollment[]
   marks         Mark[]
+  attendances   Attendance[]
 }
 
 model Teacher {
@@ -170,6 +171,7 @@ model Module {
   lessons        Lesson[]
   exams          Exam[]
   profileModules ProfileModule[]
+  classes        Class[]
 
   @@unique([code, courseId])
 }
@@ -321,6 +323,32 @@ model Lesson {
   module    Module?  @relation(fields: [moduleId], references: [id])
 
   @@unique([startTime, endTime, day, moduleId])
+}
+
+model Class {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  //
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  //
+  moduleId    String?      @db.ObjectId
+  module      Module?      @relation(fields: [moduleId], references: [id])
+  attendances Attendance[]
+}
+
+model Attendance {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  status    Status   @default(ACTIVE)
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //
+  studentId String   @db.ObjectId
+  student   Student  @relation(fields: [studentId], references: [id])
+  //
+  classId   String?  @db.ObjectId
+  class     Class?   @relation(fields: [classId], references: [id])
 }
 
 // model Payment {
