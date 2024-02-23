@@ -13,10 +13,13 @@
 @tailwind components;
 @tailwind utilities;
 
-next-route-announcer ~ [style*="z-index: 999999999"] {
+/*next-route-announcer ~ [style*="z-index: 999999999"] {*/
+/*  display: none;*/
+/*}*/
+
+next-route-announcer ~ div:not([data-radix-popper-content-wrapper]) {
   display: none;
 }
-
 
 
 @layer base {
