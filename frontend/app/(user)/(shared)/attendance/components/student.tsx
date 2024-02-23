@@ -1,21 +1,16 @@
-import { getStudentAttendances } from '@/actions/handleGet.action';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import React, { FC } from 'react';
 
-const Page = async () => {
-  const session = await getServerSession(authOptions);
+interface StudentProps {
+  attendances: any[];
+}
 
-  if (!session) return <div>Not logged in</div>;
-
-  const id = session.user.id;
-
-  const attendances = await getStudentAttendances(id);
-
+const Student: FC<StudentProps> = ({ attendances }) => {
   return (
-    <div>
-      <h1>Attendance</h1>
+    <div className="h-full">
       {!attendances.length ? (
-        <p>No attendances</p>
+        <div className="flex items-center justify-center w-full h-full">
+          <p>No attendances available</p>
+        </div>
       ) : (
         <table>
           <thead>
@@ -41,4 +36,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default Student;

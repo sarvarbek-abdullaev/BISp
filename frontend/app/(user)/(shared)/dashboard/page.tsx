@@ -12,7 +12,7 @@ const Dashboard = async () => {
 
   const studentCourseModules: StudentCourseWithModules = await getStudentModules(session?.user.id);
 
-  if (!studentCourseModules.modules.length) {
+  if (!studentCourseModules.modules?.length) {
     return <div>No Modules Found</div>;
   }
 
@@ -20,7 +20,7 @@ const Dashboard = async () => {
     <div className="p-10">
       <h1 className="text-4xl font-mono mb-10">My Modules:</h1>
       <div className="grid grid-cols-3 gap-4">
-        {studentCourseModules.modules.map((module) => {
+        {studentCourseModules.modules?.map((module) => {
           const moduleLinks = [
             {
               href: `/module/${module.id}/marks`,
@@ -45,7 +45,7 @@ const Dashboard = async () => {
                 <h2>Name: {module.name}</h2>
                 <p>Code: {module.code}</p>
                 <div className="flex justify-between text-sm mt-10 min-h-16 items-end">
-                  {moduleLinks.map((link, index) => (
+                  {moduleLinks?.map((link, index) => (
                     <Link key={index} href={link.href} className="flex flex-col gap-2 items-center text-gray-400">
                       <link.icon className="mr-1 h-5 w-5" />
                       <span>{link.text}</span>
