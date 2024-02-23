@@ -18,6 +18,7 @@ import { MarkModule } from './common/marks/mark.module';
 import { EventModule } from './common/events/event.module';
 import { OrderModule } from './common/orders/order.module';
 import { LessonModule } from './common/lessons/lesson.module';
+import { ClassModule } from './common/classes/class.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { LessonModule } from './common/lessons/lesson.module';
     EventModule,
     OrderModule,
     LessonModule,
+    ClassModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
