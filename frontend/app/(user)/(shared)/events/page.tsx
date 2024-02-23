@@ -1,8 +1,8 @@
 import { getEvents } from '@/utils/backend-route';
-import EventCalendar from '@/components/shared/event-calendar';
+import EventsCalendar from '@/components/shared/events-calendar';
 
 export default async function Events() {
   const events = await getEvents();
 
-  return <EventCalendar events={events} />;
+  return <EventsCalendar events={events} />;
 }
