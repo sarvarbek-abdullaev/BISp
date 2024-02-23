@@ -193,6 +193,21 @@ export class StudentService {
     });
   }
 
+  async getStudentAttendances(id: string): Promise<any> {
+    return this.prismaService.attendance.findMany({
+      where: {
+        studentId: id,
+      },
+      include: {
+        class: {
+          include: {
+            module: true,
+          },
+        },
+      },
+    });
+  }
+
   // async getStudentByEmail(email: string): Promise<Student> {
   //   return this.prismaService.student.findUnique({
   //     where: {
