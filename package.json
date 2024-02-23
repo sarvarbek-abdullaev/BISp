@@ -8,8 +8,8 @@
     "node": ">= 20.0.0"
   },
   "workspaces": [
-    "backend",
-    "frontend"
+    "backend/*",
+    "frontend/*"
   ],
   "scripts": {
     "start:backend": "npm run start:dev --prefix backend",
