@@ -52,6 +52,11 @@ enum EnrollmentStatus {
   APPROVED
 }
 
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
 model Profile {
   id             String          @id @default(auto()) @map("_id") @db.ObjectId
   firstName      String
@@ -338,17 +343,17 @@ model Class {
 }
 
 model Attendance {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  status    Status   @default(ACTIVE)
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  status    AttendanceStatus @default(PRESENT)
   //
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
   //
-  studentId String   @db.ObjectId
-  student   Student  @relation(fields: [studentId], references: [id])
+  studentId String           @db.ObjectId
+  student   Student          @relation(fields: [studentId], references: [id])
   //
-  classId   String?  @db.ObjectId
-  class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?          @db.ObjectId
+  class     Class?           @relation(fields: [classId], references: [id])
 }
 
 // model Payment {
