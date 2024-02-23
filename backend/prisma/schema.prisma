@@ -69,27 +69,25 @@ model AcademicYear {
 }
 
 model Profile {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  firstName           String
-  lastName            String
-  email               String               @unique
-  birthDate           DateTime             @db.Date
-  status              Status               @default(ACTIVE)
-  password            String?
-  role                Role                 @default(STUDENT)
+  id                   String                @id @default(auto()) @map("_id") @db.ObjectId
+  firstName            String
+  lastName             String
+  email                String                @unique
+  birthDate            DateTime              @db.Date
+  status               Status                @default(ACTIVE)
+  password             String?
+  role                 Role                  @default(STUDENT)
   //
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
   //
-  orders              Order[]
-  profileModules      ProfileModule[]
-  // payments  Payment[]
-  // 
-  students            Student[]
-  teachers            Teacher[]
-  admins              Admin[]
-  registeredModules   RegisteredModule[]
-  moduleRegistrations ModuleRegistration[]
+  orders               Order[]
+  profileModules       ProfileModule[]
+  students             Student[]
+  teachers             Teacher[]
+  admins               Admin[]
+  registeredModules    RegisteredModule[]
+  modulesRegistrations ModulesRegistration[]
 }
 
 model Student {
@@ -168,32 +166,58 @@ model StudentGroup {
 }
 
 model Module {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  code                String               @unique
-  name                String
-  status              Status               @default(ACTIVE)
-  description         String?
+  id                          String                       @id @default(auto()) @map("_id") @db.ObjectId
+  code                        String                       @unique
+  name                        String
+  status                      Status                       @default(ACTIVE)
+  description                 String?
   //
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
   //
-  level               Level                @default(LEVEL_1)
+  level                       Level                        @default(LEVEL_1)
   //
-  courseId            String?              @db.ObjectId
-  course              Course?              @relation(fields: [courseId], references: [id])
+  courseId                    String?                      @db.ObjectId
+  course                      Course?                      @relation(fields: [courseId], references: [id])
   //
-  teacherId           String?              @db.ObjectId
-  teacher             Teacher?             @relation(fields: [teacherId], references: [id])
+  teacherId                   String?                      @db.ObjectId
+  teacher                     Teacher?                     @relation(fields: [teacherId], references: [id])
   //
-  events              Event[]
-  lessons             Lesson[]
-  exams               Exam[]
-  profileModules      ProfileModule[]
-  classes             Class[]
-  registeredModules   RegisteredModule[]
-  MmduleRegistrations ModuleRegistration[]
+  events                      Event[]
+  lessons                     Lesson[]
+  exams                       Exam[]
+  profileModules              ProfileModule[]
+  classes                     Class[]
+  registeredModules           RegisteredModule[]
+  moduleToModuleRegistrations ModuleToModuleRegistration[]
 
   @@unique([code, courseId])
+}
+
+model ModulesRegistration {
+  id                          String                       @id @default(auto()) @map("_id") @db.ObjectId
+  status                      EnrollmentStatus             @default(PENDING)
+  // 
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  //
+  profileId                   String                       @db.ObjectId
+  profile                     Profile                      @relation(fields: [profileId], references: [id])
+  // 
+  moduleToModuleRegistrations ModuleToModuleRegistration[]
+}
+
+model ModuleToModuleRegistration {
+  id                    String              @id @default(auto()) @map("_id") @db.ObjectId
+  //
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  //
+  module                Module              @relation(fields: [moduleId], references: [id])
+  moduleId              String              @db.ObjectId
+  //
+  modulesRegistration   ModulesRegistration @relation(fields: [modulesRegistrationId], references: [id])
+  modulesRegistrationId String              @db.ObjectId
 }
 
 model RegisteredModule {
@@ -211,19 +235,6 @@ model RegisteredModule {
   academicYearId String       @db.ObjectId
 
   @@unique([profileId, moduleId, academicYearId])
-}
-
-model ModuleRegistration {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  status    Status   @default(ACTIVE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  //
-  profile   Profile  @relation(fields: [profileId], references: [id])
-  profileId String   @db.ObjectId
-  //
-  module    Module   @relation(fields: [moduleId], references: [id])
-  moduleId  String   @db.ObjectId
 }
 
 model ProfileModule {
