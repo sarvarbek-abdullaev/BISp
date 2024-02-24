@@ -1,7 +1,7 @@
 import { getStudentModules } from '@/actions/handleGet.action';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { StudentCourseWithModules } from '../../../../../backend/src/common/students/student.service';
+import { StudentModulesByYear } from '../../../../../backend/src/common/students/student.service';
 import Link from '@/components/shared/Link';
 import { ClipboardCheckIcon, UsersIcon, FileTextIcon } from 'lucide-react';
 
@@ -10,9 +10,11 @@ const Dashboard = async () => {
 
   if (!session) return <div>Not logged in</div>;
 
-  const studentCourseModules: StudentCourseWithModules = await getStudentModules(session?.user.id);
+  const studentCourseModules: StudentModulesByYear[] = await getStudentModules(session?.user.id);
 
-  if (!studentCourseModules.modules?.length) {
+  const currentYear = studentCourseModules[0]?.modules;
+
+  if (!currentYear?.length) {
     return <div>No Modules Found</div>;
   }
 
@@ -20,7 +22,7 @@ const Dashboard = async () => {
     <div className="p-10">
       <h1 className="text-4xl font-mono mb-10">My Modules:</h1>
       <div className="grid grid-cols-3 gap-4">
-        {studentCourseModules.modules?.map((module) => {
+        {currentYear?.map((module) => {
           const moduleLinks = [
             {
               href: `/module/${module.id}/marks`,

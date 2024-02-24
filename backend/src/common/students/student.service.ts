@@ -5,21 +5,15 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import {
-  Course,
-  Module,
-  Order,
-  Status,
-  Student,
-  StudentGroup,
-} from '@prisma/client';
+import { Module, Order, Status, Student, StudentGroup } from '@prisma/client';
 import { UserDto } from '../../dtos';
 
 interface StudentWithCurrentGroup extends Student {
   currentGroup: StudentGroup;
 }
 
-export interface StudentCourseWithModules extends Course {
+export interface StudentModulesByYear {
+  academicYear: number;
   modules: Module[];
 }
 
@@ -147,21 +141,48 @@ export class StudentService {
     return delete student.profile.password && { ...student, currentGroup };
   }
 
-  async getStudentModules(id: string): Promise<StudentCourseWithModules> {
+  async getStudentModules(id: string): Promise<StudentModulesByYear[]> {
     const student = await this.prismaService.student.findUnique({
       where: {
         id,
       },
       include: {
-        course: {
+        profile: {
           include: {
-            modules: true,
+            registeredModules: {
+              include: {
+                module: {
+                  include: {
+                    course: true,
+                  },
+                },
+                academicYear: {
+                  select: {
+                    year: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
     });
 
-    return student.course;
+    return student.profile.registeredModules.reduce((acc, module) => {
+      const existingYearIndex = acc.findIndex(
+        (m) => m.academicYear === module.academicYear.year,
+      );
+
+      if (existingYearIndex !== -1) {
+        acc[existingYearIndex].modules.push(module.module);
+      } else {
+        acc.push({
+          academicYear: module.academicYear.year,
+          modules: [module.module],
+        });
+      }
+      return acc;
+    }, []);
   }
 
   async getStudentOrders(id: string): Promise<UserOrder[]> {

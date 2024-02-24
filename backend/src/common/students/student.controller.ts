@@ -12,8 +12,8 @@ import { Attendance, Student } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import {
   StudentService,
-  StudentCourseWithModules,
   UserOrder,
+  StudentModulesByYear,
 } from './student.service';
 
 @Controller('students')
@@ -33,7 +33,7 @@ export class StudentController {
   @Get(':id/modules')
   async getStudentModules(
     @Param('id') id: string,
-  ): Promise<StudentCourseWithModules> {
+  ): Promise<StudentModulesByYear[]> {
     return await this.studentService.getStudentModules(id);
   }
 
