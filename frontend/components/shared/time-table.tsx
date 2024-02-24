@@ -2,7 +2,6 @@
 
 import {
   Agenda,
-  DragAndDrop,
   EventSettingsModel,
   Inject,
   Month,
@@ -63,8 +62,9 @@ const Calendar: FC<CalendarProps> = ({ lessons }) => {
       endHour="21:00"
       showQuickInfo={true}
       readonly={true}
+      disabled={true}
     >
-      <Inject services={[Week, WorkWeek, Month, Agenda, DragAndDrop]} />
+      <Inject services={[Week, WorkWeek, Month, Agenda]} />
     </ScheduleComponent>
   );
 };
