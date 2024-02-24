@@ -27,20 +27,20 @@ export class ModulesRegistrationController {
     );
   }
 
-  // @Post(':id/approve')
-  // async approveModulesRegistrationById(
-  //   @Param('id') id: string,
-  // ): Promise<ModulesRegistration> {
-  //   return this.courseService.approveModulesRegistrationById(id);
-  // }
-  //
-  // @Post(':id/reject')
-  // async rejectModulesRegistrationById(
-  //   @Param('id') id: string,
-  // ): Promise<ModulesRegistration> {
-  //   return this.courseService.rejectModulesRegistrationById(id);
-  // }
-  //
+  @Post(':id/approve')
+  async approveModulesRegistrationById(
+    @Param('id') id: string,
+  ): Promise<ModulesRegistration> {
+    return this.courseService.approveModulesRegistrationById(id);
+  }
+
+  @Post(':id/reject')
+  async rejectModulesRegistrationById(
+    @Param('id') id: string,
+  ): Promise<ModulesRegistration> {
+    return this.courseService.rejectModulesRegistrationById(id);
+  }
+
   @Delete(':id')
   async deleteModulesRegistrationById(
     @Param('id') id: string,

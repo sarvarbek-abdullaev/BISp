@@ -1,14 +1,14 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { ModulesRegistration, EnrollmentStatus } from '@prisma/client';
-import { StudentService } from '../students/student.service';
 
 @Injectable()
 export class ModulesRegistrationService {
-  constructor(
-    private prisma: PrismaService,
-    private studentService: StudentService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async createModulesRegistration(
     modulesRegistrationData,
@@ -103,14 +103,38 @@ export class ModulesRegistrationService {
       data: {
         status: EnrollmentStatus.APPROVED,
       },
+      include: {
+        moduleToModuleRegistrations: {
+          select: {
+            moduleId: true,
+          },
+        },
+      },
     });
 
-    // await this.studentService.setStudentCourse(
-    //   enrollment.profileId,
-    //   enrollment.moduleToModuleRegistrations[0].moduleId,
-    // );
+    const moduleIds = enrollment.moduleToModuleRegistrations.map(
+      (module) => module.moduleId,
+    );
 
-    // await this.studentService
+    const academicYear = await this.prisma.academicYear.findFirst({
+      where: {
+        year: 2024,
+      },
+    });
+
+    if (!academicYear) {
+      throw new NotFoundException('Academic year not found');
+    }
+
+    const academicYearId = academicYear?.id;
+
+    await this.prisma.registeredModule.createMany({
+      data: moduleIds.map((moduleId) => ({
+        academicYearId,
+        moduleId,
+        profileId: enrollment.profileId,
+      })),
+    });
 
     return enrollment;
   }
@@ -128,37 +152,6 @@ export class ModulesRegistrationService {
       },
     });
   }
-
-  // async approveModulesRegistrationById(id: string): Promise<ModulesRegistration> {
-  //   const enrollment = await this.prisma.registeredModule.update({
-  //     where: {
-  //       id,
-  //       status: EnrollmentStatus.PENDING,
-  //     },
-  //     data: {
-  //       status: EnrollmentStatus.APPROVED,
-  //     },
-  //   });
-  //
-  //   await this.studentService.setStudentCourse(
-  //     enrollment.studentId,
-  //     enrollment.courseId,
-  //   );
-  //
-  //   return enrollment;
-  // }
-  //
-  // async rejectModulesRegistrationById(id: string): Promise<ModulesRegistration> {
-  //   return this.prisma.registeredModule.update({
-  //     where: {
-  //       id,
-  //       status: ModulesRegistrationStatus.PENDING,
-  //     },
-  //     data: {
-  //       status: ModulesRegistrationStatus.CANCELED,
-  //     },
-  //   });
-  // }
 
   async deleteModulesRegistrationById(
     id: string,

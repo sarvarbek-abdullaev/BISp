@@ -233,8 +233,6 @@ model RegisteredModule {
   //
   academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
   academicYearId String       @db.ObjectId
-
-  @@unique([profileId, moduleId, academicYearId])
 }
 
 model ProfileModule {

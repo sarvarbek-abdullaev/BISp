@@ -119,7 +119,15 @@ export class StudentService {
           },
         },
         course: true,
-        profile: true,
+        profile: {
+          include: {
+            registeredModules: {
+              include: {
+                module: true,
+              },
+            },
+          },
+        },
         studentGroups: {
           select: {
             id: true,
