@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import { Enrollment, EnrollmentStatus } from '@prisma/client';
 import { StudentService } from '../students/student.service';
@@ -11,6 +11,19 @@ export class EnrollmentService {
   ) {}
 
   async createEnrollment(enrollmentData): Promise<Enrollment> {
+    const enrollments = await this.prisma.enrollment.findMany({
+      where: {
+        status: EnrollmentStatus.PENDING,
+        studentId: enrollmentData.studentId,
+      },
+    });
+
+    if (enrollments.length > 0) {
+      throw new ForbiddenException(
+        'You have already enrolled to the course. Wait for the approval.',
+      );
+    }
+
     return this.prisma.enrollment.create({
       data: enrollmentData,
     });

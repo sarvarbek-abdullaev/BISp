@@ -48,8 +48,8 @@ export class ModulesRegistrationController {
     return this.courseService.deleteModulesRegistrationById(id);
   }
 
-  // @Delete()
-  // async deleteAllModulesRegistrations(): Promise<ModulesRegistration[]> {
-  //   return this.courseService.deleteAllModulesRegistrations();
-  // }
+  @Delete()
+  async deleteAllModulesRegistrations(): Promise<ModulesRegistration[]> {
+    return this.courseService.deleteAllModulesRegistrations();
+  }
 }

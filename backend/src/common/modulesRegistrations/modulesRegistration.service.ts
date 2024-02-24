@@ -13,17 +13,17 @@ export class ModulesRegistrationService {
   async createModulesRegistration(
     modulesRegistrationData,
   ): Promise<ModulesRegistration> {
-    const { profileId, moduleToModuleRegistrations } = modulesRegistrationData;
+    const { profileId, modules } = modulesRegistrationData;
 
-    const modules = await this.prisma.module.findMany({
+    const modulesExist = await this.prisma.module.findMany({
       where: {
         id: {
-          in: moduleToModuleRegistrations.map((module) => module.moduleId),
+          in: modules,
         },
       },
     });
 
-    if (modules.length !== moduleToModuleRegistrations.length) {
+    if (modules.length !== modulesExist.length) {
       throw new BadRequestException(
         'One or more modules ids are invalid or do not exist.',
       );
@@ -43,6 +43,10 @@ export class ModulesRegistrationService {
         },
       });
 
+      const moduleToModuleRegistrations = modules.map((moduleId) => ({
+        moduleId,
+      }));
+
       return this.prisma.modulesRegistration.update({
         where: {
           id: registration.id,
@@ -54,6 +58,10 @@ export class ModulesRegistrationService {
         },
       });
     }
+
+    const moduleToModuleRegistrations = modules.map((moduleId) => ({
+      moduleId,
+    }));
 
     return this.prisma.modulesRegistration.create({
       data: {
@@ -169,8 +177,8 @@ export class ModulesRegistrationService {
     });
   }
 
-  // async deleteAllModulesRegistrations(): Promise<any> {
-  //   await this.prisma.moduleToModuleRegistration.deleteMany();
-  //   return this.prisma.modulesRegistration.deleteMany();
-  // }
+  async deleteAllModulesRegistrations(): Promise<any> {
+    await this.prisma.moduleToModuleRegistration.deleteMany();
+    return this.prisma.modulesRegistration.deleteMany();
+  }
 }
