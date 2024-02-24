@@ -1,5 +1,11 @@
+import PageContainer from '@/components/user/page-container';
+
 const Page = () => {
-  return <div>Course Application Page</div>;
+  return (
+    <PageContainer title="Course Application:">
+      <div>Course Application Page</div>
+    </PageContainer>
+  );
 };
 
 export default Page;

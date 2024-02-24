@@ -4,6 +4,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { StudentModulesByYear } from '../../../../../backend/src/common/students/student.service';
 import Link from '@/components/shared/Link';
 import { ClipboardCheckIcon, UsersIcon, FileTextIcon } from 'lucide-react';
+import PageContainer from '@/components/user/page-container';
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
@@ -15,8 +16,7 @@ const Dashboard = async () => {
   const currentYear = studentCourseModules[0]?.modules;
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-mono mb-10">My Modules:</h1>
+    <PageContainer title="My Modules:">
       {!currentYear?.length ? (
         <div>No Modules Found</div>
       ) : (
@@ -59,7 +59,7 @@ const Dashboard = async () => {
           })}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 };
 

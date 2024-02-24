@@ -1,15 +1,15 @@
 import { getProducts } from '@/actions/handleGet.action';
 import { Product } from '@prisma/client';
 import ProductsContainer from '@/components/shared/products-container';
+import PageContainer from '@/components/user/page-container';
 
 const Page = async () => {
   const products: Product[] = await getProducts();
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-mono mb-10">Products Available:</h1>
+    <PageContainer title="Products Available:">
       <ProductsContainer products={products} />
-    </div>
+    </PageContainer>
   );
 };
 

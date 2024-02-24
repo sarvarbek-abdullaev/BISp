@@ -1,5 +1,6 @@
 import Calendar from '@/components/shared/time-table';
 import { getGroups, getLessons, getModules } from '@/actions/handleGet.action';
+import PageContainer from '@/components/user/page-container';
 
 export default async function TimeTable() {
   const [groups, modules, lessons] = await Promise.all([getGroups(), getModules(), getLessons()]);
@@ -7,9 +8,8 @@ export default async function TimeTable() {
   // console.log(groups, modules, lessons);
 
   return (
-    <div className="container-fluid p-10">
-      <h1 className="h3 mb-3">Time Table</h1>
+    <PageContainer title="Time Table:">
       <Calendar groups={groups} modules={modules} lessons={lessons} />
-    </div>
+    </PageContainer>
   );
 }

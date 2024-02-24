@@ -3,6 +3,7 @@ import CourseApplication from '@/components/user/course-application';
 import { getCourses } from '@/actions/handleGet.action';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import PageContainer from '@/components/user/page-container';
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -19,8 +20,7 @@ const Page = async () => {
   const courses = await getCourses();
 
   return (
-    <div className="px-10">
-      <h1 className="text-4xl font-bold font-mono text-center py-5 mb-5">Course Enrollment Page</h1>
+    <PageContainer title="Course Registration:">
       <div className="flex space-x-4">
         <div>
           <p>
@@ -31,7 +31,7 @@ const Page = async () => {
       </div>
 
       <CourseApplication courses={courses} session={session} />
-    </div>
+    </PageContainer>
   );
 };
 
