@@ -5,7 +5,14 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Module, Order, Status, Student, StudentGroup } from '@prisma/client';
+import {
+  Module,
+  Order,
+  Status,
+  Student,
+  StudentGroup,
+  Course,
+} from '@prisma/client';
 import { UserDto } from '../../dtos';
 
 interface StudentWithCurrentGroup extends Student {
@@ -235,6 +242,19 @@ export class StudentService {
         },
       },
     });
+  }
+
+  async getStudentCourse(id: string): Promise<Course> {
+    const student = await this.prismaService.student.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        course: true,
+      },
+    });
+
+    return student.course;
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

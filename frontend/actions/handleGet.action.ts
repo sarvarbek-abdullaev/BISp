@@ -260,6 +260,19 @@ export const getStudentModules = async (id: string) => {
   }
 };
 
+export const getStudentCourse = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/students/${id}/course`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    // console.log(error);
+  }
+};
+
 export const getStudentAttendances = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/students/${id}/attendances`, {

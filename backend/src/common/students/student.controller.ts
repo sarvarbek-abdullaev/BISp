@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Attendance, Student } from '@prisma/client';
+import { Attendance, Student, Course } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import {
   StudentService,
@@ -45,6 +45,11 @@ export class StudentController {
   @Get(':id/attendances')
   async getStudentAttendances(@Param('id') id: string): Promise<Attendance[]> {
     return await this.studentService.getStudentAttendances(id);
+  }
+
+  @Get(':id/course')
+  async getStudentCourse(@Param('id') id: string): Promise<Course> {
+    return await this.studentService.getStudentCourse(id);
   }
 
   @Put(':id')
