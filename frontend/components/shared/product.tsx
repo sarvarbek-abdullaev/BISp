@@ -47,34 +47,34 @@ const ProductCard: FC<ProductCardProps> = ({ product, cart, setCart }) => {
 
   return (
     <div className="group flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-      <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
+      <div className="relative mx-3 mt-3 flex h-40 md:h-60 overflow-hidden rounded-xl">
         {/* @ts-ignore */}
         <Image src={product.image} alt="product image" layout="fill" objectFit="cover" />
       </div>
-      <div className="mt-4 px-5 pb-5">
-        <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
-        <div className="mt-2 mb-5 flex items-center justify-between">
+      <div className="mt-2 px-2 pb-2 lg:mt-4 lg:px-5 lg:pb-5">
+        <h5 className="text-sm sm:text-md md:text-lg lg:text-xl tracking-tight text-slate-900">{product.name}</h5>
+        <div className="m-1 lg:mb-5 flex items-center justify-between">
           <p>
-            <span className="text-3xl font-bold text-slate-900">${product.price}</span>
+            <span className="text-md sm:text-lg lg:text-lg xl:text-3xl font-bold text-slate-900">${product.price}</span>
             {/*<span className="text-sm text-slate-900 line-through">$699</span>*/}
           </p>
         </div>
         <Select onValueChange={(value: typeof defaultVariant) => setVariant(value)} defaultValue={variant}>
-          <SelectTrigger disabled={product.variants.length <= 1}>
+          <SelectTrigger className="h-6 text-xs sm:h-auto sm:text-md" disabled={product.variants.length <= 1}>
             <SelectValue placeholder="Select a variant" />
           </SelectTrigger>
           <SelectContent>
             {product.variants.map((variant, id) => {
               return (
-                <SelectItem key={id} value={variant}>
+                <SelectItem key={id} value={variant} className="h-6 text-xs sm:h-auto sm:text-md">
                   {variant}
                 </SelectItem>
               );
             })}
           </SelectContent>
         </Select>
-        <div className="border-t border-gray-200 my-4" />
-        <div className="flex w-full items-center justify-center min-h-12 rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+        <div className="border-t border-gray-200 my-2 lg:my-4" />
+        <div className="flex w-full items-center justify-center h-10 min-h-10 md:min-h-12 rounded-md bg-slate-900 px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
           {alreadyInCart ? (
             <div className="flex justify-between w-full mx-3">
               <span className="mr-1 focus:outline-none" onClick={() => handleUpdateQuantity(productIndex, -1)}>
@@ -90,7 +90,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, cart, setCart }) => {
               onClick={!alreadyInCart ? onClick : undefined}
               className="flex items-center justify-center cursor-pointer w-full"
             >
-              <LucideShoppingCart size="20px" className="mr-2" />
+              <LucideShoppingCart size="20px" className="mr-1 md:mr-2" />
               Add to cart
             </span>
           )}

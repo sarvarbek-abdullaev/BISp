@@ -19,11 +19,11 @@ const Link: FC<LinkProps> = ({ href, children, className, indicator = false, que
     <NextLink href={href} className={cn(className, isActive ? 'disabled' : '')}>
       <div
         className={cn(
-          'absolute top-0 right-0 w-[5px] rounded-lg h-full hidden sm:block',
+          'absolute top-0 right-0 w-[5px] rounded-lg h-full hidden md:block',
           isActive && indicator && 'bg-foreground',
         )}
       />
-      <div className={cn('', indicator && 'text-muted-foreground', isActive && indicator ? 'text-foreground' : '')}>
+      <div className={cn(indicator && 'text-muted-foreground', isActive && indicator ? 'text-foreground' : '')}>
         {children}
       </div>
     </NextLink>

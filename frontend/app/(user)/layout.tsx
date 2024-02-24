@@ -20,10 +20,10 @@ const UserLayout: FC<LayoutProps> = async ({ children }) => {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <Container>
-        <div className="flex h-full">
+      <Container className="">
+        <div className="flex h-full justify-center">
           <GlobalSidebar tabs={userTabs} session={session} />
-          <Wrapper>{children}</Wrapper>
+          <Wrapper className="pb-24 md:pb-0">{children}</Wrapper>
         </div>
       </Container>
     </div>

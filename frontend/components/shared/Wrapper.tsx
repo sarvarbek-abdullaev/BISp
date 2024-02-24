@@ -1,17 +1,24 @@
 import { FC, ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 interface WrapperProps {
   children: ReactNode;
   flex?: string;
   padding?: string;
   width?: string;
+  className?: string;
 }
 
-export const Wrapper: FC<WrapperProps> = ({ children, flex, padding = '5', width = '90%' }) => {
+export const Wrapper: FC<WrapperProps> = ({ children, className, flex, padding, width }) => {
   return (
     <div
-      className="flex flex-col mx-10 px-5 py-2 rounded-lg overflow-hidden bg-[#202020] overflow-y-auto"
-      style={{ flex, padding, width }}
+      className={cn(
+        'flex flex-col md:mx-10 md:px-5 md:py-2 rounded-lg overflow-hidden bg-[#202020] overflow-y-auto flex-1',
+        flex && `flex-${flex}`,
+        padding && `p-${padding}`,
+        width && `w-${width}`,
+        className,
+      )}
     >
       {children}
     </div>

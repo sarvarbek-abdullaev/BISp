@@ -8,8 +8,8 @@ interface PageContainerProps {
 }
 const PageContainer: FC<PageContainerProps> = ({ children, title, className }) => {
   return (
-    <div className={cn('p-10', className)}>
-      <h1 className="text-4xl font-mono mb-10">{title}</h1>
+    <div className={cn('p-6 md:p-8 lg:p-10', className)}>
+      <h1 className="text-2xl mb-3 font-mono md:text-3xl md:mb-5 lg:text-4xl lg:mb-10">{title}</h1>
       {children}
     </div>
   );

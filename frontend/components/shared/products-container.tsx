@@ -83,7 +83,7 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {products.map((product) => (
           <div key={product.id} className="justify-self-center w-full">
             <ProductCard product={product} setCart={setCart} cart={cart} />
@@ -97,7 +97,6 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
             $
             {cart.items.reduce((acc, item) => {
               const product = products.find((p) => p.id === item.productId);
-              console.log(product);
               return acc + parseInt(item.quantity) * (product?.price || 0);
             }, 0)}
           </span>
@@ -106,7 +105,7 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
           disabled={cart.items.length === 0}
           onClick={handleOrderNow}
           variant="outline"
-          className="text-white font-bold py-6 px-16 text-lg rounded border-black min-w-60 rounded-lg"
+          className="text-white font-bold py-6 px-8 md:px-16 text-lg border-black min-w-32 md:min-w-60 rounded-lg"
         >
           {orderPlacing ? <Loader2 className="animate-spin" size={24} /> : 'Order Now'}
         </Button>
