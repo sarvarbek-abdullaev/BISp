@@ -23,7 +23,9 @@ const Link: FC<LinkProps> = ({ href, children, className, indicator = false, que
           isActive && indicator && 'bg-foreground',
         )}
       />
-      <div className={cn('text-muted-foreground', isActive && 'text-foreground')}>{children}</div>
+      <div className={cn('', indicator && 'text-muted-foreground', isActive && indicator ? 'text-foreground' : '')}>
+        {children}
+      </div>
     </NextLink>
   );
 };
