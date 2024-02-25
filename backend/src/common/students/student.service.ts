@@ -303,7 +303,11 @@ export class StudentService {
           include: {
             registeredModules: {
               include: {
-                module: true,
+                module: {
+                  include: {
+                    exams: true,
+                  },
+                },
               },
             },
           },
@@ -330,11 +334,21 @@ export class StudentService {
           return moduleAcc;
         }, []);
 
-        // Push module with its marks into the accumulator
-        acc.push({
-          module: registeredModule.module,
-          marks: moduleMarks,
-        });
+        const module = {
+          ...registeredModule.module,
+          exams: registeredModule.module.exams.map((exam) => {
+            const examMark = moduleMarks.find(
+              (mark) => mark.examId === exam.id,
+            );
+
+            return {
+              ...exam,
+              mark: examMark ? examMark.mark : null,
+            };
+          }),
+        };
+
+        acc.push(module);
 
         return acc;
       },

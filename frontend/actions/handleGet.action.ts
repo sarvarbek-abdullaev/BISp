@@ -286,6 +286,19 @@ export const getStudentAttendances = async (id: string) => {
   }
 };
 
+export const getStudentMarks = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/students/${id}/marks`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getOrdersByUserId = async (type: string, id: string) => {
   try {
     const res = await fetch(`${API_URL}/${type}s/${id}/orders`, {
