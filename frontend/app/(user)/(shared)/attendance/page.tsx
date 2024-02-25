@@ -5,18 +5,30 @@ import Student from '@/app/(user)/(shared)/attendance/components/student';
 import Teacher from '@/app/(user)/(shared)/attendance/components/teacher';
 import PageContainer from '@/components/user/page-container';
 
-const Page = async () => {
+const Page = async ({ searchParams }: any) => {
+  const { moduleCode } = searchParams;
+
   const session = await getServerSession(authOptions);
 
   if (!session) return <div>Not logged in</div>;
 
   const id = session.user.id;
   const role = session.user.profile.role.toLowerCase();
-  const attendances = await getStudentAttendances(id);
+  let data = null;
+
+  if (role === 'student') {
+    data = await getStudentAttendances(id);
+  } else {
+    // data = await getTeacherAttendances(id);
+  }
 
   return (
     <PageContainer title="Attendance:">
-      {role === 'student' ? <Student attendances={attendances} /> : <Teacher attendances={attendances} />}
+      {role === 'student' ? (
+        <Student attendances={data} moduleCode={moduleCode} />
+      ) : (
+        <Teacher attendances={data} moduleCode={moduleCode} />
+      )}
     </PageContainer>
   );
 };

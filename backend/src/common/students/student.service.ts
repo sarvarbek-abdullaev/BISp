@@ -6,12 +6,12 @@ import {
 import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import {
+  Course,
   Module,
   Order,
   Status,
   Student,
   StudentGroup,
-  Course,
 } from '@prisma/client';
 import { UserDto } from '../../dtos';
 
@@ -230,18 +230,54 @@ export class StudentService {
   }
 
   async getStudentAttendances(id: string): Promise<any> {
-    return this.prismaService.attendance.findMany({
+    const studentAttendances = await this.prismaService.student.findFirst({
       where: {
-        studentId: id,
+        id,
       },
       include: {
-        class: {
+        profile: {
+          select: {
+            registeredModules: {
+              select: {
+                module: true,
+              },
+            },
+          },
+        },
+        attendances: {
           include: {
-            module: true,
+            class: {
+              include: {
+                module: true,
+              },
+            },
           },
         },
       },
     });
+
+    return studentAttendances.profile.registeredModules.reduce(
+      (acc, registeredModule) => {
+        const moduleCode = registeredModule.module.id;
+        const moduleAttendances = studentAttendances.attendances.reduce(
+          (moduleAcc, attendance) => {
+            if (attendance.class?.module?.id === moduleCode) {
+              moduleAcc.push(delete attendance.class.module && attendance);
+            }
+            return moduleAcc;
+          },
+          [],
+        );
+
+        acc.push({
+          module: registeredModule.module,
+          attendances: moduleAttendances,
+        });
+
+        return acc;
+      },
+      [],
+    );
   }
 
   async getStudentCourse(id: string): Promise<Course> {

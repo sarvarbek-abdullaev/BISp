@@ -22,3 +22,10 @@ export const createDateTime = (date: string) => {
     minute: 'numeric',
   });
 };
+
+export const createTime = (date: string) => {
+  return new Date(date).toLocaleTimeString(navigator.language, {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+};

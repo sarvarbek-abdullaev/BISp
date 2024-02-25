@@ -24,12 +24,12 @@ const Dashboard = async () => {
           {currentYear?.map((module) => {
             const moduleLinks = [
               {
-                href: `/module/${module.id}/marks`,
+                href: `/marks/?moduleCode=${module.code}`,
                 icon: ClipboardCheckIcon,
                 text: 'Marks',
               },
               {
-                href: `/module/${module.id}/attendance`,
+                href: `/attendance?moduleCode=${module.code}`,
                 icon: UsersIcon,
                 text: 'Attendance',
               },

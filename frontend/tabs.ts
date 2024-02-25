@@ -26,6 +26,8 @@ export const productColumns = ['No', 'Name', 'Price', 'Status', 'Image', 'Date C
 
 export const orderColumns = ['No', 'Name', 'Subtotal', 'Products', 'Status', 'Date Created', 'Actions'];
 
+export const attendanceColumns = ['No', 'Class', 'Status', 'Created', 'Time'];
+
 export const userTabs = [
   {
     name: 'Dashboard',
