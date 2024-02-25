@@ -47,6 +47,11 @@ export class StudentController {
     return await this.studentService.getStudentAttendances(id);
   }
 
+  @Get(':id/marks')
+  async getStudentMarks(@Param('id') id: string): Promise<any> {
+    return await this.studentService.getStudentMarks(id);
+  }
+
   @Get(':id/course')
   async getStudentCourse(@Param('id') id: string): Promise<Course> {
     return await this.studentService.getStudentCourse(id);

@@ -293,6 +293,55 @@ export class StudentService {
     return student.course;
   }
 
+  async getStudentMarks(id: string): Promise<any> {
+    const studentMarks = await this.prismaService.student.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        profile: {
+          include: {
+            registeredModules: {
+              include: {
+                module: true,
+              },
+            },
+          },
+        },
+        marks: {
+          include: {
+            exam: {
+              include: {
+                module: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return studentMarks.profile.registeredModules.reduce(
+      (acc, registeredModule) => {
+        const moduleCode = registeredModule.module.id;
+        const moduleMarks = studentMarks.marks.reduce((moduleAcc, mark) => {
+          if (mark.exam?.module?.id === moduleCode) {
+            moduleAcc.push(delete mark.exam.module && mark);
+          }
+          return moduleAcc;
+        }, []);
+
+        // Push module with its marks into the accumulator
+        acc.push({
+          module: registeredModule.module,
+          marks: moduleMarks,
+        });
+
+        return acc;
+      },
+      [],
+    );
+  }
+
   // async getStudentByEmail(email: string): Promise<Student> {
   //   return this.prismaService.student.findUnique({
   //     where: {
