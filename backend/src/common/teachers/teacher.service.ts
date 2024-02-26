@@ -133,7 +133,7 @@ export class TeacherService {
   async updateTeacherById(id: string, teacherData): Promise<Teacher> {
     if (teacherData.password) {
       throw new BadRequestException(
-        'You cannot update the password of an admin using this endpoint. Use the /auth/change-password endpoint instead.',
+        'You cannot update the password of an admin using this endpoint. Use the /auth/forgot-password endpoint instead.',
       );
     }
 

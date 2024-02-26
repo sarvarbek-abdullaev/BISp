@@ -12,7 +12,7 @@ export class AuthController {
     return this.authService.login(loginData);
   }
 
-  @Post('change-password')
+  @Post('forgot-password')
   async changePassword(@Body() changePassword: ChangePasswordDto) {
     return this.authService.changePassword(changePassword);
   }

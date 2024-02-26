@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Logo } from '@/components/shared/Logo';
+import Link from '@/components/shared/Link';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -120,7 +122,9 @@ export default function Page() {
                     </Alert>
                   )}
                   <div className="text-end">
-                    <Button variant="link">Forgot password?</Button>
+                    <Link href="/auth/forgot-password" className="text-xs text-zinc-500 dark:text-white/70">
+                      <Button variant="link">Forgot password?</Button>
+                    </Link>
                   </div>
                   <Button variant="secondary">Sign in</Button>
                 </div>

@@ -2,6 +2,21 @@
 import { API_URL } from '@/actions/handleGet.action';
 import { revalidatePath } from 'next/cache';
 
+export const changePassword = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/auth/forgot-password`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateUserById = async (type: string, id: string | undefined, data: any) => {
   try {
     const res = await fetch(`${API_URL}/${type}/${id}`, {
