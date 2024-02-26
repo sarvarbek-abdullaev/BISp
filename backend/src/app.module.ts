@@ -21,6 +21,7 @@ import { LessonModule } from './common/lessons/lesson.module';
 import { ClassModule } from './common/classes/class.module';
 import { AttendanceModule } from './common/attendances/attendance.module';
 import { ModulesRegistrationModule } from './common/modulesRegistrations/modulesRegistration.module';
+import { PaymentModule } from './common/payments/payment.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ModulesRegistrationModule } from './common/modulesRegistrations/modules
     ClassModule,
     AttendanceModule,
     ModulesRegistrationModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],
