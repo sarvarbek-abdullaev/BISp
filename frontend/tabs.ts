@@ -112,7 +112,7 @@ export const adminProgramTabs = [
   },
   {
     name: 'Modules',
-    path: '/admin/programs/marks',
+    path: '/admin/programs/modules',
   },
   {
     name: 'Exams',
