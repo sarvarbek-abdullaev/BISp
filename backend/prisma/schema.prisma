@@ -88,6 +88,7 @@ model Profile {
   admins               Admin[]
   registeredModules    RegisteredModule[]
   modulesRegistrations ModulesRegistration[]
+  payments             Payment[]
 }
 
 model Student {
@@ -358,12 +359,11 @@ model Order {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   //
-  orderedProducts OrderedProduct[]
-  //
   profileId       String           @db.ObjectId
   profile         Profile          @relation(fields: [profileId], references: [id])
-  // 
-  // payments        Payment[]
+  //
+  orderedProducts OrderedProduct[]
+  payments        Payment[]
 }
 
 model Lesson {
@@ -410,18 +410,17 @@ model Attendance {
   class     Class?           @relation(fields: [classId], references: [id])
 }
 
-// model Payment {
-//   id        String        @id @default(auto()) @map("_id") @db.ObjectId
-//   amount    Float
-//   status    PaymentStatus @default(PENDING)
-//   type      PaymentType
-//   //
-//   createdAt DateTime      @default(now())
-//   updatedAt DateTime      @updatedAt
-//   //
-//   profile   Profile?      @relation(fields: [profileId], references: [id])
-//   profileId String?       @db.ObjectId
-//   //
-//   order     Order?        @relation(fields: [orderId], references: [id])
-//   orderId   String?       @db.ObjectId
-// }
+model Payment {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float
+  type      PaymentType
+  //
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  //
+  profileId String      @db.ObjectId
+  profile   Profile     @relation(fields: [profileId], references: [id])
+  //
+  orderId   String?     @db.ObjectId
+  order     Order?      @relation(fields: [orderId], references: [id])
+}
