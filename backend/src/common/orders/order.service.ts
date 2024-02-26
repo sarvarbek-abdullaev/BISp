@@ -13,6 +13,12 @@ export class OrderService {
   constructor(private prismaService: PrismaService) {}
 
   async createOrder(orderData): Promise<Order> {
+    const { paymentDetails } = orderData;
+
+    const prismaData = {
+      profileId: orderData.profileId,
+    };
+
     const orderedProducts = orderData.orderedProducts.map((orderedProduct) => {
       return {
         productId: orderedProduct.productId,
@@ -20,13 +26,17 @@ export class OrderService {
         selectedSize: orderedProduct.selectedSize,
       };
     });
+
+    prismaData['status'] = paymentDetails
+      ? OrderStatus.PAID
+      : OrderStatus.PENDING;
+
+    prismaData['orderedProducts'] = {
+      create: orderedProducts,
+    };
+
     return this.prismaService.order.create({
-      data: {
-        profileId: orderData.profileId,
-        orderedProducts: {
-          create: orderedProducts,
-        },
-      },
+      data: prismaData,
     });
   }
 
