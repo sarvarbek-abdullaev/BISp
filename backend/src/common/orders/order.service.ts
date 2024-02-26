@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Order, OrderedProduct, OrderStatus } from '@prisma/client';
+import {
+  Order,
+  OrderedProduct,
+  OrderStatus,
+  PaymentType,
+} from '@prisma/client';
 
 interface OrderData extends Order {
   subtotal: number;
@@ -35,7 +40,17 @@ export class OrderService {
       create: orderedProducts,
     };
 
-    return this.prismaService.order.create({
+    if (paymentDetails) {
+      prismaData['payments'] = {
+        create: {
+          profileId: orderData.profileId,
+          amount: paymentDetails.amount,
+          type: PaymentType.PRODUCT,
+        },
+      };
+    }
+
+    return await this.prismaService.order.create({
       data: prismaData,
     });
   }

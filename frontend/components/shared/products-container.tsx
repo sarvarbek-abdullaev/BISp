@@ -47,6 +47,8 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
         paymentDetails: {
           cardDetails: paymentRequest.paymentMethodData.info.cardDetails,
           cardNetwork: paymentRequest.paymentMethodData.info.cardNetwork,
+          paymentMethod: paymentRequest.paymentMethodData.type,
+          amount: totalPrice,
         },
       };
       setOrderPlacing(true);
