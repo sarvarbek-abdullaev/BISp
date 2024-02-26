@@ -12,15 +12,19 @@ const GooglePaymentButton: FC<GooglePaymentButtonProps> = ({
   currencyCode = 'USD',
   onSuccessfulPayment,
 }) => {
+  const isPriceZero = +totalPrice === 0;
+
   return (
     <GooglePayButton
       environment="TEST"
       buttonType="pay"
       buttonColor="black"
       buttonSizeMode="static"
+      className={isPriceZero ? 'pointer-events-none opacity-50' : ''}
       paymentRequest={{
         apiVersion: 2,
         apiVersionMinor: 0,
+        emailRequired: true,
         allowedPaymentMethods: [
           {
             type: 'CARD',
