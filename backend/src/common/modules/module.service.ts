@@ -26,6 +26,7 @@ export class ModuleService {
   }
 
   async updateModuleById(id: string, moduleData): Promise<Module> {
+    console.log({ moduleData });
     const prismaData = {
       ...moduleData,
     };

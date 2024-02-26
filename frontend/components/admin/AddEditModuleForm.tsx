@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 interface AddEditFormProps {
   module?: Module;
   courses: Course[];
+  teachers: any[];
   type: string;
 }
 
@@ -23,6 +24,7 @@ const formSchema = z.object({
   code: z.string().min(2, 'Code must be at least 2 characters'),
   description: z.string().min(10, 'Description must be at least 3 characters'),
   courseId: z.string(),
+  teacherId: z.string().optional(),
 });
 
 const formElements = [
@@ -50,9 +52,15 @@ const formElements = [
     type: 'dropdown',
     required: true,
   },
+  {
+    label: 'Teacher',
+    name: 'teacherId',
+    type: 'dropdown',
+    required: false,
+  },
 ];
 
-const AddEditModuleForm: FC<AddEditFormProps> = ({ module, courses, type }) => {
+const AddEditModuleForm: FC<AddEditFormProps> = ({ module, teachers, courses, type }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,6 +68,7 @@ const AddEditModuleForm: FC<AddEditFormProps> = ({ module, courses, type }) => {
       code: module?.code || '',
       description: module?.description || '',
       courseId: module?.courseId || '',
+      teacherId: module?.teacherId || '',
     },
   });
 
@@ -118,17 +127,26 @@ const AddEditModuleForm: FC<AddEditFormProps> = ({ module, courses, type }) => {
                               {element.type === 'dropdown' ? (
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Select a course" />
+                                    <SelectValue placeholder={'Select a ' + element.label} />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {courses.map(
-                                      (course) =>
-                                        course.id && (
-                                          <SelectItem key={course.id} value={course.id}>
-                                            {course.name}
-                                          </SelectItem>
-                                        ),
-                                    )}
+                                    {element.name === 'courseId'
+                                      ? courses.map(
+                                          (course) =>
+                                            course.id && (
+                                              <SelectItem key={course.id} value={course.id}>
+                                                {course.name}
+                                              </SelectItem>
+                                            ),
+                                        )
+                                      : teachers?.map(
+                                          (teacher) =>
+                                            teacher.id && (
+                                              <SelectItem key={teacher.id} value={teacher.id}>
+                                                {teacher.profile?.firstName + ' ' + teacher.profile?.lastName}
+                                              </SelectItem>
+                                            ),
+                                        )}
                                   </SelectContent>
                                 </Select>
                               ) : (

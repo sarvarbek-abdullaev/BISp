@@ -13,6 +13,7 @@ export interface Module {
   description: string;
   courseId?: string;
   course?: Course;
+  teacherId?: string;
 }
 
 export interface Tab {

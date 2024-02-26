@@ -80,6 +80,8 @@ export const updateModuleById = async (id: string | undefined, validatePath: str
       },
     });
     const _data = await res.json();
+    console.log({ data });
+    console.log({ _data });
     revalidatePath(`/admin/programs/${validatePath}`);
     return _data;
   } catch (error) {
