@@ -31,15 +31,16 @@ export class TeacherService {
             role: Role.TEACHER,
           },
         },
+        modules: {
+          connect: teacherData.moduleIds
+            ? teacherData.moduleIds.map((id) => {
+                return {
+                  id,
+                };
+              })
+            : [],
+        },
       };
-
-      if (!!teacherData.courseId) {
-        prismaData['course'] = {
-          connect: {
-            id: teacherData.courseId,
-          },
-        };
-      }
 
       const teacher = await this.prismaService.teacher.create({
         data: prismaData,
@@ -140,21 +141,19 @@ export class TeacherService {
       throw new BadRequestException('You cannot change the role');
     }
 
-    const courseData = !!teacherData.courseId
-      ? {
-          connect: {
-            id: teacherData.courseId,
-          },
-        }
-      : {
-          disconnect: true,
-        };
-
     const prismaData = {
       profile: {
         update: teacherData.profile,
       },
-      course: courseData,
+      modules: {
+        set: teacherData.moduleIds
+          ? teacherData.moduleIds.map((id) => {
+              return {
+                id,
+              };
+            })
+          : [],
+      },
     };
 
     const teacher = await this.prismaService.teacher.update({

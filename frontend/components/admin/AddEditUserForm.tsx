@@ -1,36 +1,50 @@
 'use client';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateUserById } from '@/actions/handleUpdate.action';
 import { createUser } from '@/actions/handleCreate.action';
-import { Textarea } from '@/components/ui/textarea';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface AddEditFormProps {
   user?: {
     id: string;
-    name: string;
-    email: string;
-    birthYear: string;
+    profile: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      birthDate: string;
+    };
+    modules: any[];
   };
+  modules: any[];
   type: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters'),
+  firstName: z.string().min(3, 'Name must be at least 3 characters'),
+  lastName: z.string().min(3, 'Name must be at least 3 characters'),
   email: z.string().email('Invalid email'),
-  birthYear: z.string().min(4, 'Invalid birth year'),
+  birthDate: z.string(),
+  moduleIds: z.array(z.string()).optional(),
 });
 
 const formElements = [
   {
-    label: 'Name',
-    name: 'name',
+    label: 'First Name',
+    name: 'firstName',
+    type: 'text',
+    required: true,
+  },
+  {
+    label: 'Last Name',
+    name: 'lastName',
     type: 'text',
     required: true,
   },
@@ -41,23 +55,33 @@ const formElements = [
     required: true,
   },
   {
-    label: 'Birth Year',
-    name: 'birthYear',
-    type: 'text',
+    label: 'Birth Date',
+    name: 'birthDate',
+    type: 'date',
     required: true,
+  },
+  {
+    label: 'Modules',
+    name: 'moduleIds',
+    type: 'checkbox',
+    required: false,
   },
 ];
 
-const AddEditUserForm: FC<AddEditFormProps> = ({ user, type }) => {
+const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
   const isEdit = !!user;
   const router = useRouter();
+
+  const moduleIds = user?.modules?.map((module) => module.id);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.name || '',
-      email: user?.email || '',
-      birthYear: user?.birthYear || '',
+      firstName: user?.profile?.firstName || '',
+      lastName: user?.profile?.lastName || '',
+      email: user?.profile?.email || '',
+      birthDate: user?.profile?.birthDate || '',
+      moduleIds: moduleIds || [],
     },
   });
 
@@ -105,13 +129,40 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, type }) => {
                               {element.label}:
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                id={element.name}
-                                type={element.type}
-                                required={element.required}
-                                disabled={isLoading}
-                                {...field}
-                              />
+                              {element.type === 'checkbox' ? (
+                                <>
+                                  {modules.map((module) => (
+                                    <FormItem
+                                      key={module.id}
+                                      className="flex flex-row items-center space-x-3 space-y-0"
+                                    >
+                                      <FormControl>
+                                        <Checkbox
+                                          checked={field.value?.includes(module.id)}
+                                          onCheckedChange={(checked) => {
+                                            return checked
+                                              ? // @ts-ignore
+                                                field.onChange([...field.value, module.id])
+                                              : // @ts-ignore
+                                                field.onChange(field.value?.filter((value) => value !== module.id));
+                                          }}
+                                        />
+                                      </FormControl>
+                                      <FormLabel className="font-normal text-white text-md">{module.name}</FormLabel>
+                                    </FormItem>
+                                  ))}
+                                </>
+                              ) : element.type === 'date' ? (
+                                <input type="date" id={element.name} required={element.required} {...field} />
+                              ) : (
+                                <Input
+                                  id={element.name}
+                                  type={element.type}
+                                  required={element.required}
+                                  disabled={isLoading}
+                                  {...field}
+                                />
+                              )}
                             </FormControl>
                             <FormMessage />
                           </FormItem>
