@@ -65,7 +65,7 @@ export default async function GroupsPage({ searchParams }: any) {
     <>
       <EnrollmentSidebar />
       {courseCode ? (
-        <Wrapper>
+        <Wrapper className="flex-1">
           <Table columns={enrollmentColumns} rows={enrollments} type="enrollments" />
         </Wrapper>
       ) : (

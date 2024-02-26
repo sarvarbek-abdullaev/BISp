@@ -6,7 +6,7 @@ interface UsersLayoutProps {
 }
 
 const UsersLayout: FC<UsersLayoutProps> = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>;
+  return <Wrapper className="flex-1">{children}</Wrapper>;
 };
 
 export default UsersLayout;

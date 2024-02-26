@@ -13,7 +13,7 @@ export const Wrapper: FC<WrapperProps> = ({ children, className, flex, padding, 
   return (
     <div
       className={cn(
-        'flex flex-col md:mx-10 md:px-5 md:py-2 rounded-lg overflow-hidden bg-[#202020] overflow-y-auto flex-1',
+        'flex flex-col md:mx-10 md:px-5 md:py-2 rounded-lg overflow-hidden bg-[#202020] overflow-y-auto',
         flex && `flex-${flex}`,
         padding && `p-${padding}`,
         width && `w-${width}`,

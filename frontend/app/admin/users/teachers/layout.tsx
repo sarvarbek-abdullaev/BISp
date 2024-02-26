@@ -1,5 +1,3 @@
-import { Sidebar } from '@/components/shared/Sidebar';
-import { adminUsersTabs } from '@/tabs';
 import { FC } from 'react';
 import { Wrapper } from '@/components/shared/Wrapper';
 
@@ -8,7 +6,7 @@ interface UsersLayoutProps {
 }
 
 const UsersLayout: FC<UsersLayoutProps> = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>;
+  return <Wrapper className="flex-1">{children}</Wrapper>;
 };
 
 export default UsersLayout;
