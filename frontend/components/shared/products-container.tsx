@@ -105,13 +105,11 @@ const ProductsContainer: FC<ProductsContainerProps> = ({ products }) => {
           Total:
           <span className="font-bold">$ {totalPrice}</span>
         </h2>
-        <button disabled={cart.items.length === 0} className="disabled:hover:bg-transparent">
-          <GooglePaymentButton
-            totalPrice={totalPrice.toString()}
-            currencyCode="USD"
-            onSuccessfulPayment={handleOrderNow}
-          />
-        </button>
+        <GooglePaymentButton
+          totalPrice={totalPrice.toString()}
+          currencyCode="USD"
+          onSuccessfulPayment={handleOrderNow}
+        />
         {/*<Button*/}
         {/*  disabled={cart.items.length === 0}*/}
         {/*  onClick={handleOrderNow}*/}

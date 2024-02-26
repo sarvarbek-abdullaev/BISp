@@ -117,58 +117,62 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                   <div className="space-y-5">
-                    {formElements.map((element, index) => (
-                      <FormField
-                        key={element.type + index}
-                        // @ts-ignore
-                        name={element.name}
-                        control={form.control}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white/70">
-                              {element.label}:
-                            </FormLabel>
-                            <FormControl>
-                              {element.type === 'checkbox' ? (
-                                <>
-                                  {modules.map((module) => (
-                                    <FormItem
-                                      key={module.id}
-                                      className="flex flex-row items-center space-x-3 space-y-0"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(module.id)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? // @ts-ignore
-                                                field.onChange([...field.value, module.id])
-                                              : // @ts-ignore
-                                                field.onChange(field.value?.filter((value) => value !== module.id));
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal text-white text-md">{module.name}</FormLabel>
-                                    </FormItem>
-                                  ))}
-                                </>
-                              ) : element.type === 'date' ? (
-                                <input type="date" id={element.name} required={element.required} {...field} />
-                              ) : (
-                                <Input
-                                  id={element.name}
-                                  type={element.type}
-                                  required={element.required}
-                                  disabled={isLoading}
-                                  {...field}
-                                />
-                              )}
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    ))}
+                    {formElements.map((element, index) => {
+                      if (element.name === 'moduleIds' && !modules) return null;
+
+                      return (
+                        <FormField
+                          key={element.type + index}
+                          // @ts-ignore
+                          name={element.name}
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white/70">
+                                {element.label}:
+                              </FormLabel>
+                              <FormControl>
+                                {element.type === 'checkbox' ? (
+                                  <>
+                                    {modules?.map((module) => (
+                                      <FormItem
+                                        key={module.id}
+                                        className="flex flex-row items-center space-x-3 space-y-0"
+                                      >
+                                        <FormControl>
+                                          <Checkbox
+                                            checked={field.value?.includes(module.id)}
+                                            onCheckedChange={(checked) => {
+                                              return checked
+                                                ? // @ts-ignore
+                                                  field.onChange([...field.value, module.id])
+                                                : // @ts-ignore
+                                                  field.onChange(field.value?.filter((value) => value !== module.id));
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="font-normal text-white text-md">{module.name}</FormLabel>
+                                      </FormItem>
+                                    ))}
+                                  </>
+                                ) : element.type === 'date' ? (
+                                  <input type="date" id={element.name} required={element.required} {...field} />
+                                ) : (
+                                  <Input
+                                    id={element.name}
+                                    type={element.type}
+                                    required={element.required}
+                                    disabled={isLoading}
+                                    {...field}
+                                  />
+                                )}
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      );
+                    })}
                   </div>
                   <div className="space-y-6">
                     <Button variant="secondary">{isEdit ? 'Update' : 'Create'}</Button>
