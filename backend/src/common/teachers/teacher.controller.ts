@@ -31,6 +31,11 @@ export class TeacherController {
     return await this.teacherService.getTeacherOrders(id);
   }
 
+  @Get(':id/modules')
+  async getTeacherModules(@Param('id') id: string): Promise<UserOrder[]> {
+    return await this.teacherService.getTeacherModules(id);
+  }
+
   @Put(':id')
   async updateTeacherById(
     @Param('id') id: string,
