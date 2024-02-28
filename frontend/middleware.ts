@@ -15,8 +15,6 @@ export async function middleware(req: NextRequest) {
   if (!req.cookies.has('next-auth.session-token') && !currentPath.includes('api')) {
     if (currentPath.includes('auth/forgot-password')) return NextResponse.next();
 
-    console.log('Hello');
-
     return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 

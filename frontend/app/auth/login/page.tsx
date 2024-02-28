@@ -69,7 +69,16 @@ export default function Page() {
           </div>
           <div className="w-full py-0 sm:py-8 px-4 sm:px-10 bg-transparent sm:bg-surface shadow-none sm:shadow-md rounded-none sm:rounded-xl">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent form submission
+                    form.handleSubmit(handleSubmit)(); // Manually submit the form
+                  }
+                }}
+                className="space-y-8"
+              >
                 <div className="space-y-5">
                   <FormField
                     name="email"
