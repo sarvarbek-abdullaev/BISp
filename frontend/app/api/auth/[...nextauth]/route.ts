@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { API_URL } from '@/actions/handleGet.action';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -10,7 +11,7 @@ export const authOptions: NextAuthOptions = {
         //@ts-ignore
         const { email, password } = JSON.parse(credentials?.data) as { email: string; password: string };
         // fetch user from backend and compare password
-        const response = await fetch(process.env.BACKEND_URL + '/auth/login', {
+        const response = await fetch(API_URL + '/auth/login', {
           method: 'POST',
           body: JSON.stringify({ email, password }),
           headers: { 'Content-Type': 'application/json' },
