@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const semesters = ['SEMESTER_1', 'SEMESTER_2'];
-const levels = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
+export const semesters = ['SEMESTER_1', 'SEMESTER_2'];
+export const levels = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
 
 interface AddEditFormProps {
   data: {

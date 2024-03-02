@@ -11,9 +11,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { levels } from '@/components/admin/AddEditGroupForm';
 
 interface AddEditFormProps {
-  module?: Module;
+  module?: Module & {
+    level: (typeof levels)[number];
+  };
   courses: Course[];
   teachers: any[];
   type: string;
@@ -32,6 +35,12 @@ const formElements = [
     label: 'Name',
     name: 'name',
     type: 'text',
+    required: true,
+  },
+  {
+    label: 'Level',
+    name: 'level',
+    type: 'dropdown',
     required: true,
   },
   {
@@ -69,6 +78,7 @@ const AddEditModuleForm: FC<AddEditFormProps> = ({ module, teachers, courses, ty
       description: module?.description || '',
       courseId: module?.courseId || '',
       teacherId: module?.teacherId || '',
+      level: module?.level || '',
     },
   });
 
@@ -139,14 +149,20 @@ const AddEditModuleForm: FC<AddEditFormProps> = ({ module, teachers, courses, ty
                                               </SelectItem>
                                             ),
                                         )
-                                      : teachers?.map(
-                                          (teacher) =>
-                                            teacher.id && (
-                                              <SelectItem key={teacher.id} value={teacher.id}>
-                                                {teacher.profile?.firstName + ' ' + teacher.profile?.lastName}
-                                              </SelectItem>
-                                            ),
-                                        )}
+                                      : element.name === 'teacherId'
+                                        ? teachers.map(
+                                            (teacher) =>
+                                              teacher.id && (
+                                                <SelectItem key={teacher.id} value={teacher.id}>
+                                                  {teacher.profile.firstName} {teacher.profile.lastName}
+                                                </SelectItem>
+                                              ),
+                                          )
+                                        : levels.map((level) => (
+                                            <SelectItem key={level} value={level}>
+                                              {level}
+                                            </SelectItem>
+                                          ))}
                                   </SelectContent>
                                 </Select>
                               ) : (
