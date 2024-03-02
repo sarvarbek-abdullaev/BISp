@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Semester } from '@prisma/client';
+import { Semester, Level } from '@prisma/client';
 
 interface AddEditFormProps {
   data: {
@@ -20,6 +20,7 @@ interface AddEditFormProps {
       name: string;
       course: Course;
       academicYearId: number;
+      level: Level;
       semester: Semester;
     };
     academicYears: any[];
@@ -32,11 +33,17 @@ interface AddEditFormProps {
   type: string;
 }
 
+// @ts-ignore
+const levelKeys = Object.keys(Level).filter((key) => isNaN(Number(Level[key])));
+// @ts-ignore
+const semesterKeys = Object.keys(Semester).filter((key) => isNaN(Number(Semester[key])));
+
 const formSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
   courseId: z.string().min(1, 'Course must be chosen'),
   academicYearId: z.string().min(1, 'Academic year must be chosen'),
   semester: z.string().min(1, 'Semester must be chosen'),
+  level: z.string().min(1, 'Level must be chosen'),
 });
 
 const formElements = [
@@ -49,6 +56,12 @@ const formElements = [
   {
     label: 'Course',
     name: 'courseId',
+    type: 'dropdown',
+    required: true,
+  },
+  {
+    label: 'Level',
+    name: 'level',
     type: 'dropdown',
     required: true,
   },
@@ -72,6 +85,7 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultData, type }) => {
     defaultValues: {
       name: defaultData.group?.name || '',
       courseId: defaultData.group?.course?.id || '',
+      level: defaultData.group?.level || '',
       academicYearId: defaultData.group?.academicYearId?.toString() || '',
       semester: defaultData.group?.semester || '',
     },
@@ -160,17 +174,16 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultData, type }) => {
                                             </SelectItem>
                                           ))
                                         : element.name === 'semester'
-                                          ? [Semester].map((semester) => (
-                                              <>
-                                                <SelectItem key={semester.SEMESTER_1} value={semester.SEMESTER_1}>
-                                                  {semester.SEMESTER_1}
-                                                </SelectItem>
-                                                <SelectItem key={semester.SEMESTER_2} value={semester.SEMESTER_2}>
-                                                  {semester.SEMESTER_2}
-                                                </SelectItem>
-                                              </>
+                                          ? semesterKeys.map((semester) => (
+                                              <SelectItem key={semester} value={semester}>
+                                                {semester}
+                                              </SelectItem>
                                             ))
-                                          : null}
+                                          : levelKeys.map((level) => (
+                                              <SelectItem key={level} value={level}>
+                                                {level}
+                                              </SelectItem>
+                                            ))}
                                   </SelectContent>
                                 </Select>
                               ) : (
