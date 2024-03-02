@@ -142,6 +142,7 @@ model Group {
   id             String         @id @default(auto()) @map("_id") @db.ObjectId
   semester       Semester
   name           String
+  level          Level          @default(LEVEL_1)
   status         Status         @default(ACTIVE)
   //
   createdAt      DateTime       @default(now())
