@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const Semester = ['SEMESTER_1', 'SEMESTER_2'];
-const Level = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
+const semesters = ['SEMESTER_1', 'SEMESTER_2'];
+const levels = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
 
 interface AddEditFormProps {
   data: {
@@ -22,8 +22,8 @@ interface AddEditFormProps {
       name: string;
       course: Course;
       academicYearId: number;
-      level: (typeof Level)[number];
-      semester: (typeof Semester)[number];
+      level: (typeof levels)[number];
+      semester: (typeof semesters)[number];
     };
     academicYears: any[];
     courses: {
@@ -34,11 +34,6 @@ interface AddEditFormProps {
   };
   type: string;
 }
-
-// @ts-ignore
-const levelKeys = Object.keys(Level).filter((key) => isNaN(Number(Level[key])));
-// @ts-ignore
-const semesterKeys = Object.keys(Semester).filter((key) => isNaN(Number(Semester[key])));
 
 const formSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
@@ -176,12 +171,12 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultData, type }) => {
                                             </SelectItem>
                                           ))
                                         : element.name === 'semester'
-                                          ? semesterKeys.map((semester) => (
+                                          ? semesters.map((semester) => (
                                               <SelectItem key={semester} value={semester}>
                                                 {semester}
                                               </SelectItem>
                                             ))
-                                          : levelKeys.map((level) => (
+                                          : levels.map((level) => (
                                               <SelectItem key={level} value={level}>
                                                 {level}
                                               </SelectItem>
