@@ -133,14 +133,14 @@ export class GroupService {
     });
   }
 
-  async deactivateGroupsByYear(year: number) {
-    return this.prisma.group.updateMany({
-      where: {
-        year,
-      },
-      data: {
-        status: Status.INACTIVE,
-      },
-    });
-  }
+  // async deactivateGroupsByYear(year: number) {
+  //   return this.prisma.group.updateMany({
+  //     where: {
+  //       year,
+  //     },
+  //     data: {
+  //       status: Status.INACTIVE,
+  //     },
+  //   });
+  // }
 }

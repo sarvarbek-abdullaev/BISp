@@ -50,8 +50,8 @@ export class GroupController {
     return this.groupService.deactivateGroupsByIds(ids);
   }
 
-  @Patch('deactivate-by-year')
-  async deactivateGroupsByYear(@Body() year: number) {
-    return this.groupService.deactivateGroupsByYear(year);
-  }
+  // @Patch('deactivate-by-year')
+  // async deactivateGroupsByYear(@Body() year: number) {
+  //   return this.groupService.deactivateGroupsByYear(year);
+  // }
 }
