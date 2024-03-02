@@ -11,7 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Semester, Level } from '@prisma/client';
+
+const Semester = ['SEMESTER_1', 'SEMESTER_2'];
+const Level = ['LEVEL_1', 'LEVEL_2', 'LEVEL_3', 'LEVEL_4'];
 
 interface AddEditFormProps {
   data: {
@@ -20,8 +22,8 @@ interface AddEditFormProps {
       name: string;
       course: Course;
       academicYearId: number;
-      level: Level;
-      semester: Semester;
+      level: (typeof Level)[number];
+      semester: (typeof Semester)[number];
     };
     academicYears: any[];
     courses: {
