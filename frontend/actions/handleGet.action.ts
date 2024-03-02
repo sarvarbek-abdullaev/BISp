@@ -337,3 +337,16 @@ export const getLessons = async () => {
     console.log(error);
   }
 };
+
+export const getAcademicYears = async () => {
+  try {
+    const res = await fetch(`${API_URL}/academic-years`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

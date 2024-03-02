@@ -18,7 +18,7 @@ export default async function GroupsPage({ searchParams }: any) {
   const allModulesLength = courses.reduce((acc: number, course: Course) => acc + course.modules.length, 0);
 
   if (courseCode !== 'all') {
-    groups = groups.filter((group: any) => group?.course?.code === courseCode);
+    groups = groups?.filter((group: any) => group?.course?.code === courseCode);
   }
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];

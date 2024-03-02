@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Flex } from '@chakra-ui/react';
 import GroupSidebar from '@/app/admin/groups/group-sidebar';
 import { Wrapper } from '@/components/shared/Wrapper';
 
@@ -11,7 +10,7 @@ const AdminLayout: FC<LayoutProps> = async ({ children }) => {
   return (
     <>
       <GroupSidebar />
-      <Wrapper>{children}</Wrapper>
+      <Wrapper className="flex-1">{children}</Wrapper>
     </>
   );
 };

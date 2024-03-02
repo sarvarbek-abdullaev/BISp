@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Semester } from '@prisma/client';
 
 interface AddEditFormProps {
   data: {
@@ -18,8 +19,10 @@ interface AddEditFormProps {
       id: string;
       name: string;
       course: Course;
-      year: number;
+      academicYearId: number;
+      semester: Semester;
     };
+    academicYears: any[];
     courses: {
       id: string;
       name: string;
@@ -31,8 +34,9 @@ interface AddEditFormProps {
 
 const formSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
-  courseId: z.string().min(1, 'Course must be at least 1'),
-  year: z.string().min(1, 'Year must be at least 1'),
+  courseId: z.string().min(1, 'Course must be chosen'),
+  academicYearId: z.string().min(1, 'Academic year must be chosen'),
+  semester: z.string().min(1, 'Semester must be chosen'),
 });
 
 const formElements = [
@@ -49,9 +53,15 @@ const formElements = [
     required: true,
   },
   {
-    label: 'Year',
-    name: 'year',
-    type: 'number',
+    label: 'Academic Year',
+    name: 'academicYearId',
+    type: 'dropdown',
+    required: true,
+  },
+  {
+    label: 'Semester',
+    name: 'semester',
+    type: 'dropdown',
     required: true,
   },
 ];
@@ -62,7 +72,8 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultData, type }) => {
     defaultValues: {
       name: defaultData.group?.name || '',
       courseId: defaultData.group?.course?.id || '',
-      year: defaultData.group?.year.toString() || '',
+      academicYearId: defaultData.group?.academicYearId?.toString() || '',
+      semester: defaultData.group?.semester || '',
     },
   });
 
@@ -133,17 +144,33 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ data: defaultData, type }) => {
                                   {...(field.value && { defaultValue: field.value })}
                                 >
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Select a course" />
+                                    <SelectValue placeholder={`Select a ${element.label}`} />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {defaultData.courses.map(
-                                      (course) =>
-                                        course.id && (
+                                    {element.name === 'courseId'
+                                      ? defaultData.courses.map((course) => (
                                           <SelectItem key={course.id} value={course.id}>
                                             {course.name}
                                           </SelectItem>
-                                        ),
-                                    )}
+                                        ))
+                                      : element.name === 'academicYearId'
+                                        ? defaultData.academicYears?.map((academicYear) => (
+                                            <SelectItem key={academicYear.id} value={academicYear.id}>
+                                              {academicYear.year}
+                                            </SelectItem>
+                                          ))
+                                        : element.name === 'semester'
+                                          ? [Semester].map((semester) => (
+                                              <>
+                                                <SelectItem key={semester.SEMESTER_1} value={semester.SEMESTER_1}>
+                                                  {semester.SEMESTER_1}
+                                                </SelectItem>
+                                                <SelectItem key={semester.SEMESTER_2} value={semester.SEMESTER_2}>
+                                                  {semester.SEMESTER_2}
+                                                </SelectItem>
+                                              </>
+                                            ))
+                                          : null}
                                   </SelectContent>
                                 </Select>
                               ) : (
