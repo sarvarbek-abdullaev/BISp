@@ -5,7 +5,8 @@ export const findByIdAndReturnName = (data: object[], id: string) => {
 
 export const createISODate = (day: number, startHour: number) => {
   const date = new Date();
-  date.setDate(date.getDate() - date.getDay());
+  const dayOfWeek = date.getDay();
+  dayOfWeek === 0 ? date.setDate(date.getDate() - 7) : date.setDate(date.getDate() - date.getDay());
 
   date.setDate(date.getDate() + day);
   date.setHours(startHour);
