@@ -1,0 +1,437 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table AcademicYear {
+  id String [pk]
+  year Int [unique, not null]
+  startDate DateTime
+  endDate DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  registeredModules RegisteredModule [not null]
+  groups Group [not null]
+}
+
+Table Profile {
+  id String [pk]
+  firstName String [not null]
+  lastName String [not null]
+  email String [unique, not null]
+  birthDate DateTime [not null]
+  status Status [not null, default: 'ACTIVE']
+  password String
+  role Role [not null, default: 'STUDENT']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  orders Order [not null]
+  profileModules ProfileModule [not null]
+  students Student [not null]
+  teachers Teacher [not null]
+  admins Admin [not null]
+  registeredModules RegisteredModule [not null]
+  modulesRegistrations ModulesRegistration [not null]
+  payments Payment [not null]
+}
+
+Table Student {
+  id String [pk]
+  level Level [not null, default: 'LEVEL_1']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+  courseId String
+  course Course
+  studentGroups StudentGroup [not null]
+  enrollments Enrollment [not null]
+  marks Mark [not null]
+  attendances Attendance [not null]
+}
+
+Table Teacher {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+  modules Module [not null]
+}
+
+Table Admin {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+}
+
+Table Group {
+  id String [pk]
+  semester Semester [not null]
+  name String [not null]
+  level Level [not null, default: 'LEVEL_1']
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  course Course [not null]
+  courseId String [not null]
+  academicYear AcademicYear [not null]
+  academicYearId String [not null]
+  studentGroups StudentGroup [not null]
+  lessons Lesson [not null]
+
+  indexes {
+    (name, courseId, academicYearId, semester) [unique]
+  }
+}
+
+Table StudentGroup {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  student Student [not null]
+  studentId String [not null]
+  group Group [not null]
+  groupId String [not null]
+
+  indexes {
+    (studentId, groupId) [unique]
+  }
+}
+
+Table Module {
+  id String [pk]
+  code String [unique, not null]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  description String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  level Level [not null, default: 'LEVEL_1']
+  courseId String
+  course Course
+  teacherId String
+  teacher Teacher
+  events Event [not null]
+  lessons Lesson [not null]
+  exams Exam [not null]
+  profileModules ProfileModule [not null]
+  classes Class [not null]
+  registeredModules RegisteredModule [not null]
+  moduleToModuleRegistrations ModuleToModuleRegistration [not null]
+
+  indexes {
+    (code, courseId) [unique]
+  }
+}
+
+Table ModulesRegistration {
+  id String [pk]
+  status EnrollmentStatus [not null, default: 'PENDING']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+  moduleToModuleRegistrations ModuleToModuleRegistration [not null]
+}
+
+Table ModuleToModuleRegistration {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  module Module [not null]
+  moduleId String [not null]
+  modulesRegistration ModulesRegistration [not null]
+  modulesRegistrationId String [not null]
+}
+
+Table RegisteredModule {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profile Profile [not null]
+  profileId String [not null]
+  module Module [not null]
+  moduleId String [not null]
+  academicYear AcademicYear [not null]
+  academicYearId String [not null]
+}
+
+Table ProfileModule {
+  id String [pk]
+  year Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profile Profile [not null]
+  profileId String [not null]
+  module Module [not null]
+  moduleId String [not null]
+
+  indexes {
+    (profileId, moduleId, year) [unique]
+  }
+}
+
+Table Exam {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  marks Mark [not null]
+  moduleId String
+  module Module
+}
+
+Table Mark {
+  id String [pk]
+  mark Float [not null]
+  exam Exam [not null]
+  examId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  student Student
+  studentId String
+}
+
+Table Course {
+  id String [pk]
+  code String [unique, not null]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  description String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  modules Module [not null]
+  groups Group [not null]
+  students Student [not null]
+  enrollments Enrollment [not null]
+}
+
+Table Enrollment {
+  id String [pk]
+  status EnrollmentStatus [not null, default: 'PENDING']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  courseId String [not null]
+  course Course [not null]
+  studentId String [not null]
+  student Student [not null]
+}
+
+Table Event {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  moduleId String
+  module Module
+}
+
+Table Product {
+  id String [pk]
+  name String [not null]
+  price Float [not null]
+  variants ProductVariant[] [not null]
+  status Status [not null, default: 'ACTIVE']
+  image String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  orderedProducts OrderedProduct [not null]
+}
+
+Table OrderedProduct {
+  id String [pk]
+  quantity Int [not null]
+  selectedSize ProductVariant [not null, default: 'DEFAULT']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  productId String [not null]
+  product Product [not null]
+  order Order
+  orderId String
+}
+
+Table Order {
+  id String [pk]
+  status OrderStatus [not null, default: 'PENDING']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+  orderedProducts OrderedProduct [not null]
+  payments Payment [not null]
+}
+
+Table Lesson {
+  id String [pk]
+  startTime Int [not null]
+  endTime Int [not null]
+  day Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  groupId String
+  group Group
+  moduleId String
+  module Module
+
+  indexes {
+    (startTime, endTime, day, moduleId) [unique]
+  }
+}
+
+Table Class {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  moduleId String
+  module Module
+  attendances Attendance [not null]
+}
+
+Table Attendance {
+  id String [pk]
+  status AttendanceStatus [not null, default: 'PRESENT']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  studentId String [not null]
+  student Student [not null]
+  classId String
+  class Class
+}
+
+Table Payment {
+  id String [pk]
+  amount Float [not null]
+  type PaymentType [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  profileId String [not null]
+  profile Profile [not null]
+  orderId String
+  order Order
+}
+
+Enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+Enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+Enum ProductVariant {
+  DEFAULT
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+Enum OrderStatus {
+  PENDING
+  PAID
+  CANCELED
+}
+
+Enum PaymentType {
+  PRODUCT
+  STUDY
+}
+
+Enum Level {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+  LEVEL_4
+}
+
+Enum EnrollmentStatus {
+  PENDING
+  CANCELED
+  APPROVED
+}
+
+Enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+Enum Semester {
+  SEMESTER_1
+  SEMESTER_2
+}
+
+Ref: Student.profileId > Profile.id
+
+Ref: Student.courseId > Course.id
+
+Ref: Teacher.profileId > Profile.id
+
+Ref: Admin.profileId > Profile.id
+
+Ref: Group.courseId > Course.id
+
+Ref: Group.academicYearId > AcademicYear.id
+
+Ref: StudentGroup.studentId > Student.id
+
+Ref: StudentGroup.groupId > Group.id
+
+Ref: Module.courseId > Course.id
+
+Ref: Module.teacherId > Teacher.id
+
+Ref: ModulesRegistration.profileId > Profile.id
+
+Ref: ModuleToModuleRegistration.moduleId > Module.id
+
+Ref: ModuleToModuleRegistration.modulesRegistrationId > ModulesRegistration.id
+
+Ref: RegisteredModule.profileId > Profile.id
+
+Ref: RegisteredModule.moduleId > Module.id
+
+Ref: RegisteredModule.academicYearId > AcademicYear.id
+
+Ref: ProfileModule.profileId > Profile.id
+
+Ref: ProfileModule.moduleId > Module.id
+
+Ref: Exam.moduleId > Module.id
+
+Ref: Mark.examId > Exam.id
+
+Ref: Mark.studentId > Student.id
+
+Ref: Enrollment.courseId > Course.id
+
+Ref: Enrollment.studentId > Student.id
+
+Ref: Event.moduleId > Module.id
+
+Ref: OrderedProduct.productId > Product.id
+
+Ref: OrderedProduct.orderId > Order.id
+
+Ref: Order.profileId > Profile.id
+
+Ref: Lesson.groupId > Group.id
+
+Ref: Lesson.moduleId > Module.id
+
+Ref: Class.moduleId > Module.id
+
+Ref: Attendance.studentId > Student.id
+
+Ref: Attendance.classId > Class.id
+
+Ref: Payment.profileId > Profile.id
+
+Ref: Payment.orderId > Order.id

@@ -1,11 +1,10 @@
 import { Sidebar } from '@/components/shared/Sidebar';
-import { Flex } from '@chakra-ui/react';
 import CheckableContent from '@/components/admin/CheckableContent';
-import { getGroups, getUsers } from '@/actions/handleGet.action';
+import { getGroups, getModules, getUsers } from '@/actions/handleGet.action';
 
 const AssignStudents = async ({ searchParams }: any) => {
   const { groupName } = searchParams;
-  const [students, groups] = await Promise.all([getUsers('students'), getGroups()]);
+  const [students, groups, modules] = await Promise.all([getUsers('students'), getGroups(), getModules()]);
 
   const groupTabs = groups.map((group: { name: string }) => {
     return {
@@ -18,20 +17,12 @@ const AssignStudents = async ({ searchParams }: any) => {
 
   const group = groups.find((group: { name: string }) => group.name === groupName);
 
+  group && (group.modules = modules.filter((module: any) => module.level === group.level));
+
   return (
     <>
       <Sidebar tabs={groupTabs} query="groupName" />
-      <Flex
-        direction="column"
-        p="5"
-        w="90%"
-        marginX="10"
-        bg="#202020"
-        borderRadius="8px"
-        overflow="hidden"
-        h="100%"
-        justifyContent="space-between"
-      >
+      <div className="flex flex-col p-5 w-[90%] mx-10 rounded-lg bg-[#202020] rounded-8 overflow-hidden h-full justify-between">
         {groupName && (
           <CheckableContent
             currentTitle="Current Students"
@@ -44,7 +35,7 @@ const AssignStudents = async ({ searchParams }: any) => {
             buttonTitle="Save"
           />
         )}
-      </Flex>
+      </div>
     </>
   );
 };

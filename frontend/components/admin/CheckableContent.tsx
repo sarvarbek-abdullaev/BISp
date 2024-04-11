@@ -34,6 +34,8 @@ const CheckableContent: FC<CheckableContentProps> = ({
   data: dataStudentGroups,
 }) => {
   const { students: fetchedStudents, groupName, group } = dataStudentGroups;
+
+  console.log({ group });
   const groupId = group.id;
   // @ts-ignore
   const handleStudentsIds = (students, groupId) => {

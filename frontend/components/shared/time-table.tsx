@@ -21,11 +21,11 @@ const Calendar: FC<CalendarProps> = ({ lessons }) => {
     dataSource: lessons?.map((lesson) => {
       return {
         Id: lesson.id,
-        Subject: `${lesson.module.name}: ${lesson.group.name}`,
+        Subject: `${lesson?.module?.name}: ${lesson?.group?.name || ''}`,
         StartTime: createISODate(lesson.day, lesson.startTime),
         EndTime: createISODate(lesson.day, lesson.endTime),
-        GroupId: lesson.group.id,
-        ModuleId: lesson.module.id,
+        GroupId: lesson.group?.id,
+        ModuleId: lesson.module?.id,
       };
     }),
     fields: {
