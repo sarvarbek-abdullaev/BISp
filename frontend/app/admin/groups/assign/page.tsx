@@ -1,6 +1,6 @@
 import { Sidebar } from '@/components/shared/Sidebar';
-import CheckableContent from '@/components/admin/CheckableContent';
 import { getGroups, getModules, getUsers } from '@/actions/handleGet.action';
+import AssignStudentGroup from '@/components/admin/assign-student-group';
 
 const AssignStudents = async ({ searchParams }: any) => {
   const { groupName } = searchParams;
@@ -24,7 +24,7 @@ const AssignStudents = async ({ searchParams }: any) => {
       <Sidebar tabs={groupTabs} query="groupName" />
       <div className="flex flex-col p-5 w-[90%] mx-10 rounded-lg bg-[#202020] rounded-8 overflow-hidden h-full justify-between">
         {groupName && (
-          <CheckableContent
+          <AssignStudentGroup
             currentTitle="Current Students"
             availableTitle="Available Students"
             data={{
