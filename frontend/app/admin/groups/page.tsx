@@ -12,13 +12,13 @@ import { Button } from '@/components/ui/button';
 export default async function GroupsPage({ searchParams }: any) {
   const { courseCode } = searchParams;
 
-  let [groups, courses] = await Promise.all([getGroups(), getCourses()]);
+  const [groups, courses] = await Promise.all([getGroups(), getCourses()]);
+  let filteredGroups = groups;
 
-  // @ts-ignore
-  const allModulesLength = courses.reduce((acc: number, course: Course) => acc + course.modules.length, 0);
+  const allGroupsLength = groups.length;
 
   if (courseCode !== 'all') {
-    groups = groups?.filter((group: any) => group?.course?.code === courseCode);
+    filteredGroups = filteredGroups?.filter((group: any) => group?.course?.code === courseCode);
   }
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
@@ -42,16 +42,17 @@ export default async function GroupsPage({ searchParams }: any) {
           </div>
         </Wrapper>
         <Wrapper flex="1">
-          <div className="flex justify-end items-center gap-4 my-4">All modules: {allModulesLength}</div>
+          <div className="flex justify-end items-center gap-4 my-4">All groups: {allGroupsLength}</div>
           <div className="grid grid-cols-3 gap-4">
             {groupTabs.map(({ path, name }: Tab, index: number) => {
-              const courseModulesLength = courses.find((course: Course) => course.name === name)?.modules?.length;
+              const currentGroupsLength = groups.filter((group: any) => group?.course?.name === name)?.length;
+
               return (
                 <CircularProgressBar
                   key={path + name + index}
-                  text={courseModulesLength}
-                  value={courseModulesLength}
-                  maxValue={allModulesLength}
+                  text={currentGroupsLength}
+                  value={currentGroupsLength}
+                  maxValue={allGroupsLength}
                   color={colors[index]}
                   path={path}
                   name={name}
@@ -69,7 +70,7 @@ export default async function GroupsPage({ searchParams }: any) {
       <GroupSidebar />
       {courseCode ? (
         <Wrapper className="flex-1">
-          <Table columns={groupColumns} rows={groups} type="groups" />
+          <Table columns={groupColumns} rows={filteredGroups} type="groups" />
         </Wrapper>
       ) : (
         <Dashboard />
