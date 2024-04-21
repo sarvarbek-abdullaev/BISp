@@ -14,6 +14,7 @@ import {
   StudentGroup,
 } from '@prisma/client';
 import { UserDto } from '../../dtos';
+import { GroupService } from '../groups/group.service';
 
 interface StudentWithCurrentGroup extends Student {
   currentGroup: StudentGroup;
@@ -31,7 +32,10 @@ export interface UserOrder extends Order {
 
 @Injectable()
 export class StudentService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private groupService: GroupService,
+  ) {}
 
   async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
@@ -354,6 +358,26 @@ export class StudentService {
       },
       [],
     );
+  }
+
+  async getStudentsForGroup(groupId: string): Promise<Student[]> {
+    const group = await this.groupService.getGroupById(groupId);
+
+    if (!group) {
+      throw new NotFoundException('Group not found');
+    }
+
+    const { level, courseId } = group;
+
+    return this.prismaService.student.findMany({
+      where: {
+        level,
+        courseId,
+      },
+      include: {
+        profile: true,
+      },
+    });
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

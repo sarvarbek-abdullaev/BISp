@@ -24,6 +24,20 @@ export class GroupService {
       where: {
         id,
       },
+    });
+
+    if (!group) {
+      throw new NotFoundException(`Group with ID ${id} not found`);
+    }
+
+    return group;
+  }
+
+  async getGroupDetailsById(id: string): Promise<Group> {
+    const group = await this.prisma.group.findUnique({
+      where: {
+        id,
+      },
       include: {
         studentGroups: {
           include: {

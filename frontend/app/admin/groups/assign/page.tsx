@@ -6,10 +6,10 @@ const AssignStudents = async ({ searchParams }: any) => {
   const { groupName } = searchParams;
   const [students, groups, modules] = await Promise.all([getUsers('students'), getGroups(), getModules()]);
 
-  const groupTabs = groups.map((group: { name: string }) => {
+  const groupTabs = groups.map((group: { name: string; id: string }) => {
     return {
       name: group.name,
-      path: `/admin/groups/assign?groupName=${group.name}`,
+      path: `/admin/groups/assign?groupId=${group.id}`,
     };
   });
 

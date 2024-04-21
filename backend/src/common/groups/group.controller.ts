@@ -10,10 +10,14 @@ import {
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { Group } from '@prisma/client';
+import { StudentService } from '../students/student.service';
 
 @Controller('groups')
 export class GroupController {
-  constructor(private groupService: GroupService) {}
+  constructor(
+    private groupService: GroupService,
+    private studentService: StudentService,
+  ) {}
 
   @Get()
   async getAllGroups() {
@@ -21,8 +25,13 @@ export class GroupController {
   }
 
   @Get(':id')
-  async getGroupById(@Param('id') id: string) {
-    return this.groupService.getGroupById(id);
+  async getGroupDetailsById(@Param('id') id: string) {
+    return this.groupService.getGroupDetailsById(id);
+  }
+
+  @Get(':id/available-students')
+  async getStudentsForGroup(@Param('id') id: string) {
+    return this.studentService.getStudentsForGroup(id);
   }
 
   @Get('student/:id')
