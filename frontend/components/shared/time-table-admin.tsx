@@ -19,22 +19,24 @@ import { createLesson } from '@/actions/handleCreate.action';
 import { createISODate, findByIdAndReturnName } from '@/utils/methods';
 import { toast } from '@/components/ui/use-toast';
 import { updateLessonById } from '@/actions/handleUpdate.action';
+import { handleDelete } from '@/actions/handleDelete.action';
 
 interface CalendarAdminProps {
   groups: any[];
   modules: any[];
   lessons: any[];
+  groupName: any;
 }
 
-const CalendarAdmin: FC<CalendarAdminProps> = ({ lessons, modules, groups }) => {
+const CalendarAdmin: FC<CalendarAdminProps> = ({ lessons, modules, groups, groupName }) => {
   const eventSettings: EventSettingsModel = {
     dataSource: lessons?.map((lesson) => {
       return {
         Id: lesson.id,
-        Subject: `${lesson.module.name}: ${lesson.group.name}`,
+        Subject: `${lesson.module?.name}: ${lesson.group?.name}`,
         StartTime: createISODate(lesson.day, lesson.startTime),
         EndTime: createISODate(lesson.day, lesson.endTime),
-        GroupId: lesson.group.id,
+        GroupId: lesson.group?.id,
         ModuleId: lesson.module.id,
       };
     }),
@@ -66,22 +68,6 @@ const CalendarAdmin: FC<CalendarAdminProps> = ({ lessons, modules, groups }) => 
     return props !== undefined ? (
       <table className="custom-event-editor">
         <tbody>
-          <tr>
-            <td className="e-textlabel">Group</td>
-            <td colSpan={4}>
-              <DropDownListComponent
-                id="GroupId"
-                placeholder="Choose group"
-                data-name="GroupId"
-                className="e-field"
-                dataSource={groups.map((group) => {
-                  return { text: group.name, id: group.id };
-                })}
-                fields={{ text: 'text', value: 'id' }}
-                value={props.EventType || null}
-              ></DropDownListComponent>
-            </td>
-          </tr>
           <tr>
             <td className="e-textlabel">Module</td>
             <td colSpan={4}>
@@ -155,14 +141,14 @@ const CalendarAdmin: FC<CalendarAdminProps> = ({ lessons, modules, groups }) => 
       actionComplete={async (args: any) => {
         if (args.requestType === 'eventCreated') {
           const currentObj = args.data[0];
-
-          const groupName = findByIdAndReturnName(groups, currentObj.GroupId);
           const moduleName = findByIdAndReturnName(modules, currentObj.ModuleId);
 
           args.addedRecords[0].Subject = `${moduleName}: ${groupName}`;
 
+          const activeGroup = groups.find((group) => group.name === groupName);
+
           const newData = {
-            groupId: currentObj.GroupId,
+            groupId: activeGroup.id,
             moduleId: currentObj.ModuleId,
             day: new Date(currentObj.StartTime).getDay(),
             startTime: new Date(currentObj.StartTime).getHours(),
@@ -194,6 +180,23 @@ const CalendarAdmin: FC<CalendarAdminProps> = ({ lessons, modules, groups }) => 
             toast({
               variant: 'destructive',
               title: resp.message || resp.message,
+            });
+          }
+        } else if (args.requestType === 'eventRemoved') {
+          const deletedLessonId = args.deletedRecords[0].Id;
+
+          const resp = await handleDelete('lessons', 'timetable', deletedLessonId);
+
+          if (resp.error || resp.statusCode === 500) {
+            args.cancel = true;
+            toast({
+              variant: 'destructive',
+              title: resp.message || resp.message,
+            });
+          } else {
+            toast({
+              variant: 'default',
+              title: 'Lesson deleted successfully',
             });
           }
         }

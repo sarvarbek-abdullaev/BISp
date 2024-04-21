@@ -73,6 +73,10 @@ export const adminTabs = [
     path: '/admin/programs',
   },
   {
+    name: 'TimeTable',
+    path: '/admin/timetable',
+  },
+  {
     name: 'Enrollments',
     path: '/admin/enrollments',
   },
