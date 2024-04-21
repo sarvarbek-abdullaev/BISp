@@ -1,10 +1,14 @@
 import { Sidebar } from '@/components/shared/Sidebar';
-import { getGroups, getModules, getUsers } from '@/actions/handleGet.action';
+import { getGroups, getModules, getStudentsForGroup } from '@/actions/handleGet.action';
 import AssignStudentGroup from '@/components/admin/assign-student-group';
 
 const AssignStudents = async ({ searchParams }: any) => {
-  const { groupName } = searchParams;
-  const [students, groups, modules] = await Promise.all([getUsers('students'), getGroups(), getModules()]);
+  const { groupId } = searchParams;
+  const [groups, modules] = await Promise.all([getGroups(), getModules()]);
+  const group = groups.find((group: { id: string }) => group.id === groupId);
+  const groupName = group?.name;
+
+  const students = group && (await getStudentsForGroup(group?.id));
 
   const groupTabs = groups.map((group: { name: string; id: string }) => {
     return {
@@ -15,15 +19,13 @@ const AssignStudents = async ({ searchParams }: any) => {
 
   groupTabs.unshift({ name: 'Dashboard', path: '/admin/groups/assign' });
 
-  const group = groups.find((group: { name: string }) => group.name === groupName);
-
   group && (group.modules = modules.filter((module: any) => module.level === group.level));
 
   return (
     <>
       <Sidebar tabs={groupTabs} query="groupName" />
       <div className="flex flex-col p-5 w-[90%] mx-10 rounded-lg bg-[#202020] rounded-8 overflow-hidden h-full justify-between">
-        {groupName && (
+        {groupId && (
           <AssignStudentGroup
             currentTitle="Current Students"
             availableTitle="Available Students"

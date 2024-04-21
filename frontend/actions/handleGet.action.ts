@@ -13,19 +13,6 @@ export const getUsers = async (type: string) => {
   }
 };
 
-export const getUsersForGroup = async (type: string, id: string) => {
-  try {
-    const res = await fetch(`${API_URL}/${type}?groupId=${id}`, {
-      next: {
-        revalidate: 30,
-      },
-    });
-    return await res.json();
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const getUserById = async (type: string, id: string) => {
   try {
     const res = await fetch(`${API_URL}/${type}/${id}`, {
@@ -55,6 +42,19 @@ export const getGroups = async () => {
 export const getGroupById = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/groups/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getStudentsForGroup = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/groups/${id}/available-students`, {
       next: {
         revalidate: 0,
       },

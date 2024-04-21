@@ -369,15 +369,18 @@ export class StudentService {
 
     const { level, courseId } = group;
 
-    return this.prismaService.student.findMany({
+    const students = await this.prismaService.student.findMany({
       where: {
-        level,
         courseId,
       },
       include: {
         profile: true,
       },
     });
+
+    students.filter((student) => student.level === level);
+
+    return students;
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

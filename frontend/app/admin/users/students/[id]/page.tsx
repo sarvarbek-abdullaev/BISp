@@ -19,12 +19,16 @@ interface StudentGroup {
 
 interface Student {
   id: string;
+  level: string;
   profile: {
     firstName: string;
     lastName: string;
     email: string;
     birthDate: string;
     role: string;
+  };
+  course: {
+    name: string;
   };
   studentGroups: StudentGroup[];
   currentGroup: StudentGroup;
@@ -34,6 +38,8 @@ const StudentPage: FC<StudentPageProps> = async ({ params }) => {
   const type = 'students';
   const student: Student = await getUserById(type, params.id);
 
+  console.log({ student });
+
   if (!student?.id) return <CenteredText text="Student not found" />;
 
   return (
@@ -41,9 +47,11 @@ const StudentPage: FC<StudentPageProps> = async ({ params }) => {
       <p>Id: {student.id}</p>
       <p>FirstName: {student.profile.firstName}</p>
       <p>LastName: {student.profile.lastName}</p>
+      <p>Level: {student.level}</p>
       <p>Email: {student.profile.email}</p>
       <p>Birth Date: {createDate(student.profile.birthDate)}</p>
       <p>Role: {student.profile.role}</p>
+      <p>Course: {student.course?.name}</p>
       <p>Current Group: {student.currentGroup?.group?.name}</p>
       <p>All groups: {student.studentGroups?.map((studentGroup) => studentGroup.group.name).join(', ')}</p>
     </div>
