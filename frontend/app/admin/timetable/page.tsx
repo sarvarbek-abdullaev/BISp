@@ -1,6 +1,8 @@
 import { getGroups, getLessons, getModules } from '@/actions/handleGet.action';
 import CalendarAdmin from '@/components/shared/time-table-admin';
 import { Sidebar } from '@/components/shared/Sidebar';
+import { TimeTable } from '@/components/admin/timetable-table';
+import { timetableColumns } from '@/tabs';
 
 const UsersPage = async ({ searchParams }: any) => {
   const { groupName } = searchParams;
@@ -25,18 +27,13 @@ const UsersPage = async ({ searchParams }: any) => {
     <>
       <Sidebar tabs={groupTabs} query="groupName" />
       <div className="flex flex-col p-5 w-[90%] mx-10 rounded-lg bg-[#202020] rounded-8 overflow-hidden h-full justify-between">
-        {groupName && (
+        {groupName ? (
           <CalendarAdmin modules={modules} groups={groups} lessons={currentLessons} groupName={groupName} />
+        ) : (
+          <TimeTable columns={timetableColumns} rows={lessons} type="lessons" />
         )}
       </div>
     </>
-
-    // <div className="flex w-full h-full flex-col gap-4">
-    //   <Sidebar tabs={groupTabs} query="groupName" />
-    //   <Wrapper flex="1">
-    //     <CalendarAdmin modules={modules} groups={groups} lessons={lessons} />
-    //   </Wrapper>
-    // </div>
   );
 };
 

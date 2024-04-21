@@ -28,6 +28,8 @@ export const orderColumns = ['No', 'Name', 'Subtotal', 'Products', 'Status', 'Da
 
 export const attendanceColumns = ['No', 'Class', 'Status', 'Created', 'Time'];
 
+export const timetableColumns = ['No', 'Group', 'Modules', 'Hours', 'Created At', 'Actions'];
+
 export const userTabs = [
   {
     name: 'Dashboard',
