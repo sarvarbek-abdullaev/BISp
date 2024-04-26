@@ -97,6 +97,7 @@ export class StudentGroupService {
   }
 
   async deleteStudentGroupsByIds(ids: string[]): Promise<any> {
+    console.log({ ids });
     try {
       if (ids.length < 1) {
         return false;

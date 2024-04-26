@@ -375,12 +375,22 @@ export class StudentService {
       },
       include: {
         profile: true,
+        studentGroups: true,
       },
     });
 
     students.filter((student) => student.level === level);
 
-    return students;
+    return students.map((student) => {
+      const studentGroup = student.studentGroups.find(
+        (studentGroup) => studentGroup.groupId === groupId,
+      );
+
+      return {
+        ...student,
+        studentGroupId: studentGroup ? studentGroup.id : null,
+      };
+    });
   }
 
   // async getStudentByEmail(email: string): Promise<Student> {

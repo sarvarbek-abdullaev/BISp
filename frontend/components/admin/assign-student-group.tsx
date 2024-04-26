@@ -1,12 +1,11 @@
 'use client';
 
-import React, { FC, useEffect } from 'react';
-import { Label } from '@/components/ui/label';
+import React, { FC, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { updateUserGroups } from '@/actions/handleUpdate.action';
+import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { updateUserGroups } from '@/actions/handleUpdate.action';
+import { useRouter } from 'next/navigation';
 
 interface AssignStudentGroupProps {
   data: {
@@ -19,26 +18,45 @@ interface AssignStudentGroupProps {
   buttonTitle: string;
 }
 
-import { z } from 'zod';
+interface IFormInput {
+  id: string;
+  studentId: string;
+  defaultSelected: boolean;
+  isSelected: boolean;
+}
 
-const StudentSchema = z.object({
-  id: z.string(),
-  profile: z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-  }),
-  isChecked: z.boolean(),
-});
-
-const GroupSchema = z.object({
-  id: z.string(),
-});
-
-const AssignStudentGroupSchema = z.object({
-  students: z.array(StudentSchema),
-  group: GroupSchema,
-  groupName: z.string(),
-});
+const renderStudents = (students: any[], isChecked: boolean, setDefaultStudents: React.Dispatch<IFormInput[]>) => {
+  return students.map((student: any) => {
+    if (!!student.studentGroupId === isChecked) {
+      return (
+        <div key={student.id} className="flex items-center space-x-4">
+          <Checkbox
+            defaultChecked={!!student.studentGroupId}
+            onCheckedChange={(checked) => {
+              // @ts-ignore
+              setDefaultStudents((prevState: IFormInput[]) => {
+                const prevStateArray = Object.values(prevState);
+                return prevStateArray.map((prevStudent) => {
+                  if (prevStudent.studentId === student.id) {
+                    return {
+                      ...prevStudent,
+                      isSelected: checked,
+                    };
+                  }
+                  return prevStudent;
+                });
+              });
+            }}
+          />
+          <Label>
+            {student.profile.firstName} {student.profile.lastName}
+          </Label>
+        </div>
+      );
+    }
+    return null;
+  });
+};
 
 const AssignStudentGroup: FC<AssignStudentGroupProps> = ({
   availableTitle,
@@ -46,96 +64,62 @@ const AssignStudentGroup: FC<AssignStudentGroupProps> = ({
   buttonTitle,
   data: dataStudentGroups,
 }) => {
-  const { students: defaultStudents, group, groupName } = dataStudentGroups;
-  const groupId = group.id;
+  const { students, group } = dataStudentGroups;
 
-  const {
-    handleSubmit,
-    register,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(AssignStudentGroupSchema),
-  });
+  const defaultValues = students.reduce((acc, student, currentIndex) => {
+    acc[currentIndex] = {
+      id: student.studentGroupId,
+      studentId: student.id,
+      defaultSelected: !!student.studentGroupId,
+      isSelected: !!student.studentGroupId,
+    };
+    return acc;
+  }, {});
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    console.log('Form Data:', data);
+  const [defaultStudents, setDefaultStudents] = useState<IFormInput[]>(defaultValues);
+  const router = useRouter();
 
+  const handleSubmit = async (e: React.FormEvent) => {
     try {
-      const userGroups = data.students
-        .filter(
-          (student: any) =>
-            student.isChecked !==
-            defaultStudents.find((defaultStudent: any) => defaultStudent.id === student.id)?.isChecked,
-        )
-        .map((student: any) => ({
-          userId: student.id,
+      e.preventDefault();
+
+      const studentGroups = Object.values(defaultStudents)
+        .filter((defaultStudent) => defaultStudent.isSelected && !defaultStudent.defaultSelected && defaultStudent)
+        .map((student) => ({
+          studentId: student.studentId,
           groupId: group.id,
         }));
 
-      const deletedIds = defaultStudents
-        .filter(
-          (defaultStudent: any) => !data.students.find((student: any) => student.id === defaultStudent.id)?.isChecked,
-        )
+      const deletedIds = Object.values(defaultStudents)
+        .filter((defaultStudent) => defaultStudent.isSelected !== defaultStudent.defaultSelected && defaultStudent)
         .map((defaultStudent: any) => defaultStudent.id);
 
-      console.log('User Groups:', userGroups);
-      console.log('Deleted IDs:', deletedIds);
-
-      const res = await updateUserGroups('groups/assign', 'user-groups/manage', {
-        userGroups,
+      const res = await updateUserGroups('groups', 'student-groups/manage', {
+        studentGroups,
         deletedIds,
       });
-      //router.push(`/admin/groups/${groupId}`);
+      console.log({ res });
+      router.push(`/admin/groups/${group.id}`);
     } catch (error) {
       console.log('Error:', error);
     }
   };
 
-  useEffect(() => {
-    setValue('students', defaultStudents);
-  }, [defaultStudents, setValue]);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-1">
         <div>
           <Label>{currentTitle}</Label>
-          <div className="space-y-5 mt-2">
-            {defaultStudents.map(
-              (student: any) =>
-                student.isChecked && (
-                  <div key={student.id} className="flex items-center space-x-4">
-                    <Checkbox {...register(`students.${student.id}.isChecked`)} defaultChecked={student.isChecked} />
-                    <Label>
-                      {student.profile.firstName} {student.profile.lastName}
-                    </Label>
-                  </div>
-                ),
-            )}
-          </div>
+          <div className="space-y-5 mt-2">{renderStudents(students, true, setDefaultStudents)}</div>
         </div>
         <div>
           <Label>{availableTitle}</Label>
-          <div className="space-y-5 mt-2">
-            {defaultStudents.map(
-              (student: any) =>
-                !student.isChecked && (
-                  <div key={student.id} className="flex items-center space-x-4">
-                    <Checkbox {...register(`students.${student.id}.isChecked`)} defaultChecked={student.isChecked} />
-                    <Label>
-                      {student.profile.firstName} {student.profile.lastName}
-                    </Label>
-                  </div>
-                ),
-            )}
-          </div>
+          <div className="space-y-5 mt-2">{renderStudents(students, false, setDefaultStudents)}</div>
         </div>
+        <Button type="submit" className="max-w-[200px]">
+          {buttonTitle}
+        </Button>
       </div>
-      <Button type="submit" className="max-w-[200px]">
-        {buttonTitle}
-      </Button>
     </form>
   );
 };
