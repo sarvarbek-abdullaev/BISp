@@ -170,6 +170,57 @@ export class StudentService {
     });
   }
 
+  async getStudentsWithAttendanceByModuleId(
+    moduleId: string,
+  ): Promise<Student[]> {
+    const students = await this.prismaService.student.findMany({
+      where: {
+        profile: {
+          registeredModules: {
+            some: {
+              moduleId,
+            },
+          },
+        },
+      },
+      include: {
+        profile: true,
+        studentGroups: {
+          select: {
+            id: true,
+            group: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        attendances: {
+          include: {
+            attendanceClass: true,
+          },
+        },
+      },
+    });
+
+    return students.map((student) => {
+      const currentGroup = student.studentGroups[0];
+
+      delete student.profile.password;
+      delete student.studentGroups;
+
+      return {
+        ...student,
+        currentGroup,
+        attendances: student.attendances,
+      };
+    });
+  }
+
   async getStudentModules(id: string): Promise<StudentModulesByYear[]> {
     const student = await this.prismaService.student.findUnique({
       where: {

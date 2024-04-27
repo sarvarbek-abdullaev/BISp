@@ -24,6 +24,16 @@ export class AttendanceClassService {
     });
   }
 
+  async getAttendanceClassesByModuleId(
+    moduleId: string,
+  ): Promise<AttendanceClass[]> {
+    return this.prisma.attendanceClass.findMany({
+      where: {
+        moduleId,
+      },
+    });
+  }
+
   async updateAttendanceClassById(
     id: string,
     AttendanceClassData,

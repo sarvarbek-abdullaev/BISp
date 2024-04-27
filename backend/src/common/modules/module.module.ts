@@ -4,9 +4,16 @@ import { ModuleService } from './module.service';
 import { PrismaService } from '../../prisma.service';
 import { StudentService } from '../students/student.service';
 import { GroupService } from '../groups/group.service';
+import { AttendanceClassService } from '../attendanceClasses/attendanceClass.service';
 
 @Module({
   controllers: [ModuleController],
-  providers: [ModuleService, PrismaService, StudentService, GroupService],
+  providers: [
+    ModuleService,
+    PrismaService,
+    StudentService,
+    GroupService,
+    AttendanceClassService,
+  ],
 })
 export class ModuleModule {}

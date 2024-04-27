@@ -11,8 +11,8 @@ export class AttendanceService {
       throw new BadRequestException('Student ID is required');
     }
 
-    if (!attendanceData.classId) {
-      throw new BadRequestException('Class ID is required');
+    if (!attendanceData.attendanceClassId) {
+      throw new BadRequestException('AttendanceClass ID is required');
     }
 
     return this.prismaService.attendance.create({
@@ -22,6 +22,20 @@ export class AttendanceService {
 
   async getAllAttendances(): Promise<Attendance[]> {
     return this.prismaService.attendance.findMany({
+      include: {
+        attendanceClass: true,
+        student: true,
+      },
+    });
+  }
+
+  async getAttendanceByModuleId(moduleId: string): Promise<Attendance[]> {
+    return this.prismaService.attendance.findMany({
+      where: {
+        attendanceClass: {
+          moduleId,
+        },
+      },
       include: {
         attendanceClass: true,
         student: true,
@@ -46,8 +60,8 @@ export class AttendanceService {
       throw new BadRequestException('Student ID is required');
     }
 
-    if (!attendanceData.classId) {
-      throw new BadRequestException('Class ID is required');
+    if (!attendanceData.attendanceClassId) {
+      throw new BadRequestException('AttendanceClass ID is required');
     }
 
     if (!attendanceData.status) {
