@@ -97,8 +97,8 @@ const Teacher: FC<TeacherProps> = ({ data, moduleCode }) => {
                       className="flex gap-2"
                       onClick={() => setPopoverOpen((prevState) => !prevState)}
                     >
-                      New Attendance Class
                       <FaPlus />
+                      New Attendance Class
                     </Button>
                   }
                   body={
