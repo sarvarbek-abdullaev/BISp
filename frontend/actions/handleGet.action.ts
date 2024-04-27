@@ -378,6 +378,19 @@ export const getAttendanceByModuleId = async (id: string) => {
   }
 };
 
+export const getAssessMarksByModuleId = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/modules/${id}/assess`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getStudentsByModuleId = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}/modules/${id}/students`, {

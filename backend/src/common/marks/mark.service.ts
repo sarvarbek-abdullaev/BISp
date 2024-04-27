@@ -62,7 +62,7 @@ export class MarkService {
       throw new ForbiddenException('Student is not associated with a course');
     }
 
-    if (student.courseId !== exam.module.courseId) {
+    if (+student.courseId !== +exam.module.courseId) {
       throw new ForbiddenException(
         'Exam is not associated with the student course',
       );
@@ -106,6 +106,8 @@ export class MarkService {
     if (!student.courseId) {
       throw new ForbiddenException('Student is not associated with a course');
     }
+    console.log(student.courseId, exam.module.courseId);
+    console.log(student.courseId !== exam.module.courseId);
 
     if (student.courseId !== exam.module.courseId) {
       throw new ForbiddenException(

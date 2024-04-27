@@ -261,3 +261,20 @@ export const createAttendance = async (data: any) => {
     console.log(error);
   }
 };
+
+export const createMark = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/marks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const _data = await res.json();
+    revalidatePath('/marks');
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

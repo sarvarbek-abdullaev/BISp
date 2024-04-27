@@ -32,6 +32,8 @@ export const timetableColumns = ['No', 'Group', 'Modules', 'Hours', 'Created At'
 
 export const moduleAttendanceColumns = ['No', 'Name', 'Group'];
 
+export const moduleAssessColumns = ['No', 'Name', 'Group'];
+
 export const userTabs = [
   {
     name: 'Dashboard',

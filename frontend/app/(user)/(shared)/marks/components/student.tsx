@@ -4,11 +4,11 @@ import React, { FC } from 'react';
 import { cn } from '@/lib/utils';
 
 interface StudentProps {
-  modules: any[];
+  data: any[];
   moduleCode: string;
 }
 
-const Student: FC<StudentProps> = ({ modules, moduleCode }) => {
+const Student: FC<StudentProps> = ({ data: modules, moduleCode }) => {
   const highlightedModuleId = modules.find((module) => module.code === moduleCode)?.id;
 
   return (
