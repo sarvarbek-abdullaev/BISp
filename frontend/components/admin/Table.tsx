@@ -153,14 +153,14 @@ export const Table: FC<UsersTableProps> = ({ columns, rows, type: defaultType })
                       element={<BsThreeDotsVertical />}
                       body={
                         <>
-                          <Link href={`${type}/${id}`}>
+                          <Link href={`${defaultType}/${id}`}>
                             <Button className="text-white w-full" variant="ghost">
                               <p className="text-left w-full">View</p>
                             </Button>
                           </Link>
                           {globalType !== 'enrollments' ? (
                             <>
-                              <Link href={`${type}/${id}/edit`}>
+                              <Link href={`${defaultType}/${id}/edit`}>
                                 <Button className="w-full text-green-700 hover:text-green-700" variant="ghost">
                                   <p className="text-left w-full">Edit</p>
                                 </Button>
