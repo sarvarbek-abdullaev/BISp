@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Exam, Module } from '@prisma/client';
+import { Exam, Lesson, Module } from '@prisma/client';
 
 @Injectable()
 export class ModuleService {
@@ -36,6 +36,24 @@ export class ModuleService {
     });
 
     return module?.exams;
+  }
+
+  async getTeacherLessonsById(id: string): Promise<Lesson[]> {
+    const moduleWithClasses = await this.prisma.module.findMany({
+      where: {
+        teacherId: id,
+      },
+      include: {
+        lessons: {
+          include: {
+            module: true,
+            group: true,
+          },
+        },
+      },
+    });
+
+    return moduleWithClasses.flatMap((module) => module.lessons);
   }
 
   async updateModuleById(id: string, moduleData): Promise<Module> {

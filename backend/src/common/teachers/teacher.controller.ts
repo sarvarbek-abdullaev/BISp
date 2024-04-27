@@ -11,10 +11,14 @@ import { Teacher } from '@prisma/client';
 import { UserDto } from '../../dtos';
 import { TeacherService } from './teacher.service';
 import { UserOrder } from '../students/student.service';
+import { ModuleService } from '../modules/module.service';
 
 @Controller('teachers')
 export class TeacherController {
-  constructor(private teacherService: TeacherService) {}
+  constructor(
+    private teacherService: TeacherService,
+    private moduleService: ModuleService,
+  ) {}
 
   @Get()
   async getAllTeachers(): Promise<UserDto[]> {
@@ -34,6 +38,11 @@ export class TeacherController {
   @Get(':id/modules')
   async getTeacherModules(@Param('id') id: string): Promise<UserOrder[]> {
     return await this.teacherService.getTeacherModules(id);
+  }
+
+  @Get(':id/lessons')
+  async getTeacherTimeTable(@Param('id') id: string): Promise<any[]> {
+    return this.moduleService.getTeacherLessonsById(id);
   }
 
   @Put(':id')
