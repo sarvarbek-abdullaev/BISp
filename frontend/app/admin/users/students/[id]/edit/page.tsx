@@ -11,7 +11,7 @@ interface PageProps {
 const Page: FC<PageProps> = async ({ params }) => {
   const type = 'students';
   const user = await getUserById(type, params.id);
-  return <AddEditUserForm user={user} type={type} />;
+  return <AddEditUserForm user={user} type={type} modules={[]} />;
 };
 
 export default Page;

@@ -78,7 +78,9 @@ interface Status {
   message: string;
 }
 
-export const Table: FC<UsersTableProps> = ({ columns, rows, type }) => {
+export const Table: FC<UsersTableProps> = ({ columns, rows, type: defaultType }) => {
+  const type = defaultType?.includes('/') ? defaultType.split('/')[1] : defaultType;
+
   const text = `No ${type} found`;
 
   if (!rows.length) return <CenteredText text={text} />;

@@ -99,15 +99,15 @@ export const adminUsersTabs = [
   },
   {
     name: 'Students',
-    path: '/admin/users/students',
+    path: '/admin/users?type=students',
   },
   {
     name: 'Teachers',
-    path: '/admin/users/teachers',
+    path: '/admin/users?type=teachers',
   },
   {
     name: 'Admins',
-    path: '/admin/users/admins',
+    path: '/admin/users?type=admins',
   },
 ];
 

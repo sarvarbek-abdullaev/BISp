@@ -27,6 +27,19 @@ export const getUserById = async (type: string, id: string) => {
   }
 };
 
+export const getUserByIdNew = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/users/${id}`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getGroups = async () => {
   try {
     const res = await fetch(`${API_URL}/groups`, {

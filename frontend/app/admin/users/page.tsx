@@ -1,18 +1,31 @@
-import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
-import { adminUsersTabs } from '@/tabs';
+import { adminUsersTabs, columns } from '@/tabs';
+import { getUsers } from '@/actions/handleGet.action';
+import { FC } from 'react';
 import { Wrapper } from '@/components/shared/Wrapper';
 import Link from '@/components/shared/Link';
 import { Button } from '@/components/ui/button';
-import { getUsers } from '@/actions/handleGet.action';
+import { CircularProgressBar } from '@/components/admin/CircularProgressBar';
+import { Table } from '@/components/admin/Table';
 
-const UsersPage = async () => {
+interface PageProps {
+  searchParams: any;
+}
+
+const UsersPage: FC<PageProps> = async ({ searchParams }) => {
+  const userType = searchParams['type'];
   const userTypes = adminUsersTabs.slice(1);
   const users = await Promise.all(userTypes.map(({ name }) => getUsers(name.toLowerCase())));
   const allUsersLength = users.reduce((acc, { length }) => acc + length, 0);
 
   const colors = ['#00FFF5', '#FFE605', '#FF05C8'];
 
-  return (
+  const usersData = userType && (await getUsers(userType));
+
+  return userType ? (
+    <Wrapper className="flex-1">
+      <Table rows={usersData} columns={columns} type={'users/' + userType} />
+    </Wrapper>
+  ) : (
     <div className="flex w-full h-full flex-col gap-4">
       <Wrapper>
         <div className="flex justify-end items-center gap-4">
