@@ -421,6 +421,8 @@ model Attendance {
   //
   attendanceClass   AttendanceClass  @relation(fields: [attendanceClassId], references: [id])
   attendanceClassId String           @db.ObjectId
+
+  @@unique([studentId, attendanceClassId])
 }
 
 model AttendanceClass {

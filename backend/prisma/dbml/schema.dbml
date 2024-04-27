@@ -302,6 +302,10 @@ Table Attendance {
   student Student [not null]
   attendanceClass AttendanceClass [not null]
   attendanceClassId String [not null]
+
+  indexes {
+    (studentId, attendanceClassId) [unique]
+  }
 }
 
 Table AttendanceClass {
