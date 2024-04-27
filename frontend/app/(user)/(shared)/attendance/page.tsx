@@ -14,7 +14,7 @@ const Page = async ({ searchParams }: any) => {
 
   const { id, profile } = session.user;
   const role = profile.role.toLowerCase();
-  let data: null[];
+  let data: [];
 
   if (role === 'student') {
     data = await getStudentAttendances(id);

@@ -1,4 +1,4 @@
-import { getStudentMarks } from '@/actions/handleGet.action';
+import { getStudentMarks, getTeacherModules } from '@/actions/handleGet.action';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import PageContainer from '@/components/user/page-container';
@@ -15,12 +15,12 @@ const Profile = async ({ searchParams }: any) => {
   const id = session.user.id;
   const role = session.user.profile.role.toLowerCase();
 
-  let data = null;
+  let data: [];
 
   if (role === 'student') {
     data = await getStudentMarks(id);
   } else {
-    // data = await getTeacherAttendances(id);
+    data = await getTeacherModules(id);
   }
 
   if (!data?.length) {
@@ -30,9 +30,9 @@ const Profile = async ({ searchParams }: any) => {
   return (
     <PageContainer title="Marks:">
       {role === 'student' ? (
-        <Student modules={data} moduleCode={moduleCode} />
+        <Student data={data} moduleCode={moduleCode} />
       ) : (
-        <Teacher marks={data} moduleCode={moduleCode} />
+        <Teacher data={data} moduleCode={moduleCode} />
       )}
     </PageContainer>
   );
