@@ -204,6 +204,7 @@ model Module {
   classes                     Class[]
   registeredModules           RegisteredModule[]
   moduleToModuleRegistrations ModuleToModuleRegistration[]
+  attendanceClasses           AttendanceClass[]
 
   @@unique([code, courseId])
 }
@@ -398,29 +399,41 @@ model Lesson {
 }
 
 model Class {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //
+  moduleId  String?  @db.ObjectId
+  module    Module?  @relation(fields: [moduleId], references: [id])
+}
+
+model Attendance {
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  status            AttendanceStatus @default(PRESENT)
+  //
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  //
+  studentId         String           @db.ObjectId
+  student           Student          @relation(fields: [studentId], references: [id])
+  //
+  attendanceClass   AttendanceClass  @relation(fields: [attendanceClassId], references: [id])
+  attendanceClassId String           @db.ObjectId
+}
+
+model AttendanceClass {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  title       String
+  //
+  module      Module       @relation(fields: [moduleId], references: [id])
+  moduleId    String       @db.ObjectId
   //
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   //
-  moduleId    String?      @db.ObjectId
-  module      Module?      @relation(fields: [moduleId], references: [id])
   attendances Attendance[]
-}
-
-model Attendance {
-  id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  status    AttendanceStatus @default(PRESENT)
-  //
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  //
-  studentId String           @db.ObjectId
-  student   Student          @relation(fields: [studentId], references: [id])
-  //
-  classId   String?          @db.ObjectId
-  class     Class?           @relation(fields: [classId], references: [id])
 }
 
 model Payment {

@@ -120,6 +120,7 @@ Table Module {
   classes Class [not null]
   registeredModules RegisteredModule [not null]
   moduleToModuleRegistrations ModuleToModuleRegistration [not null]
+  attendanceClasses AttendanceClass [not null]
 
   indexes {
     (code, courseId) [unique]
@@ -290,7 +291,6 @@ Table Class {
   updatedAt DateTime [not null]
   moduleId String
   module Module
-  attendances Attendance [not null]
 }
 
 Table Attendance {
@@ -300,8 +300,18 @@ Table Attendance {
   updatedAt DateTime [not null]
   studentId String [not null]
   student Student [not null]
-  classId String
-  class Class
+  attendanceClass AttendanceClass [not null]
+  attendanceClassId String [not null]
+}
+
+Table AttendanceClass {
+  id String [pk]
+  title String [not null]
+  module Module [not null]
+  moduleId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  attendances Attendance [not null]
 }
 
 Table Payment {
@@ -430,7 +440,9 @@ Ref: Class.moduleId > Module.id
 
 Ref: Attendance.studentId > Student.id
 
-Ref: Attendance.classId > Class.id
+Ref: Attendance.attendanceClassId > AttendanceClass.id
+
+Ref: AttendanceClass.moduleId > Module.id
 
 Ref: Payment.profileId > Profile.id
 
