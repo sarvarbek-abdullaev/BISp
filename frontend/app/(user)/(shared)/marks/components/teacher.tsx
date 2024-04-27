@@ -22,7 +22,7 @@ const Teacher: FC<TeacherProps> = ({ data: modules, moduleCode }) => {
   const activeModule = modules.find((module) => module.code === moduleCode);
 
   const [selectedModule, setSelectedModule] = useState<typeof activeModule>(activeModule);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [students, setStudents] = useState<any[]>([]);
   const [assessColumns, setAssessColumns] = useState<string[]>(moduleAssessColumns);
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
@@ -31,6 +31,8 @@ const Teacher: FC<TeacherProps> = ({ data: modules, moduleCode }) => {
 
   useEffect(() => {
     if (!selectedModule) return;
+
+    setIsLoading(true);
 
     getAssessMarksByModuleId(selectedModule.id)
       .then(({ studentsData, exams }) => {
