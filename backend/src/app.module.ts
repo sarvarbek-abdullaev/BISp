@@ -23,6 +23,7 @@ import { AttendanceModule } from './common/attendances/attendance.module';
 import { ModulesRegistrationModule } from './common/modulesRegistrations/modulesRegistration.module';
 import { PaymentModule } from './common/payments/payment.module';
 import { AcademicYearModule } from './common/academicYears/academicYear.module';
+import { AttendanceClassModule } from './common/attendanceClasses/attendanceClass.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AcademicYearModule } from './common/academicYears/academicYear.module';
     ModulesRegistrationModule,
     PaymentModule,
     AcademicYearModule,
+    AttendanceClassModule,
   ],
   controllers: [AppController],
   providers: [AppService, StudentModule],

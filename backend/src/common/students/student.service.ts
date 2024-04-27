@@ -152,6 +152,24 @@ export class StudentService {
     return delete student.profile.password && { ...student, currentGroup };
   }
 
+  async getStudentsByModuleId(moduleId: string): Promise<Student[]> {
+    return this.prismaService.student.findMany({
+      where: {
+        profile: {
+          registeredModules: {
+            some: {
+              moduleId,
+            },
+          },
+        },
+      },
+      include: {
+        profile: true,
+        course: true,
+      },
+    });
+  }
+
   async getStudentModules(id: string): Promise<StudentModulesByYear[]> {
     const student = await this.prismaService.student.findUnique({
       where: {
@@ -250,9 +268,9 @@ export class StudentService {
         },
         attendances: {
           include: {
-            class: {
+            attendanceClass: {
               include: {
-                module: true,
+                attendances: true,
               },
             },
           },
@@ -262,11 +280,11 @@ export class StudentService {
 
     return studentAttendances.profile.registeredModules.reduce(
       (acc, registeredModule) => {
-        const moduleCode = registeredModule.module.id;
+        const moduleId = registeredModule.module.id;
         const moduleAttendances = studentAttendances.attendances.reduce(
           (moduleAcc, attendance) => {
-            if (attendance.class?.module?.id === moduleCode) {
-              moduleAcc.push(delete attendance.class.module && attendance);
+            if (attendance.attendanceClass.moduleId === moduleId) {
+              moduleAcc.push(attendance);
             }
             return moduleAcc;
           },

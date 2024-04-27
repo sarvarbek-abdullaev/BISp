@@ -23,7 +23,7 @@ export class AttendanceService {
   async getAllAttendances(): Promise<Attendance[]> {
     return this.prismaService.attendance.findMany({
       include: {
-        class: true,
+        attendanceClass: true,
         student: true,
       },
     });
@@ -35,7 +35,7 @@ export class AttendanceService {
         id,
       },
       include: {
-        class: true,
+        attendanceClass: true,
         student: true,
       },
     });

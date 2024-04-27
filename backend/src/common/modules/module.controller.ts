@@ -9,10 +9,14 @@ import {
 } from '@nestjs/common';
 import { ModuleService } from './module.service';
 import { Module } from '@prisma/client';
+import { StudentService } from '../students/student.service';
 
 @Controller('modules')
 export class ModuleController {
-  constructor(private moduleService: ModuleService) {}
+  constructor(
+    private moduleService: ModuleService,
+    private studentService: StudentService,
+  ) {}
 
   @Get()
   async getAllModules() {
@@ -22,6 +26,11 @@ export class ModuleController {
   @Get(':id')
   async getModuleById(@Param('id') id: string) {
     return this.moduleService.getModuleById(id);
+  }
+
+  @Get(':id/students')
+  async getStudentsByModuleId(@Param('id') id: string) {
+    return this.studentService.getStudentsByModuleId(id);
   }
 
   @Post()
