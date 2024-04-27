@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
-import { Module } from '@prisma/client';
+import { Exam, Module } from '@prisma/client';
 
 @Injectable()
 export class ModuleService {
@@ -25,8 +25,20 @@ export class ModuleService {
     });
   }
 
+  async getExamsByModuleId(id: string): Promise<Exam[]> {
+    const module = await this.prisma.module.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        exams: true,
+      },
+    });
+
+    return module?.exams;
+  }
+
   async updateModuleById(id: string, moduleData): Promise<Module> {
-    console.log({ moduleData });
     const prismaData = {
       ...moduleData,
     };

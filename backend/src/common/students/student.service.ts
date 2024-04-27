@@ -221,6 +221,55 @@ export class StudentService {
     });
   }
 
+  async getStudentsWithMarksByModuleId(moduleId: string): Promise<Student[]> {
+    const students = await this.prismaService.student.findMany({
+      where: {
+        profile: {
+          registeredModules: {
+            some: {
+              moduleId,
+            },
+          },
+        },
+      },
+      include: {
+        profile: true,
+        studentGroups: {
+          select: {
+            id: true,
+            group: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        marks: {
+          include: {
+            exam: true,
+          },
+        },
+      },
+    });
+
+    return students.map((student) => {
+      const currentGroup = student.studentGroups[0];
+
+      delete student.profile.password;
+      delete student.studentGroups;
+
+      return {
+        ...student,
+        currentGroup,
+        marks: student.marks,
+      };
+    });
+  }
+
   async getStudentModules(id: string): Promise<StudentModulesByYear[]> {
     const student = await this.prismaService.student.findUnique({
       where: {

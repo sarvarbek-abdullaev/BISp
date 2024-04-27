@@ -16,6 +16,8 @@ type AttendanceWithClass = Attendance & { attendanceClass: any };
 
 type StudentWithAttendance = Student & { attendances: AttendanceWithClass[] };
 
+type StudentsWithMarks = Student & { marks: any[] };
+
 @Controller('modules')
 export class ModuleController {
   constructor(
@@ -46,11 +48,10 @@ export class ModuleController {
 
   @Get(':id/attendances')
   async getAttendanceByModuleId(@Param('id') id: string) {
-    const attendanceClasses =
-      await this.attendanceClassService.getAttendanceClassesByModuleId(id);
-
-    const students =
-      await this.studentService.getStudentsWithAttendanceByModuleId(id);
+    const [attendanceClasses, students] = await Promise.all([
+      this.attendanceClassService.getAttendanceClassesByModuleId(id),
+      this.studentService.getStudentsWithAttendanceByModuleId(id),
+    ]);
 
     const studentsData = students.map((student: StudentWithAttendance) => {
       const attendance = attendanceClasses.map((attendanceClass) => {
@@ -72,6 +73,36 @@ export class ModuleController {
     return {
       studentsData,
       attendanceClasses,
+    };
+  }
+
+  @Get(':id/assess')
+  async getAssessMarksByModuleId(@Param('id') id: string) {
+    const [students, exams] = await Promise.all([
+      this.studentService.getStudentsWithMarksByModuleId(id),
+      this.moduleService.getExamsByModuleId(id),
+    ]);
+
+    const studentsData = students.map((student: StudentsWithMarks) => {
+      const marks = exams.map((exam) => {
+        const currentMark = student.marks.find(
+          (mark) => mark?.exam?.id === exam.id,
+        );
+
+        if (currentMark) return currentMark;
+
+        return { exam };
+      });
+
+      return {
+        ...student,
+        marks,
+      };
+    });
+
+    return {
+      studentsData,
+      exams,
     };
   }
 
