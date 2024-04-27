@@ -7,11 +7,11 @@ import { createDate, createTime } from '@/lib/utils';
 import { attendanceColumns } from '@/tabs';
 
 interface StudentProps {
-  attendances: any[];
+  data: any[];
   moduleCode: string;
 }
 
-const Student: FC<StudentProps> = ({ attendances: moduleAttendances, moduleCode }) => {
+const Student: FC<StudentProps> = ({ data: moduleAttendances, moduleCode }) => {
   const defaultModule =
     moduleAttendances.find((moduleAttendance) => moduleAttendance.module.code === moduleCode) || moduleAttendances[0];
 

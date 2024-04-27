@@ -30,6 +30,8 @@ export const attendanceColumns = ['No', 'Class', 'Status', 'Created', 'Time'];
 
 export const timetableColumns = ['No', 'Group', 'Modules', 'Hours', 'Created At', 'Actions'];
 
+export const moduleAttendanceColumns = ['No', 'Name', 'Group'];
+
 export const userTabs = [
   {
     name: 'Dashboard',

@@ -232,3 +232,20 @@ export const updateLessonById = async (id: string | undefined, data: any) => {
     console.log(error);
   }
 };
+
+export const updateAttendanceById = async (id: string | undefined, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/attendances/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    revalidatePath('/attendance');
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

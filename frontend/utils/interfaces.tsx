@@ -21,3 +21,8 @@ export interface Tab {
   name: string;
   key?: string;
 }
+
+export enum AttendanceStatus {
+  PRESENT = 'PRESENT',
+  ABSENT = 'ABSENT',
+}

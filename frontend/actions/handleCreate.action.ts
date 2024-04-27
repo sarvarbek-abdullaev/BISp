@@ -227,3 +227,37 @@ export const modulesRegistrations = async (data: any) => {
     console.log(error);
   }
 };
+
+export const createAttendanceClass = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/attendance-classes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const _data = await res.json();
+    revalidatePath('/attendance');
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createAttendance = async (data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/attendances`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const _data = await res.json();
+    revalidatePath('/attendance');
+    return _data;
+  } catch (error) {
+    console.log(error);
+  }
+};

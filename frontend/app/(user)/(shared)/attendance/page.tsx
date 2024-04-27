@@ -1,4 +1,4 @@
-import { getStudentAttendances } from '@/actions/handleGet.action';
+import { getStudentAttendances, getTeacherModules } from '@/actions/handleGet.action';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import Student from '@/app/(user)/(shared)/attendance/components/student';
@@ -12,22 +12,22 @@ const Page = async ({ searchParams }: any) => {
 
   if (!session) return <div>Not logged in</div>;
 
-  const id = session.user.id;
-  const role = session.user.profile.role.toLowerCase();
-  let data = null;
+  const { id, profile } = session.user;
+  const role = profile.role.toLowerCase();
+  let data: null;
 
   if (role === 'student') {
     data = await getStudentAttendances(id);
   } else {
-    // data = await getTeacherAttendances(id);
+    data = await getTeacherModules(id);
   }
 
   return (
     <PageContainer title="Attendance:">
       {role === 'student' ? (
-        <Student attendances={data} moduleCode={moduleCode} />
+        <Student data={data} moduleCode={moduleCode} />
       ) : (
-        <Teacher attendances={data} moduleCode={moduleCode} />
+        <Teacher data={data} moduleCode={moduleCode} />
       )}
     </PageContainer>
   );

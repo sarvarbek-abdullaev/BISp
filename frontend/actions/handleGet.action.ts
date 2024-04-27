@@ -1,4 +1,5 @@
-export const API_URL = process.env.BACKEND_URL;
+// export const API_URL = process.env.BACKEND_URL;
+export const API_URL = 'http://localhost:3000';
 
 export const getUsers = async (type: string) => {
   try {
@@ -354,6 +355,32 @@ export const getLessons = async () => {
 export const getAcademicYears = async () => {
   try {
     const res = await fetch(`${API_URL}/academic-years`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAttendanceByModuleId = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/modules/${id}/attendances`, {
+      next: {
+        revalidate: 30,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getStudentsByModuleId = async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/modules/${id}/students`, {
       next: {
         revalidate: 30,
       },

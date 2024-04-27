@@ -6,11 +6,12 @@ interface PopoverProps {
   element: React.ReactNode;
   header?: React.ReactNode;
   body?: React.ReactNode;
+  isOpen?: boolean;
 }
 
-export const Popover: FC<PopoverProps> = ({ element, header, body }) => {
+export const Popover: FC<PopoverProps> = ({ element, header, body, isOpen }) => {
   return (
-    <PopoverShadcn>
+    <PopoverShadcn open={isOpen}>
       <PopoverTrigger>{element}</PopoverTrigger>
       <PopoverContent className="w-fit">
         {header && <div className="mb-4">{header}</div>}
