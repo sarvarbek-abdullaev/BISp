@@ -81,6 +81,8 @@ export const createExam = async (type: string, data: any) => {
     });
     const _data = await res.json();
     revalidatePath(`/admin/programs/${type}`);
+    revalidatePath('/marks');
+
     return _data;
   } catch (error) {
     console.log(error);
