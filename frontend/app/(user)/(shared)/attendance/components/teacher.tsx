@@ -28,6 +28,13 @@ const Teacher: FC<TeacherProps> = ({ data, moduleCode }) => {
   const [newClassTitle, setNewClassTitle] = useState<string>('');
   const [newClassCreated, setNewClassCreated] = useState<boolean>(false);
 
+  // Update window URL with module code
+  const updateWindowUrl = (moduleCode: string) => {
+    const queryParams = new URLSearchParams(window.location.search);
+    queryParams.set('moduleCode', moduleCode);
+    window.history.replaceState({}, '', `${window.location.pathname}?${queryParams}`);
+  };
+
   useEffect(() => {
     if (!selectedModule) return;
 
@@ -40,6 +47,7 @@ const Teacher: FC<TeacherProps> = ({ data, moduleCode }) => {
         setAttendanceColumns(moduleAttendanceColumns.concat(attendanceClassNames));
       })
       .finally(() => {
+        updateWindowUrl(selectedModule.code);
         setIsLoading(false);
       });
   }, [selectedModule, newClassCreated]);
