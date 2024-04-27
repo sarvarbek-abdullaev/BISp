@@ -33,7 +33,9 @@ export const Navbar: FC<NavbarProps> = ({ tabs, session, styles }) => {
 
   return (
     <div className="flex sticky top-0 bg-[#202020] items-center justify-between px-8 z-1" {...styles}>
-      <Logo height={75} width={150} />
+      <Link href="/">
+        <Logo height={75} width={150} />
+      </Link>
       <Tabs defaultValue={defaultTab} className="w-[400px]">
         <TabsList className="p-0 h-full">
           {tabs.map((tab, index) => (
