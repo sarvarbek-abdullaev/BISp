@@ -352,6 +352,19 @@ export const getLessons = async () => {
   }
 };
 
+export const getUserLessons = async (type: string, id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/${type}/${id}/lessons`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAcademicYears = async () => {
   try {
     const res = await fetch(`${API_URL}/academic-years`, {
