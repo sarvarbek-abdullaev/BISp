@@ -13,3 +13,10 @@ export const createISODate = (day: number, startHour: number) => {
   date.setMinutes(0);
   return date.toISOString();
 };
+
+// Update window URL with module code
+export const updateWindowUrl = (moduleCode: string) => {
+  const queryParams = new URLSearchParams(window.location.search);
+  queryParams.set('moduleCode', moduleCode);
+  window.history.replaceState({}, '', `${window.location.pathname}?${queryParams}`);
+};

@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { createAttendanceClass } from '@/actions/handleCreate.action';
 import { moduleAttendanceColumns } from '@/tabs';
+import { updateWindowUrl } from '@/utils/methods';
 
 interface TeacherProps {
   data: any[];
@@ -27,13 +28,6 @@ const Teacher: FC<TeacherProps> = ({ data, moduleCode }) => {
   const [attendanceColumns, setAttendanceColumns] = useState<string[]>(moduleAttendanceColumns);
   const [newClassTitle, setNewClassTitle] = useState<string>('');
   const [newClassCreated, setNewClassCreated] = useState<boolean>(false);
-
-  // Update window URL with module code
-  const updateWindowUrl = (moduleCode: string) => {
-    const queryParams = new URLSearchParams(window.location.search);
-    queryParams.set('moduleCode', moduleCode);
-    window.history.replaceState({}, '', `${window.location.pathname}?${queryParams}`);
-  };
 
   useEffect(() => {
     if (!selectedModule) return;
