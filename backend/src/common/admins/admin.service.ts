@@ -166,6 +166,25 @@ export class AdminService {
     return delete admin.profile.password && admin;
   }
 
+  async updateAdminImageById(id: string, adminData): Promise<Admin> {
+    const admin = await this.prismaService.admin.update({
+      where: {
+        id,
+      },
+      data: {
+        profile: {
+          update: {
+            imageUrl: adminData.imageUrl,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+    return delete admin.profile.password && admin;
+  }
+
   async deleteAdminById(id: string): Promise<Admin> {
     return this.prismaService.admin.delete({
       where: {

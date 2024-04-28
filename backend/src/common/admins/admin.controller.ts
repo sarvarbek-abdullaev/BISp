@@ -44,6 +44,14 @@ export class AdminController {
     return await this.adminService.updateAdminById(id, adminData);
   }
 
+  @Put(':id')
+  async updateAdminImageById(
+    @Param('id') id: string,
+    @Body() adminData: Admin,
+  ): Promise<Admin> {
+    return await this.adminService.updateAdminImageById(id, adminData);
+  }
+
   @Post()
   async createAdmin(@Body() adminData: Admin): Promise<UserDto> {
     return await this.adminService.createAdmin(adminData);
