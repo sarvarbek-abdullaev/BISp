@@ -1,5 +1,6 @@
 // export const API_URL = process.env.BACKEND_URL;
-export const API_URL = 'http://localhost:3000';
+export const API_URL = 'https://bisp-production.up.railway.app/api';
+// export const API_URL = 'http://localhost:3000';
 
 export const getUsers = async (type: string) => {
   try {
