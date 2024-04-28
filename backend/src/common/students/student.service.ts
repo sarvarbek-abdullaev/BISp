@@ -152,6 +152,55 @@ export class StudentService {
     return delete student.profile.password && { ...student, currentGroup };
   }
 
+  async getStudentDetailsById(id: string): Promise<Student> {
+    return this.prismaService.student.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        course: true,
+        profile: {
+          include: {
+            registeredModules: {
+              include: {
+                module: true,
+                academicYear: true,
+              },
+            },
+            orders: {
+              include: {
+                orderedProducts: true,
+                payments: true,
+              },
+            },
+            payments: true,
+          },
+        },
+        attendances: true,
+        marks: true,
+        enrollments: {
+          include: {
+            course: true,
+          },
+        },
+        studentGroups: {
+          select: {
+            id: true,
+            group: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+  }
+
   async getStudentsByModuleId(moduleId: string): Promise<Student[]> {
     return this.prismaService.student.findMany({
       where: {

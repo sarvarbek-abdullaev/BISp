@@ -6,7 +6,7 @@ interface UsersLayoutProps {
 }
 
 const UsersLayout: FC<UsersLayoutProps> = ({ children }) => {
-  return <Wrapper className="flex-1">{children}</Wrapper>;
+  return <Wrapper className="flex-1 md:py-0">{children}</Wrapper>;
 };
 
 export default UsersLayout;

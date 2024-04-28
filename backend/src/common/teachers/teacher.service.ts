@@ -82,6 +82,35 @@ export class TeacherService {
     return delete teacher.profile.password && teacher;
   }
 
+  async getTeacherDetailsById(id: string): Promise<UserDto> {
+    return this.prismaService.teacher.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        profile: {
+          include: {
+            orders: {
+              include: {
+                orderedProducts: {
+                  include: {
+                    product: true,
+                  },
+                },
+              },
+            },
+            payments: true,
+          },
+        },
+        modules: {
+          include: {
+            course: true,
+          },
+        },
+      },
+    });
+  }
+
   async getTeacherModules(id: string): Promise<any> {
     const teacher = await this.prismaService.teacher.findUnique({
       where: {

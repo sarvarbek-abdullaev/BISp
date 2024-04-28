@@ -26,6 +26,11 @@ export class AdminController {
     return await this.adminService.getAdminById(id);
   }
 
+  @Get(':id/all')
+  async getAdminDetailsById(@Param('id') id: string): Promise<UserDto> {
+    return await this.adminService.getAdminDetailsById(id);
+  }
+
   @Get(':id/orders')
   async getAdminOrders(@Param('id') id: string): Promise<UserOrder[]> {
     return await this.adminService.getAdminOrders(id);

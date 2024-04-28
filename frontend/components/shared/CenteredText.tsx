@@ -7,7 +7,7 @@ interface CenteredTextProps {
 
 const CenteredText: FC<CenteredTextProps> = ({ text, children }) => (
   <div className="w-full h-full flex items-center justify-center">
-    <p className="text-xl">{text}</p>
+    {text && <p className="text-xl">{text}</p>}
     {children}
   </div>
 );

@@ -61,6 +61,30 @@ export class AdminService {
     return delete admin.profile.password && admin;
   }
 
+  async getAdminDetailsById(id: string): Promise<UserDto> {
+    const admin = await this.prismaService.admin.findUnique({
+      select: {
+        id: true,
+        profile: {
+          include: {
+            orders: {
+              include: {
+                orderedProducts: true,
+                payments: true,
+              },
+            },
+            payments: true,
+          },
+        },
+      },
+      where: {
+        id,
+      },
+    });
+
+    return delete admin.profile.password && admin;
+  }
+
   async getAdminOrders(id: string): Promise<UserOrder[]> {
     const admin = await this.prismaService.admin.findUnique({
       where: {

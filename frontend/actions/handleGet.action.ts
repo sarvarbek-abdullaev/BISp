@@ -27,9 +27,9 @@ export const getUserById = async (type: string, id: string) => {
   }
 };
 
-export const getUserByIdNew = async (id: string) => {
+export const getUserDetailsById = async (type: string, id: string) => {
   try {
-    const res = await fetch(`${API_URL}/users/${id}`, {
+    const res = await fetch(`${API_URL}/${type}/${id}/all`, {
       next: {
         revalidate: 0,
       },

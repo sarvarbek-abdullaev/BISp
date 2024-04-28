@@ -30,6 +30,11 @@ export class TeacherController {
     return await this.teacherService.getTeacherById(id);
   }
 
+  @Get(':id/all')
+  async getTeacherDetailsById(@Param('id') id: string): Promise<UserDto> {
+    return await this.teacherService.getTeacherDetailsById(id);
+  }
+
   @Get(':id/orders')
   async getTeacherOrders(@Param('id') id: string): Promise<UserOrder[]> {
     return await this.teacherService.getTeacherOrders(id);

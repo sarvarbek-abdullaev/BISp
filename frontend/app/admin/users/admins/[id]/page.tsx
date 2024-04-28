@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
-import { getUserById } from '@/actions/handleGet.action';
+import { getUserDetailsById } from '@/actions/handleGet.action';
 import CenteredText from '@/components/shared/CenteredText';
 
 import { createDate } from '@/lib/utils';
+import Image from 'next/image';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Heading, InfoRow } from '@/app/admin/users/students/[id]/page';
 
 interface PageProps {
   params: {
@@ -18,23 +21,104 @@ interface Admin {
     email: string;
     birthDate: string;
     role: string;
+    orders: any[];
+    payments: any[];
   };
 }
 
+const tabs = [
+  { value: 'orders', text: 'Orders' },
+  { value: 'payments', text: 'Payments' },
+];
+
 const AdminPage: FC<PageProps> = async ({ params }) => {
   const type = 'admins';
-  const admin: Admin = await getUserById(type, params.id);
+  const admin: Admin = await getUserDetailsById(type, params.id);
+
+  console.log({ admin });
 
   if (!admin?.id) return <CenteredText text="Admin not found" />;
 
+  const { id, profile } = admin;
+
   return (
-    <div>
-      <p>Id: {admin.id}</p>
-      <p>FirstName: {admin.profile.firstName}</p>
-      <p>LastName: {admin.profile.lastName}</p>
-      <p>Email: {admin.profile.email}</p>
-      <p>Birth Date: {createDate(admin.profile.birthDate)}</p>
-      <p>Role: {admin.profile.role}</p>
+    <div className="flex">
+      <div className="w-full">
+        <h1 className="w-full text-center text-2xl bg-[#202020] py-3 sticky top-0 border-b border-gray-500 border-dashed">
+          {profile.firstName + ' ' + profile.lastName}
+        </h1>
+        <div className="flex justify-between p-5">
+          <div className="flex flex-col max-w-lg w-full">
+            <Heading text="Personal Details:" />
+            <div className="flex flex-col gap-2">
+              <InfoRow label="Id" value={id} />
+              <InfoRow label="First Name" value={profile.firstName} />
+              <InfoRow label="Last Name" value={profile.lastName} />
+              <InfoRow label="Email" value={profile.email} />
+              <InfoRow label="Birth Date" value={createDate(profile.birthDate)} />
+              <InfoRow label="Role" value={profile.role} />
+            </div>
+          </div>
+          <div className="max-w-[300px] w-full my-4">
+            <Image
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAFElEQVR42mNkAAIAAAUAAeImBZYAAAAASUVORK5CYII="
+              alt="placeholder"
+              width={300}
+              height={300}
+              className="rounded-2xl"
+            />
+          </div>
+        </div>
+        <Tabs defaultValue="enrollments" className="w-full">
+          <div className="max-w-3xl mx-auto">
+            <TabsList className="w-full flex box">
+              {tabs.map(({ value, text }) => (
+                <TabsTrigger key={value} className="flex-1" value={value}>
+                  {text}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          <div className="px-5">
+            <TabsContent value="orders">
+              <Heading text="Orders:" />
+              {profile.orders.length ? (
+                <ul>
+                  {profile.orders.map(({ id, status, total }) => (
+                    <div key={id} className="py-1">
+                      <InfoRow label="Id" value={id} />
+                      <InfoRow label="Status" value={status} />
+                      <InfoRow label="Total" value={total} />
+                    </div>
+                  ))}
+                </ul>
+              ) : (
+                <CenteredText>
+                  <p className="text-red-600">No orders found</p>
+                </CenteredText>
+              )}
+            </TabsContent>
+            <TabsContent value="payments">
+              <Heading text="Payments:" />
+              {profile.payments.length ? (
+                <ul>
+                  {profile.payments.map(({ id, status, total }) => (
+                    <div key={id} className="py-1">
+                      <InfoRow label="Id" value={id} />
+                      <InfoRow label="Status" value={status} />
+                      <InfoRow label="Total" value={total} />
+                    </div>
+                  ))}
+                </ul>
+              ) : (
+                <CenteredText>
+                  <p className="text-red-600">No payments found</p>
+                </CenteredText>
+              )}
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
     </div>
   );
 };

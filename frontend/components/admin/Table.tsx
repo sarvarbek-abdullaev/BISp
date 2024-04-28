@@ -79,7 +79,7 @@ interface Status {
 }
 
 export const Table: FC<UsersTableProps> = ({ columns, rows, type: defaultType }) => {
-  const type = defaultType?.includes('/') ? defaultType.split('/')[1] : defaultType;
+  const type = defaultType?.includes('/') ? defaultType.split('/')[defaultType.split('/').length - 1] : defaultType;
 
   const text = `No ${type} found`;
 
