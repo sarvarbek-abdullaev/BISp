@@ -8,16 +8,14 @@ export async function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
   const session = await getToken({ req, secret });
 
-  console.log({ session });
-
   if (currentPath.startsWith('/api')) {
     return NextResponse.next();
   }
 
-  if (!req.cookies.has('next-auth.session-token') && !currentPath.includes('api')) {
+  if (!session && !currentPath.includes('api')) {
     if (currentPath.includes('auth/forgot-password')) return NextResponse.next();
 
-    //return NextResponse.redirect(new URL('/auth/login', req.url));
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
   if (session) {
