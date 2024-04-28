@@ -608,6 +608,24 @@ export class StudentService {
     return delete student.profile.password && student;
   }
 
+  async updateStudentImageById(id: string, studentData: any): Promise<Student> {
+    return this.prismaService.student.update({
+      where: {
+        id,
+      },
+      data: {
+        profile: {
+          update: {
+            imageUrl: studentData.imageUrl,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+  }
+
   async deleteStudentById(id: string): Promise<Student> {
     return this.prismaService.student.delete({
       where: {

@@ -212,6 +212,24 @@ export class TeacherService {
     return delete teacher.profile.password && teacher;
   }
 
+  async updateTeacherImageById(id: string, teacherData: any): Promise<Teacher> {
+    return this.prismaService.teacher.update({
+      where: {
+        id,
+      },
+      data: {
+        profile: {
+          update: {
+            imageUrl: teacherData.imageUrl,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+  }
+
   async deleteTeacherById(id: string): Promise<Teacher> {
     return this.prismaService.teacher.delete({
       where: {

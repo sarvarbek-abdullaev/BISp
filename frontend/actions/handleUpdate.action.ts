@@ -266,3 +266,21 @@ export const updateMarkById = async (id: string | undefined, data: any) => {
     console.log(error);
   }
 };
+
+export const updateUserImageById = async (id: string | undefined, type: string, data: any) => {
+  try {
+    const res = await fetch(`${API_URL}/${type}/${id}/image`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    revalidatePath('/profile');
+    revalidatePath('/admin/users');
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

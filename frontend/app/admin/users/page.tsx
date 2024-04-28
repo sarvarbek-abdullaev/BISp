@@ -29,11 +29,20 @@ const UsersPage: FC<PageProps> = async ({ searchParams }) => {
     <div className="flex w-full h-full flex-col gap-4">
       <Wrapper>
         <div className="flex justify-end items-center gap-4">
-          {userTypes.map(({ path, name }, index) => (
-            <Link key={name + path + index} href={path + '/create'}>
-              <Button variant="ghost">Create {name.slice(0, name.length - 1)}</Button>
-            </Link>
-          ))}
+          {userTypes.map(({ path, name }, index) => {
+            let finalUrl = path + '/create';
+            const splitPath = path.split('?');
+
+            if (splitPath.length > 1) {
+              finalUrl = splitPath[0] + '/create?' + splitPath[1];
+            }
+
+            return (
+              <Link key={name + path + index} href={finalUrl}>
+                <Button variant="ghost">Create {name.slice(0, name.length - 1)}</Button>
+              </Link>
+            );
+          })}
         </div>
       </Wrapper>
       <Wrapper flex="1">

@@ -1,7 +1,8 @@
 'use client';
-import React, { FC } from 'react';
+
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateUserById } from '@/actions/handleUpdate.action';
+import { updateUserById, updateUserImageById } from '@/actions/handleUpdate.action';
 import { createUser } from '@/actions/handleCreate.action';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
+import { UploadDropzone } from '@/utils/upload-thing';
+import Image from 'next/image';
 
 interface AddEditFormProps {
   user?: {
@@ -20,6 +23,8 @@ interface AddEditFormProps {
       lastName: string;
       email: string;
       birthDate: string;
+      imageUrl: string;
+      role: string;
     };
     modules: any[];
   };
@@ -85,6 +90,9 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
     },
   });
 
+  const [isNewImage, setIsNewImage] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string>(user?.profile.imageUrl || '');
+
   const isLoading = form.formState.isSubmitting;
 
   const handleUpdate = async (data: z.infer<typeof formSchema>) => {
@@ -109,24 +117,27 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
   };
 
   return (
-    <div className="container max-w-md ml-0">
-      <div className="space-y-8">
-        <div>
-          <div className="space-y-6">
-            <div className="space-y-5">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-                  <div className="space-y-5">
-                    {formElements.map((element, index) => {
-                      if (element.name === 'moduleIds' && !modules) return null;
+    <div className="container ml-0 flex items-center">
+      <div className="space-y-8 max-w-md flex-1">
+        <div className="space-y-6 w-full">
+          <div className="space-y-5">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+                <div className="space-y-5">
+                  {formElements.map((element, index) => {
+                    if (element.name === 'moduleIds' && !modules) return null;
 
-                      return (
-                        <FormField
-                          key={element.type + index}
-                          // @ts-ignore
-                          name={element.name}
-                          control={form.control}
-                          render={({ field }) => (
+                    return (
+                      <FormField
+                        key={element.type + index}
+                        // @ts-ignore
+                        name={element.name}
+                        control={form.control}
+                        // @ts-ignore
+                        render={({ field }) => {
+                          if (element.name === 'moduleIds' && type !== 'teacher') return '';
+
+                          return (
                             <FormItem>
                               <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white/70">
                                 {element.label}:
@@ -156,7 +167,15 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
                                     ))}
                                   </>
                                 ) : element.type === 'date' ? (
-                                  <input type="date" id={element.name} required={element.required} {...field} />
+                                  <div className="w-full">
+                                    <input
+                                      type="date"
+                                      className="w-full p-2 rounded-md"
+                                      id={element.name}
+                                      required={element.required}
+                                      {...field}
+                                    />
+                                  </div>
                                 ) : (
                                   <Input
                                     id={element.name}
@@ -169,19 +188,62 @@ const AddEditUserForm: FC<AddEditFormProps> = ({ user, modules, type }) => {
                               </FormControl>
                               <FormMessage />
                             </FormItem>
-                          )}
-                        />
-                      );
-                    })}
-                  </div>
-                  <div className="space-y-6">
-                    <Button variant="secondary">{isEdit ? 'Update' : 'Create'}</Button>
-                  </div>
-                </form>
-              </Form>
-            </div>
+                          );
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="space-y-6">
+                  <Button variant="secondary">{isEdit ? 'Update' : 'Create'}</Button>
+                </div>
+              </form>
+            </Form>
           </div>
         </div>
+      </div>
+      <div className="flex-1 w-full flex justify-center">
+        {imageUrl ? (
+          <div>
+            <div className="max-w-[400px] w-full max-h-[400px] overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt="Profile"
+                width={400}
+                height={400}
+                priority
+                layout="responsive"
+                objectFit="contain"
+              />
+            </div>
+            <Button
+              variant="secondary"
+              className="mt-4"
+              onClick={() => {
+                setIsNewImage(false);
+                setImageUrl('');
+              }}
+            >
+              Change Image
+            </Button>
+          </div>
+        ) : (
+          <UploadDropzone
+            endpoint="profileImage"
+            onClientUploadComplete={async (res) => {
+              setIsNewImage(true);
+              // @ts-ignore
+              await updateUserImageById(user?.id, user?.profile?.role?.toLowerCase() + 's', {
+                imageUrl: res[0].url,
+              });
+
+              setImageUrl(res[0].url);
+            }}
+            onUploadError={(error: Error) => {
+              console.error(error);
+            }}
+          />
+        )}
       </div>
     </div>
   );

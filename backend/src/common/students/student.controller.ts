@@ -70,6 +70,14 @@ export class StudentController {
     return await this.studentService.updateStudentById(id, studentData);
   }
 
+  @Put(':id/image')
+  async updateStudentImageById(
+    @Param('id') id: string,
+    @Body() studentData: any,
+  ): Promise<Student> {
+    return await this.studentService.updateStudentImageById(id, studentData);
+  }
+
   @Post()
   async createStudent(@Body() studentData: Student): Promise<UserDto> {
     return await this.studentService.createStudent(studentData);

@@ -58,6 +58,14 @@ export class TeacherController {
     return await this.teacherService.updateTeacherById(id, studentData);
   }
 
+  @Put(':id')
+  async updateTeacherImageById(
+    @Param('id') id: string,
+    @Body() studentData: any,
+  ): Promise<Teacher> {
+    return await this.teacherService.updateTeacherImageById(id, studentData);
+  }
+
   @Post()
   async createTeacher(@Body() studentData: Teacher): Promise<UserDto> {
     return await this.teacherService.createTeacher(studentData);
