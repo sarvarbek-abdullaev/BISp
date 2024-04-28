@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Logo } from '@/components/shared/Logo';
 import Link from '@/components/shared/Link';
+import { APP_URL } from '@/actions/handleGet.action';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -44,7 +45,7 @@ export default function Page() {
         redirect: false,
       }).then(({ ok, error }: any) => {
         if (ok) {
-          router.push('/');
+          router.push(APP_URL);
         } else {
           setMessage('Invalid email or password');
           console.log(error);

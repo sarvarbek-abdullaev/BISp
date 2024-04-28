@@ -8,6 +8,8 @@ export async function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
   const session = await getToken({ req, secret });
 
+  console.log({ session });
+
   if (currentPath.startsWith('/api')) {
     return NextResponse.next();
   }
