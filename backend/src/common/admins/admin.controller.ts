@@ -31,8 +31,6 @@ export class AdminController {
     return await this.adminService.getAdminDetailsById(id);
   }
 
-  // this is for deploy
-
   @Get(':id/orders')
   async getAdminOrders(@Param('id') id: string): Promise<UserOrder[]> {
     return await this.adminService.getAdminOrders(id);
