@@ -1,7 +1,6 @@
 'use client';
 import { MdAccountCircle } from 'react-icons/md';
 import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { Popover } from '@/components/shared/Popover';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -37,11 +36,11 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
           }
           body={
             <>
-              <Button className="w-full justify-start" variant="ghost">
-                <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>
-                  My Profile
-                </Link>
-              </Button>
+              {/*<Button className="w-full justify-start" variant="ghost">*/}
+              {/*  <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>*/}
+              {/*    My Profile*/}
+              {/*  </Link>*/}
+              {/*</Button>*/}
               <Button className="w-full justify-start" variant="ghost" onClick={() => signOut()}>
                 Logout
               </Button>
@@ -81,11 +80,11 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
       }
       body={
         <>
-          <Button className="w-full justify-start" variant="ghost">
-            <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>
-              My Profile
-            </Link>
-          </Button>
+          {/*<Button className="w-full justify-start" variant="ghost">*/}
+          {/*  <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>*/}
+          {/*    My Profile*/}
+          {/*  </Link>*/}
+          {/*</Button>*/}
           <Button className="w-full justify-start" variant="ghost" onClick={() => signOut()}>
             Logout
           </Button>
