@@ -1,6 +1,7 @@
-package com.example.educonnect
+package com.example.educonnect.login
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -14,17 +15,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,17 +29,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.educonnect.network.LoginRequest
-import com.example.educonnect.network.responses.LoginResponse
-import com.example.educonnect.ui.theme.EduConnectTheme
+import com.example.educonnect.MainActivity
+import com.example.educonnect.R
+import com.example.educonnect.network.requests.LoginRequest
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
-
+//fun LoginView(context: Context, viewModel: LoginViewModel = LoginViewModel(context), onLogin: (Context) -> Unit) {
+fun LoginView(viewModel: LoginViewModel = LoginViewModel(LocalContext.current)) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf("") }
@@ -52,8 +48,10 @@ fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
 
     val isProgressVisible = remember { mutableStateOf(false) }
 
+
+
     fun isEmailValid(email: String): Boolean {
-        val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+\$")
+        val emailRegex = Regex("^([a-zA-Z0-9_+.-]+)@([a-zA-Z0-9.-]+)\\.([a-zA-Z]{2,})\$")
         return email.matches(emailRegex)
     }
 
@@ -95,11 +93,6 @@ fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        AsyncImage(
-//            model = "https://th.bing.com/th/id/OIP.8_4628wXA_gMHIx2otJO9QHaE8?rs=1&pid=ImgDetMain",
-//            contentDescription = null,
-//            modifier = Modifier.padding(30.dp)
-//        )
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo image",
@@ -167,42 +160,43 @@ fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
 
     response?.let {
         toastMessage = when {
-            it.statusCode == 0 && it.id.isEmpty() -> {
+            it.id.isEmpty() -> {
                 "Checking credentials"
             }
-
-            it.statusCode == 404 -> {
-                "User not found"
-            }
-
-            else -> {
+            it.profile.role.isNotEmpty() -> {
                 "Login successful"
+            }
+            else -> {
+                "User not found"
             }
         }
         showToast = true
         isProgressVisible.value = false
-    }
 
-    if (isProgressVisible.value) {
-        ProgressWidget(LocalContext.current)
+        ProgressWidget(isVisible = isProgressVisible.value)
     }
 }
 
+fun restartActivity(context: Context) {
+    val intent = Intent(context, MainActivity::class.java)
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(intent)
+}
+
 @Composable
-private fun ProgressWidget(context: Context) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Transparent)
-    ) {
-        Text(
+private fun ProgressWidget(isVisible: Boolean) {
+    if (isVisible) {
+        Box(
             modifier = Modifier
-                .background(Color.Black)
-                .padding(20.dp)
-                .align(Alignment.Center),
-            fontSize = 25.sp,
-            text = "Checking credentials"
-        )
+                .fillMaxSize()
+                .background(Color.Blue.copy(alpha = 0.5f)),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        // Invoke onLogin when the progress is not visible
+        restartActivity(LocalContext.current)
     }
 }
 
@@ -211,10 +205,10 @@ fun ToastMessage(message: String) {
     Toast.makeText(LocalContext.current, message, Toast.LENGTH_SHORT).show()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EduConnectTheme {
-        LoginScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    EduConnectTheme {
+//        LoginView()
+//    }
+//}

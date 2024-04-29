@@ -3,10 +3,6 @@ package com.example.educonnect.network.responses
 import com.google.gson.annotations.SerializedName
 
 class LoginResponse {
-    @SerializedName("statusCode")
-    val statusCode: Int = 0
-    @SerializedName("message")
-    val message: String = ""
     @SerializedName("id")
     val id: String = ""
     @SerializedName("profile")
@@ -17,11 +13,17 @@ class LoginResponse {
 
 class Profile {
     @SerializedName("id")
+    val id: String = ""
+
+    @SerializedName("firstName")
     val firstName: String = ""
-    @SerializedName("profile")
+
+    @SerializedName("lastName")
     val lastName: String = ""
-    @SerializedName("backendTokens")
+
+    @SerializedName("email")
     val email: String = ""
+
     @SerializedName("role")
     val role: String = ""
 }
