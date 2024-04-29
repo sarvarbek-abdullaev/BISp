@@ -16,7 +16,7 @@ interface AccountModalProps {
 export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }) => {
   const {
     user: {
-      profile: { role, firstName, lastName },
+      profile: { role, firstName, lastName, imageUrl },
     },
   } = session;
 
@@ -28,7 +28,7 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
         <Popover
           element={
             <Avatar className="h-16 w-16">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={imageUrl} />
               <AvatarFallback>
                 {firstName[0]}
                 {lastName[0]}
@@ -38,7 +38,7 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
           body={
             <>
               <Button className="w-full justify-start" variant="ghost">
-                <Link style={{ textAlign: 'left', width: '100%' }} href="/profile">
+                <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>
                   My Profile
                 </Link>
               </Button>
@@ -63,8 +63,11 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
         session && (
           <div className="flex gap-2">
             <Avatar className="h-16 w-16">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarImage src={imageUrl} />
+              <AvatarFallback>
+                {firstName[0]}
+                {lastName[0]}
+              </AvatarFallback>
             </Avatar>
             <div>
               <div className="font-semibold">
@@ -79,7 +82,7 @@ export const AccountModal: FC<AccountModalProps> = ({ type = 'navbar', session }
       body={
         <>
           <Button className="w-full justify-start" variant="ghost">
-            <Link style={{ textAlign: 'left', width: '100%' }} href="/profile">
+            <Link style={{ textAlign: 'left', width: '100%' }} href={'/profile'}>
               My Profile
             </Link>
           </Button>

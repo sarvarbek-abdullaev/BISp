@@ -9,6 +9,7 @@ declare module 'next-auth' {
         email: string;
         firstName: string;
         lastName: string;
+        imageUrl: string;
         role: string;
       };
     };
@@ -27,6 +28,7 @@ declare module 'next-auth/jwt' {
     profile: {
       id: string;
       email: string;
+      imageUrl: string;
       firstName: string;
       lastName: string;
       role: string;
