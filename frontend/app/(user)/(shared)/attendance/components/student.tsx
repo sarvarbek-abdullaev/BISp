@@ -21,6 +21,8 @@ const Student: FC<StudentProps> = ({ data: moduleAttendances, moduleCode }) => {
     return moduleAttendance.module;
   });
 
+  console.log({ selectedModule });
+
   return (
     <div className="h-full">
       {!moduleAttendances.length ? (
@@ -64,19 +66,19 @@ const Student: FC<StudentProps> = ({ data: moduleAttendances, moduleCode }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {selectedModule.attendances.map(
-                  ({ id, class: { name }, status, createdAt, updatedAt }: any, _id: number) => {
-                    return (
-                      <TableRow key={id}>
-                        <TableCell>{_id + 1}</TableCell>
-                        <TableCell>{name}</TableCell>
-                        <TableCell>{status}</TableCell>
-                        <TableCell>{createDate(createdAt)}</TableCell>
-                        <TableCell>{createTime(createdAt)}</TableCell>
-                      </TableRow>
-                    );
-                  },
-                )}
+                {selectedModule.attendances.map((attendance: any, _id: number) => {
+                  console.log({ attendance });
+                  const { id, status, attendanceClass, createdAt } = attendance;
+                  return (
+                    <TableRow key={id}>
+                      <TableCell>{_id + 1}</TableCell>
+                      <TableCell>{attendanceClass.title}</TableCell>
+                      <TableCell>{status}</TableCell>
+                      <TableCell>{createDate(createdAt)}</TableCell>
+                      <TableCell>{createTime(createdAt)}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </TableComponent>
           )}
