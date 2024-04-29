@@ -21,6 +21,7 @@ interface Teacher {
     lastName: string;
     email: string;
     birthDate: string;
+    imageUrl: string;
     role: string;
     orders: any[];
     payments: any[];
@@ -66,13 +67,7 @@ const TeaacherPage: FC<PageProps> = async ({ params }) => {
             </div>
           </div>
           <div className="max-w-[300px] w-full my-4">
-            <Image
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAFElEQVR42mNkAAIAAAUAAeImBZYAAAAASUVORK5CYII="
-              alt="placeholder"
-              width={300}
-              height={300}
-              className="rounded-2xl"
-            />
+            <Image src={profile.imageUrl} alt="placeholder" width={300} height={300} className="rounded-2xl" />
           </div>
         </div>
         <Tabs defaultValue="enrollments" className="w-full">
