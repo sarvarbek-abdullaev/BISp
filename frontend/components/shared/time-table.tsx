@@ -17,6 +17,7 @@ interface CalendarProps {
 }
 
 const Calendar: FC<CalendarProps> = ({ lessons }) => {
+  console.log({ lessons });
   const eventSettings: EventSettingsModel = {
     dataSource: lessons?.map((lesson) => {
       return {

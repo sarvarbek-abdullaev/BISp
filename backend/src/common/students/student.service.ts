@@ -7,6 +7,7 @@ import { PrismaService } from '../../prisma.service';
 import * as bcrypt from 'bcrypt';
 import {
   Course,
+  Lesson,
   Module,
   Order,
   Status,
@@ -361,6 +362,38 @@ export class StudentService {
       }
       return acc;
     }, []);
+  }
+
+  async getStudentLessonsById(id: string): Promise<Lesson[]> {
+    const student = await this.prismaService.student.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        profile: {
+          include: {
+            registeredModules: {
+              include: {
+                module: {
+                  include: {
+                    lessons: {
+                      include: {
+                        group: true,
+                        module: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return student.profile.registeredModules.flatMap((module) =>
+      module.module.lessons.map((lesson) => lesson),
+    );
   }
 
   async getStudentOrders(id: string): Promise<UserOrder[]> {
