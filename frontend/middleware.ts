@@ -25,8 +25,8 @@ export async function middleware(req: NextRequest) {
 
     const isAdmin = role.toLowerCase() === 'admin';
 
-    if (isAdmin && !currentPath.startsWith('/admin')) {
-      return NextResponse.redirect(new URL('/admin', req.url));
+    if (isAdmin && !currentPath.startsWith('/admin/')) {
+      return NextResponse.redirect(new URL('/admin/users', req.url));
     }
     if (!isAdmin && (currentPath === '/' || currentPath.startsWith('/admin'))) {
       return NextResponse.redirect(new URL('/dashboard', req.url));

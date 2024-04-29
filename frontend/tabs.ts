@@ -63,10 +63,6 @@ export const userTabs = [
 
 export const adminTabs = [
   {
-    name: 'Dashboard',
-    path: '/admin',
-  },
-  {
     name: 'Users',
     path: '/admin/users',
   },
